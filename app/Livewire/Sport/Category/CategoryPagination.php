@@ -15,7 +15,7 @@ class CategoryPagination extends Component
     //protected $paginationTheme = "bootstrap";
     public $orderColumn = "id";
     public $sortOrder = "desc";
-    public $sortLink = '<i class="sorticon fa-solid fa-caret-up"></i>';
+    public $sortLink = '<i class="sorticon fa-solid fa-caret-down"></i>';
     public $search = "";
     public $perPage = 10;
 
