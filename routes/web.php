@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\SportCategoryController;
+use App\Http\Controllers\Sport\SportCategoryController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {

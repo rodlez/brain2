@@ -1,4 +1,7 @@
-<div>
-    <!-- The biggest battle is the war against ignorance. - Mustafa Kemal Atatürk -->
-    holita
-</div>
+<!-- To use the layout.blade.php in views/components as a Template to render in the slot variable -->
+<x-app-layout>
+    <div>
+        <livewire:sport.category.category-pagination />
+    </div>
+
+</x-app-layout>

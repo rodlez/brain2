@@ -1,17 +1,18 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Sport;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class SportCategoryController extends Controller
+class SportEntryController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('sport/category.index');
+        //
     }
 
     /**
@@ -60,13 +61,5 @@ class SportCategoryController extends Controller
     public function destroy(string $id)
     {
         //
-    }
-
-    /**
-     * Test
-     */
-    public function test()
-    {
-        return view('sport/category.test');
     }
 }
