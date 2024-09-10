@@ -1,107 +1,132 @@
-<div>
+<div class="bg-white shadow rounded-xl">
 
-    <select wire:model.live="perPage">
-        <option value="10">10</option>
-        <option value="25">25</option>
-        <option value="50">50</option>
-        <option value="100">100</option>
-    </select>
+    <!-- Header -->
+    <div class="flex flex-row justify-between items-center border-b-2 border-zinc-200 py-4 px-4">
+        <div>
+            <h4 class="text-2xl text-zinc-600 leading-6 font-bold">
+                <span style="font-size: 2rem; color: orange; padding-right: 10px;">
+                    <i class="fa-solid fa-basketball"></i></span>
+                Categories
+            </h4>
+        </div>
+        <div>
+            <a href="{{ route('sportcategory.create') }}" class="text-white bg-orange-500 hover:bg-orange-600 focus:ring-0 focus:ring-black font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">New</a>
+        </div>
+    </div>
 
+    <!-- Search and Pagination -->
+    <div class="flex flex-col justify-start sm:flex-row sm:justify-between  gap-6 py-6 px-4">
+        <!-- Search -->
+        <div class="relative">
+            <div class="absolute top-2.5 bottom-0 left-4 text-slate-700">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+            <input type="search" class="rounded-xl pl-10 placeholder-zinc-400 focus:outline-none focus:ring-0 focus:border-orange-500 border-2 border-zinc-200" placeholder="Search by name" style="width: 250px;" wire:model.live="search">
+        </div>
+        <!-- Pagination -->
+        <div>
+            Pagination
+            <select wire:model.live="perPage" class="focus:outline-none focus:ring-0 focus:border-orange-500 border-2 border-zinc-200 rounded-lg">
+                <option class="bg-zinc-200 text-black" value="10">10</option>
+                <option value="25">25</option>
+                <option class="bg-zinc-200 text-black" value="50">50</option>
+                <option value="100">100</option>
+            </select>
+        </div>
+    </div>
+    <!-- Founded Entries -->
+    @if ($found !== 0)
+        <div class="flex flex-row justify-start items-center rounded-lg mx-4 p-4 bg-zinc-100">
+            <p class="text-green-600 text-md font-bold italic">{{ $found > 0 ? 'Found ' . $found . ' categories with name (' . $search . ')' : '' }}</p>
+        </div>
+    @endif
 
-    <div class="flex flex-col">
-        <div class=" overflow-x-auto">
+    <!-- Bulk Actions -->
+    @if (count($selections) > 0)
+        <div class="flex flex-row justify-start items-center sm:flex-row sm:justify-end gap-6 py-2 px-4">
+            Bulk Actions
+            <button type="button" class="w-1/3 sm:w-24 bg-red-600 text-white p-2 hover:bg-red-300 rounded-lg"
+                    wire:click="bulkDelete"
+                    wire:confirm="Are you sure you want to delete this categories?">
+                Delete
+            </button>
+        </div>
+    @endif
+
+    <!-- Table -->
+    <div class="flex flex-col pt-4 pb-8 px-4">
+        <div class="overflow-x-auto">
             <div class="min-w-full inline-block align-middle">
 
-                <!-- Search -->
-                <div class="relative text-gray-500 focus-within:text-gray-900 mb-4">
-                    <div class="absolute inset-y-0 left-1 flex items-center pl-3 pointer-events-none ">
-                        <svg class="w-5 h-5" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M17.5 17.5L15.4167 15.4167M15.8333 9.16667C15.8333 5.48477 12.8486 2.5 9.16667 2.5C5.48477 2.5 2.5 5.48477 2.5 9.16667C2.5 12.8486 5.48477 15.8333 9.16667 15.8333C11.0005 15.8333 12.6614 15.0929 13.8667 13.8947C15.0814 12.6872 15.8333 11.0147 15.8333 9.16667Z" stroke="#9CA3AF" stroke-width="1.6" stroke-linecap="round" />
-                            <path d="M17.5 17.5L15.4167 15.4167M15.8333 9.16667C15.8333 5.48477 12.8486 2.5 9.16667 2.5C5.48477 2.5 2.5 5.48477 2.5 9.16667C2.5 12.8486 5.48477 15.8333 9.16667 15.8333C11.0005 15.8333 12.6614 15.0929 13.8667 13.8947C15.0814 12.6872 15.8333 11.0147 15.8333 9.16667Z" stroke="black" stroke-opacity="0.2" stroke-width="1.6" stroke-linecap="round" />
-                            <path d="M17.5 17.5L15.4167 15.4167M15.8333 9.16667C15.8333 5.48477 12.8486 2.5 9.16667 2.5C5.48477 2.5 2.5 5.48477 2.5 9.16667C2.5 12.8486 5.48477 15.8333 9.16667 15.8333C11.0005 15.8333 12.6614 15.0929 13.8667 13.8947C15.0814 12.6872 15.8333 11.0147 15.8333 9.16667Z" stroke="black" stroke-opacity="0.2" stroke-width="1.6" stroke-linecap="round" />
-                        </svg>
-                    </div>
-                    <!-- Search box -->
-                    <input type="search" class="my-6 block w-80 h-11 pr-5 pl-12 py-2.5 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none" placeholder="Search by name" style="width: 250px;" wire:model.live="search">
-                </div>
-
-
-                <div class="flex p-4 justify-between">
-
-                    <div>
-                        <!-- Search Results -->
-                        <p class="text-green-600">{{ $found > 0 ? $found . ' categories found with name [' . $search . ']' : '' }}</p>
-                    </div>
-
-                    <!-- New Category -->
-                    <div>
-                        {{-- <a href="{{ route('category.create') }}" class="text-white bg-green-600 hover:bg-green-500 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">New Category</a> --}}
-                    </div>
-
-                </div>
-
-                <div class="overflow-hidden ">
-                    <table class="min-w-full rounded-xl">
+                <div class="overflow-hidden">
+                    <table class="min-w-full">
                         <thead>
-                            <tr class="bg-gray-50">
-                                <th scope="col" class="p-5 text-left text-sm leading-6 font-semibold text-gray-900 capitalize rounded-t-xl" wire:click="sorting('id')">Id {!! $sortLink !!}</th>
-                                <th scope="col" class="p-5 text-left text-sm leading-6 font-semibold text-gray-900 capitalize" wire:click="sorting('name')">name {!! $sortLink !!}</th>
-                                <th scope="col" class="p-5 text-left text-sm leading-6 font-semibold text-gray-900 capitalize" wire:click="sorting('created_at')">created_at {!! $sortLink !!}</th>
-                                <th scope="col" class="p-5 text-left text-sm leading-6 font-semibold text-gray-900 capitalize" wire:click="sorting('updated_at')">updated_at {!! $sortLink !!}</th>
-                                <th scope="col" class="p-5 text-left text-sm leading-6 font-semibold text-gray-900 capitalize rounded-t-xl"> Actions </th>
+                            <tr class="bg-black text-left text-sm leading-6 font-bold text-white uppercase">
+                                <th></th>
+                                <th scope="col" class="p-4 hover:cursor-pointer hover:text-orange-500 {{ $column == 'id' ? 'bg-yellow-300 text-black' : '' }}" wire:click="sorting('id')">id {!! $sortLink !!}</th>
+                                <th scope="col" class="p-4 hover:cursor-pointer hover:text-orange-500 {{ $column == 'name' ? 'bg-yellow-300 text-black' : '' }}" wire:click="sorting('name')">name {!! $sortLink !!}</th>
+                                <th scope="col" class="p-4 hover:cursor-pointer hover:text-orange-500 {{ $column == 'created_at' ? 'bg-yellow-300 text-black' : '' }}" wire:click="sorting('created_at')">created {!! $sortLink !!}</th>
+                                <th scope="col" class="p-4 hover:cursor-pointer hover:text-orange-500 {{ $column == 'updated_at' ? 'bg-yellow-300 text-black' : '' }}" wire:click="sorting('updated_at')">updated {!! $sortLink !!}</th>
+                                <th scope="col" class="p-4 uppercase"> actions </th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-gray-300 ">
+                        <tbody class="divide-y divide-zinc-200">
                             @if ($categories->count())
                                 @foreach ($categories as $category)
-                                    <tr class="bg-white transition-all duration-500 hover:bg-gray-50">
-                                        <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">{{ $category->id }}</td>
-                                        <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">{{ $category->name }}</td>
-                                        <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">{{ date('d-m-Y', strtotime($category->created_at)) }}</td>
-                                        <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">{{ date('d-m-Y', strtotime($category->updated_at)) }}</td>
-                                        <td class=" p-5 ">
+                                    <tr class="even:bg-zinc-200 odd:bg-white transition-all duration-500 hover:bg-yellow-100">
+                                        <td class="p-4 whitespace-nowrap text-sm leading-6 font-medium text-gray-900"><input wire:model.live="selections" type="checkbox" class="text-green-600 outline-none focus:ring-0 checked:bg-green-500" value={{ $category->id }}></td>
+                                        <td class="p-4 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">{{ $category->id }}</td>
+                                        <td class="p-4 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">{{ $category->name }}</td>
+                                        <td class="p-4 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">{{ date('d-m-Y', strtotime($category->created_at)) }}</td>
+                                        <td class="p-4 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">{{ date('d-m-Y', strtotime($category->updated_at)) }}</td>
+                                        <td class="p-4">
                                             <div class="flex items-center gap-1">
-                                                {{-- <a href="{{ route('category.show', $category) }}"> --}}
-                                                <a href="#">
+                                                <!-- Show -->
+                                                <a href="{{ route('sportcategory.show', $category) }}">
                                                     <button class="p-2 rounded-full  group transition-all duration-500  flex item-center">
-                                                        <i class="fa-solid fa-eye"></i>
+                                                        <span style="font-size: 1rem; color: rgb(32, 131, 7);"><i class="fa-solid fa-eye"></i></span>
                                                     </button>
                                                 </a>
-                                                {{-- <a href="{{ route('category.edit', $category) }}"> --}}
-                                                <a href="#">
+                                                <!-- Edit -->
+                                                <a href="{{ route('sportcategory.edit', $category) }}">
                                                     <button class="p-2  rounded-full  group transition-all duration-500  flex item-center">
-                                                        <i class="fa-solid fa-pen-to-square"></i>
+                                                        <span style="font-size: 1rem; color: rgb(20, 19, 20);"><i class="fa-solid fa-pen-to-square"></i></span>
                                                     </button>
                                                 </a>
-                                                {{-- <form action="{{ route('category.destroy', $category) }}" method="POST">
+                                                <!-- Delete -->
+                                                <form action="{{ route('sportcategory.destroy', $category) }}" method="POST">
                                                     <!-- Add Token to prevent Cross-Site Request Forgery (CSRF) -->
                                                     @csrf
                                                     <!-- Dirtective to Override the http method -->
                                                     @method('DELETE')
-                                                    <button class="p-2 rounded-full  group transition-all duration-500  flex item-center">
-                                                        <i class="fa-solid fa-trash"></i>
+                                                    <button class="p-2 rounded-full  group transition-all duration-500  flex item-center" onclick="return confirm('Are you sure you want to delete the category: {{ $category->name }}?')">
+                                                        <span style="font-size: 1rem; color: rgb(209, 29, 5);"><i class="fa-solid fa-trash"></i></span>
                                                     </button>
-                                                </form> --}}
+                                                </form>
                                             </div>
                                         </td>
                                     </tr>
                                 @endforeach
                             @else
-                                <tr>
-                                    <td class="p-5 whitespace-nowrap text-xl leading-6 font-medium text-gray-900">No categories found.</td>
+                                <tr class="bg-slate-200">
+                                    <td colspan="5" class="py-8 px-4 whitespace-nowrap text-xl leading-6 font-medium text-red-600 ">No categories found</td>
                                 </tr>
                             @endif
                         </tbody>
                     </table>
+
                 </div>
 
-                <!-- Pagination Links -->
-                <div class="py-2 px-4">
-                    {{ $categories->links() }}
-                </div>
 
             </div>
         </div>
+    </div>
+
+    <div class="border-2 border-zinc-100"></div>
+
+    <!-- Pagination Links -->
+    <div class="py-8 px-4">
+        {{ $categories->links() }}
     </div>
 
 </div>

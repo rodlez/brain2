@@ -5,9 +5,14 @@
         <div class="flex flex-row justify-start items-center py-4 px-2 text-slate-400">
             <a href="/dashboard" class="px-2 hover:text-orange-500">Dashboard </a> /
             <a href="/dashboard/sport" class="px-2 hover:text-orange-500">Sport</a> /
-            <a href="/dashboard/sport/category" class="px-2 font-bold text-black border-b-2 border-b-orange-500">Categories</a>
+            <a href="/dashboard/sport/category" class="px-2 font-bold text-black border-b-2 border-b-orange-500">Category</a>
         </div>
-        <livewire:sport.category.category-pagination />
-    </div>
+
+        <div>
+            <!-- Order your soul. Reduce your wants. - Augustine -->
+            <h1>CACA</h1>
+            Mire usted
+            {{ $mierda }}
+        </div>
 
 </x-app-layout>

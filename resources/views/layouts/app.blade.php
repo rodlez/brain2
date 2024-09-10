@@ -17,6 +17,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/fontawesome/css/solid.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/fontawesome/css/brands.css') }}">
 
+    @livewireStyles
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -36,9 +37,20 @@
 
         <!-- Page Content -->
         <main>
+            <!-- Session to pass the message for the CRUD operations success or error -->
+            <div class="container max-w-6xl mx-auto px-6 pt-4">
+                @if (session()->has('message'))
+                    <div class="flex flex-row justify-between item-center bg-green-700 text-white p-2 rounded-md">
+                        <h2 class="text-md italic px-2">{{ session('message') }}</h2>
+                        <a href="{{ URL::current() }}" class="px-2">X</a>
+                    </div>
+                @endif
+            </div>
+
             {{ $slot }}
         </main>
     </div>
+    @livewireScripts
 </body>
 
 </html>

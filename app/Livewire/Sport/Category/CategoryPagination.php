@@ -15,13 +15,25 @@ class CategoryPagination extends Component
     //protected $paginationTheme = "bootstrap";
     public $orderColumn = "id";
     public $sortOrder = "desc";
-    public $sortLink = '<i class="sorticon fa-solid fa-caret-down"></i>';
+    public $sortLink = '<i class="px-1 sorticon fa-solid fa-caret-down"></i>';
     public $search = "";
-    public $perPage = 10;
+    public $perPage = 25;
+
+    public $selections = [];
 
     public function updated()
     {
         $this->resetPage();
+    }
+
+    public function bulkDelete()
+    {
+        foreach ($this->selections as $selection) {
+            $category = SportCategory::find($selection);
+            $category->delete();
+        }
+
+        return to_route('sportcategory.index')->with('message', 'Categories: deleted.');
     }
 
     public function sorting($columnName = "")
@@ -35,7 +47,7 @@ class CategoryPagination extends Component
             $caretOrder = 'up';
         }
 
-        $this->sortLink = '<i class="sorticon fa-solid fa-caret-' . $caretOrder . '"></i>';
+        $this->sortLink = '<i class="px-1 sorticon fa-solid fa-caret-' . $caretOrder . '"></i>';
         $this->orderColumn = $columnName;
     }
     public function render()
@@ -57,7 +69,8 @@ class CategoryPagination extends Component
 
         return view('livewire.sport.category.category-pagination', [
             'categories' => $categories,
-            'found' => $found
+            'found' => $found,
+            'column' => $this->orderColumn
         ]);
     }
 }
