@@ -46,7 +46,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the sport entries associated with the user.
+     * Get the sports entries associated with the user.
      */
     public function sports()
     {

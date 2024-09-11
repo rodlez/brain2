@@ -9,10 +9,12 @@
         <div class="bg-white shadow rounded-xl">
             <div class="flex flex-col max-w-7xl mx-auto py-12 justify-center items-center gap-4 sm:flex-row sm:px-6 lg:px-8">
 
-                <div class="flex flex-col justify-center items-center w-40 h-40 border-4 border-black rounded-lg gap-10 bg-green-600 text-white hover:bg-yellow-200 hover:text-black hover:border-black">
-                    <span class="text-xl">Entries</span>
-                    <i class="fa-solid fa-dumbbell fa-2xl"></i>
-                </div>
+                <a href="{{ route('sportentry.index') }}">
+                    <div class="flex flex-col justify-center items-center w-40 h-40 border-4 border-black rounded-lg gap-10 bg-green-600 text-white hover:bg-yellow-200 hover:text-black hover:border-black">
+                        <span class="text-xl">Entries</span>
+                        <i class="fa-solid fa-dumbbell fa-2xl"></i>
+                    </div>
+                </a>
                 <a href="{{ route('sportcategory.index') }}">
                     <div class="flex flex-col justify-center items-center w-40 h-40 border-4 border-black rounded-lg gap-10 bg-blue-600 text-white hover:bg-yellow-200 hover:text-black hover:border-black">
                         <span>Categories</span>

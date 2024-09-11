@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Sport\SportEntryController;
 use App\Http\Controllers\Sport\SportCategoryController;
 use App\Http\Controllers\Sport\SportTagController;
 use Illuminate\Support\Facades\Route;
@@ -17,6 +18,15 @@ Route::get('/dashboard', function () {
 Route::get('/dashboard/sport', function () {
     return view('sport/main');
 })->middleware(['auth', 'verified'])->name('sport.main');
+
+Route::get('/dashboard/sport/entry', [SportEntryController::class, 'index'])->name('sportentry.index')->middleware(['auth', 'verified']);
+Route::post('/dashboard/sport/entry', [SportEntryController::class, 'store'])->name('sportentry.store')->middleware(['auth', 'verified']);
+Route::get('/dashboard/sport/entry/create', [SportEntryController::class, 'create'])->name('sportentry.create')->middleware(['auth', 'verified']);
+Route::get('/dashboard/sport/entry/{entry}', [SportEntryController::class, 'show'])->name('sportentry.show')->middleware(['auth', 'verified']);
+Route::put('/dashboard/sport/entry/{entry}', [SportEntryController::class, 'update'])->name('sportentry.update')->middleware(['auth', 'verified']);
+Route::delete('/dashboard/sport/entry/{entry}', [SportEntryController::class, 'destroy'])->name('sportentry.destroy')->middleware(['auth', 'verified']);
+Route::get('/dashboard/sport/entry/edit/{entry}', [SportEntryController::class, 'edit'])->name('sportentry.edit')->middleware(['auth', 'verified']);
+
 
 // CATEGORIES
 
