@@ -35,4 +35,12 @@ class Sport extends Model
     {
         return $this->belongsTo(SportCategory::class);
     }
+
+    /**
+     * Get the tags associated with the Sport.
+     */
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class, 'sport_entry_tag')->withTimestamps();
+    }
 }
