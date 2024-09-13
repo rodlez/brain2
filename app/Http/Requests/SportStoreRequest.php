@@ -22,14 +22,27 @@ class SportStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'tag'           => 'required',
-            'category_id'   => 'required',
+            'selectedTags'  => 'required',
+            'category'      => 'required',
             'title'         => 'bail|required|min:3|string',
             'date'          => 'bail|required|date',
             'location'      => 'bail|required|min:4|string',
             'duration'      => 'bail|required|numeric',
             'distance'      => 'nullable|numeric',
             'info'          => 'bail|nullable|min:4',
+        ];
+    }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'selectedTags.required' => 'At least 1 tag must be selected',
+            'title.required' => 'A title is required',
         ];
     }
 }

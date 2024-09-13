@@ -17,6 +17,15 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/fontawesome/css/solid.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/fontawesome/css/brands.css') }}">
 
+
+    <!-- Virtual Select Plugin -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/virtualselect/virtual-select.min.js') }}">
+    <script src="{{ asset('assets/virtualselect/virtual-select.min.js') }}"></script>
+
+    <!-- optional -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/tooltip/tooltip.min.css') }}">
+    <script src="{{ asset('assets/tooltip/tooltip.min.js') }}"></script>
+
     @livewireStyles
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -40,7 +49,7 @@
             <!-- Session to pass the message for the CRUD operations success or error -->
             <div class="container max-w-6xl mx-auto px-6 pt-4">
                 @if (session()->has('message'))
-                    <div class="flex flex-row justify-between item-center bg-green-700 text-white p-2 rounded-md">
+                    <div class="flex flex-row justify-between item-center <?php echo substr(session('message'), 0, 5) == 'Error' ? 'bg-red-600' : 'bg-green-700'; ?>  text-white p-2 rounded-md">
                         <h2 class="text-md italic px-2">{{ session('message') }}</h2>
                         <a href="{{ URL::current() }}" class="px-2">X</a>
                     </div>
@@ -51,6 +60,7 @@
         </main>
     </div>
     @livewireScripts
+    @stack('js')
 </body>
 
 </html>

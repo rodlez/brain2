@@ -19,6 +19,9 @@ class SportCategory extends Model
      */
     public function sports()
     {
-        return $this->hasMany(Sport::class);
+        return $this->hasMany(
+            Sport::class,
+            foreignKey: 'category_id'
+        );
     }
 }

@@ -77,7 +77,6 @@ class SportTagController extends Controller
         if ($tag->user_id !== request()->user()->id) {
             abort(403);
         }*/
-
         $tag->delete();
 
         return to_route('sporttag.index')->with('message', 'tag: ' . $tag->name . ' deleted.');

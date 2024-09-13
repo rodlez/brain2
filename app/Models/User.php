@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+use App\Models\Sport\Sport;
+
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
@@ -50,6 +52,9 @@ class User extends Authenticatable
      */
     public function sports()
     {
-        return $this->hasMany(Sport::class);
+        return $this->hasMany(
+            Sport::class,
+            foreignKey: 'user_id'
+        );
     }
 }

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryStoreRequest;
 use App\Models\Sport\SportCategory;
+use Exception;
 use Illuminate\View\View;
 
 class SportCategoryController extends Controller
@@ -77,10 +78,14 @@ class SportCategoryController extends Controller
         if ($category->user_id !== request()->user()->id) {
             abort(403);
         }*/
+        try {
+            $category->delete();
 
-        $category->delete();
+            return to_route('sportcategory.index')->with('message', 'category: ' . $category->name . ' deleted.');
+        } catch (Exception $e) {
 
-        return to_route('sportcategory.index')->with('message', 'category: ' . $category->name . ' deleted.');
+            return to_route('sportcategory.index')->with('message', 'Error(' . $e->getCode() . ') Category: ' . $category->name . ' can not be deleted.');
+        }
     }
 
     /**
@@ -88,6 +93,9 @@ class SportCategoryController extends Controller
      */
     public function test()
     {
+        $categories = implode(array_values(SportCategory::get()->pluck('id')->random(1)->toArray()));
+        var_dump($categories);
+        dd($categories);
         return view('sport/category.test');
     }
 

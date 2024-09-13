@@ -5,6 +5,8 @@ namespace App\Models\Sport;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use App\Models\User;
+
 class Sport extends Model
 {
     use HasFactory;
@@ -33,7 +35,10 @@ class Sport extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(
+            User::class,
+            foreignKey: 'user_id'
+        );
     }
 
     /**
@@ -41,7 +46,10 @@ class Sport extends Model
      */
     public function category()
     {
-        return $this->belongsTo(SportCategory::class);
+        return $this->belongsTo(
+            SportCategory::class,
+            foreignKey: 'category_id'
+        );
     }
 
     /**
@@ -49,6 +57,10 @@ class Sport extends Model
      */
     public function tags()
     {
-        return $this->belongsToMany(Tag::class, 'sport_entry_tag')->withTimestamps();
+        return $this->belongsToMany(
+            SportTag::class,
+            table: 'sport_entry_tag',
+            foreignPivotKey: 'sport_entry_id'
+        )->withTimestamps();
     }
 }

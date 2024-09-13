@@ -4,13 +4,21 @@ namespace App\Http\Controllers\Sport;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SportStoreRequest;
+use App\Models\Sport\Sport;
 use Illuminate\Http\Request;
+
+use App\Services\SportService;
 
 use App\Models\Sport\SportCategory;
 use App\Models\Sport\SportTag;
 
 class SportEntryController extends Controller
 {
+    // Service Injection
+    public function __construct(
+        private SportService $sportService,
+    ) {}
+
     /**
      * Display a listing of the resource.
      */
@@ -24,25 +32,13 @@ class SportEntryController extends Controller
      */
     public function create()
     {
-        /* $categories = SportCategory::orderBy('name')->get();
-        $tags       = SportTag::orderBy('name')->get();
-
-        return view('sport/entry.create', [
-            'categories'    => $categories,
-            'tags'          => $tags
-        ]); */
         return view('sport/entry/create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(SportStoreRequest $request)
-    {
-        // Retrieve the validated input data...
-        $formData   = $request->validated();
-        dd($formData);
-    }
+    public function store(SportStoreRequest $request) {}
 
     /**
      * Display the specified resource.
@@ -71,8 +67,15 @@ class SportEntryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Sport $entry)
     {
-        //
+        $entry->delete();
+        return to_route('sportentry.index')->with('message', 'Entry: ' . $entry->title . ' deleted.');
+    }
+
+    // test
+    public function test()
+    {
+        return view('sport/entry/test');
     }
 }

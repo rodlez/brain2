@@ -13,6 +13,6 @@ class SportCategorySeeder extends Seeder
      */
     public function run(): void
     {
-        SportCategory::factory(100)->create();
+        SportCategory::factory(10)->create();
     }
 }

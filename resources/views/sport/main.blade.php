@@ -27,6 +27,12 @@
                         <i class="fa-solid fa-tags fa-2xl"></i>
                     </div>
                 </a>
+                <a href="{{ route('sportentry.test') }}">
+                    <div class="flex flex-col justify-center items-center w-40 h-40 border-4 border-black rounded-lg gap-10 bg-violet-500 text-white hover:bg-yellow-200 hover:text-black hover:border-black">
+                        <span>Test</span>
+                        <i class="fa-solid fa-tags fa-2xl"></i>
+                    </div>
+                </a>
             </div>
         </div>
 </x-app-layout>
