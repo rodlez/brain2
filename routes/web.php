@@ -14,10 +14,13 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-// *********** SPORT *******************
-Route::get('/dashboard/sport', function () {
+// *********** SPORT ENTRIES *******************
+/* Route::get('/dashboard/sport', function () {
     return view('sport/main');
-})->middleware(['auth', 'verified'])->name('sport.main');
+})->middleware(['auth', 'verified'])->name('sport.main'); */
+
+Route::get('/dashboard/sport', [SportEntryController::class, 'main'])->name('sport.main')->middleware(['auth', 'verified']);
+
 
 Route::get('/dashboard/sport/entry/test', [SportEntryController::class, 'test'])->name('sportentry.test')->middleware(['auth', 'verified']);
 

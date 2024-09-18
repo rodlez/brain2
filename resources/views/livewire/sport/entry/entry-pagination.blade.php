@@ -14,18 +14,157 @@
         </div>
     </div>
 
-    <!-- Search and Pagination -->
-    <div class="flex flex-col justify-start sm:flex-row sm:justify-between  gap-6 py-6 px-4">
-        <!-- Search -->
-        <div class="relative">
-            <div class="absolute top-2.5 bottom-0 left-4 text-slate-700">
-                <i class="fa-solid fa-magnifying-glass"></i>
-            </div>
-            <input type="search" class="rounded-xl pl-10 placeholder-zinc-400 focus:outline-none focus:ring-0 focus:border-orange-500 border-2 border-zinc-200" placeholder="Search by title" style="width: 250px;" wire:model.live="search">
-        </div>
-        <!-- Pagination -->
+    <!-- Filters -->
+    <div class="flex flex-row justify-between items-center py-2 mx-4 border-orange-400 border-b-2 w-100 sm:w-100">
         <div>
-            Pagination
+            <span class="px-2 text-xl text-zinc-800">Filters
+                <span class="text-sm font-semibold text-orange-400">
+                    {{ $initialDateTo != $dateTo || $initialDateFrom != $dateFrom ? '(Date)' : '' }}
+                    {{ $cat != 0 ? '(Category)' : '' }}
+                    {{ $initialDurationTo != $durationTo || $durationFrom != 0 ? '(Duration)' : '' }}
+                    {{ $initialDistanceTo != $distanceTo || $distanceFrom != 0 ? '(Distance)' : '' }}
+                </span>
+            </span>
+        </div>
+        <div>
+            <button wire:click="activateFilter">
+                @if ($showFilter % 2 != 0)
+                    <i class="fa-solid fa-minus"></i>
+                @else
+                    <i class="fa-solid fa-plus"></i>
+                @endif
+            </button>
+        </div>
+    </div>
+
+    @if ($showFilter % 2 != 0)
+        <div class="bg-orange-200 mx-4 rounded-lg py-4 mt-4">
+            <!-- Date -->
+            <div class="flex flex-col justify-start items-start sm:flex-row sm:justify-start sm:items-center gap-4 px-4 py-2">
+                <div>
+                    <span class="pr-4"><i class="fa-solid fa-calendar-days"></i></span>
+                    <span class="sm:pr-16">Date</span>
+                </div>
+                <div class="sm:pl-4"><input type="date" class="rounded-lg" placeholder="From" style="width: 140px;" wire:model.live="dateFrom"></div>
+                <div><input type="date" class="rounded-lg" placeholder="To" style="width: 140px;" wire:model.live="dateTo"></div>
+            </div>
+            <!-- Category -->
+            <div class="flex flex-col justify-start items-start sm:flex-row sm:justify-start sm:items-center gap-4 px-4 py-2">
+                <div>
+                    <span><i class="fa-solid fa-list"></i></span>
+                    <span>Category (<span class="font-semibold text-sm">{{ count($categories) }}</span>)</span>
+                </div>
+                <div class="sm:pl-7">
+                    <select wire:model.live="cat"
+                            class="rounded-lg">
+                        <option value="0">All</option>
+                        @foreach ($categories as $category)
+                            <option value="{{ $category['name'] }}">{{ $category['name'] }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <!-- Duration -->
+            <div class="flex flex-col justify-start items-start sm:flex-row sm:justify-start sm:items-center gap-4 px-4 py-2">
+                <div>
+                    <span><i class="fa-regular fa-clock"></i></span>
+                    <span class="sm:pr-2">Duration (<span class="font-semibold text-sm">mins</span>)</span>
+                </div>
+                <div class="sm:pl-3">
+                    <input type="number" class="rounded-lg" placeholder="From" style="width: 80px;" wire:model.live="durationFrom">
+                    <input type="number" class="rounded-lg" placeholder="To" style="width: 80px;" wire:model.live="durationTo">
+                </div>
+            </div>
+            <!-- Distance -->
+            <div class="flex flex-col justify-start items-start sm:flex-row sm:justify-start sm:items-center gap-4 px-4 py-2">
+                <div>
+                    <span>
+                        <i class="fa-solid fa-route"></i></span>
+                    <span class="pr-2 sm:pr-4">Distance (<span class="font-semibold text-sm">km</span>)</span>
+                </div>
+                <div class="sm:pl-3.5">
+                    <input type="number" class="rounded-lg" placeholder="From" style="width: 80px;" wire:model.live="distanceFrom">
+                    <input type="number" class="rounded-lg" placeholder="To" style="width: 80px;" wire:model.live="distanceTo">
+                </div>
+            </div>
+            <!-- Reset Filters -->
+            <div class="flex flex-row justify-start items-center sm:flex-row sm:justify-start sm:items-center gap-4 px-4 py-2">
+                <button type="button" class="w-full bg-black text-white p-2 hover:bg-slate-700 rounded-lg" wire:click="clearFilters">
+                    <span> Reset Filters </span>
+                    <span class="px-2"><i class="fa-solid fa-delete-left"></i></span>
+                </button>
+            </div>
+
+        </div>
+    @endif
+
+    <!-- Search -->
+    <div class="flex flex-row justify-between items-center py-2 mx-4 my-4 border-green-600 border-b-2 w-100 sm:w-100">
+        <div>
+            <span class="px-2 text-xl text-zinc-800">Search
+                <span class="text-sm font-semibold text-green-600">
+                    {{ $search != '' ? '(' . $search . ')' : '' }}
+                </span>
+            </span>
+        </div>
+        <div>
+            <button wire:click="activateSearch">
+                @if ($showSearch % 2 != 0)
+                    <i class="fa-solid fa-minus"></i>
+                @else
+                    <i class="fa-solid fa-plus"></i>
+                @endif
+            </button>
+        </div>
+    </div>
+
+    @if ($showSearch % 2 != 0)
+        <div class="bg-lime-100 mx-4 rounded-lg py-4 mt-4">
+            <!-- Search -->
+            <div>
+                <span class="bg-zinc-300 rounded-lg p-3 mx-2"><i class="fa-solid fa-magnifying-glass"></i></span>
+                <input wire:model.live="search" type="text" class="w-1/2 rounded-lg placeholder-zinc-400 focus:outline-none focus:ring-0 focus:border-orange-500 border-2 border-zinc-200" placeholder="Search by title">
+                @if ($search != '')
+                    <button type="button" wire:click="clearSearch" class="bg-red-600 text-white p-2 hover:bg-red-300 rounded-lg">
+                        <span class="px-2"><i class="fa-solid fa-x"></i></span>
+                    </button>
+                @endif
+            </div>
+
+        </div>
+    @endif
+
+    <!-- Bulk Actions -->
+    @if (count($selections) > 0)
+        <div class="flex flex-row justify-between items-center py-2 mx-4 my-4 border-red-600 border-b-2 w-100 sm:w-100">
+            <div>
+                <span class="px-2 text-xl text-zinc-800">Bulk Actions</span>
+            </div>
+            <div>
+                <button type="button" class="bg-black text-white p-2 hover:bg-slate-800 rounded-lg"
+                        wire:click="bulkClear">
+                    <span>Unselect All </span>
+                    <span class="px-2"><i class="fa-solid fa-delete-left"></i></span>
+                </button>
+            </div>
+            <div>
+                <button type="button" class="bg-red-600 text-white p-2 hover:bg-red-300 rounded-lg"
+                        wire:click="bulkDelete"
+                        wire:confirm="Are you sure you want to delete this entries?">
+                    <span>Delete ({{ count($selections) }}) </span>
+                    <span class="px-2"><i class="fa-solid fa-trash"></i></span>
+                </button>
+            </div>
+        </div>
+    @endif
+
+
+    <!-- Entries -->
+    <div class="flex flex-row justify-between items-center py-2 mx-4 my-4 border-yellow-600 border-b-2 w-100 sm:w-100">
+        <div>
+            <span class="px-2 text-xl text-zinc-800">Entries found ({{ $search != '' ? $found : $total }})</span>
+        </div>
+        <div>
             <select wire:model.live="perPage" class="focus:outline-none focus:ring-0 focus:border-orange-500 border-2 border-zinc-200 rounded-lg">
                 <option class="bg-zinc-200 text-black" value="10">10</option>
                 <option value="25">25</option>
@@ -34,22 +173,24 @@
             </select>
         </div>
     </div>
-    <!-- Founded Entries -->
-    @if ($found !== 0)
-        <div class="flex flex-row justify-start items-center rounded-lg mx-4 p-4 bg-zinc-100">
-            <p class="text-green-600 text-md font-bold italic">{{ $found > 0 ? 'Found ' . $found . ' entries with title (' . $search . ')' : '' }}</p>
-        </div>
-    @endif
 
-    <!-- Bulk Actions -->
-    @if (count($selections) > 0)
-        <div class="flex flex-row justify-start items-center sm:flex-row sm:justify-end gap-6 py-2 px-4">
-            Bulk Actions
-            <button type="button" class="w-1/3 sm:w-24 bg-red-600 text-white p-2 hover:bg-red-300 rounded-lg"
-                    wire:click="bulkDelete"
-                    wire:confirm="Are you sure you want to delete this entries?">
-                Delete
-            </button>
+    <!-- Criteria -->
+    @if ($search != '' || $initialDateTo != $dateTo || $initialDateFrom != $dateFrom || $cat > 0 || $initialDurationTo != $durationTo || $durationFrom != 0 || $initialDistanceTo != $distanceTo || $distanceFrom != 0)
+        <div class="flex flex-row justify-between items-center rounded-lg mx-4 p-4 bg-zinc-100">
+            <div>
+                <p class="text-green-600 text-md font-bold">
+                    {{ $search != '' ? 'Search (' . $search . ')' : '' }}
+                    {{ $initialDateTo != $dateTo || $initialDateFrom != $dateFrom ? 'Dates (' . date('d-m-Y', strtotime($dateFrom)) . ' - ' . date('d-m-Y', strtotime($dateTo)) . ')' : '' }}
+                    {{ $cat > 0 ? 'Category (' . $cat . ')' : '' }}
+                    {{ $initialDurationTo != $durationTo || $durationFrom != 0 ? 'Duration (' . $durationFrom . ' - ' . $durationTo . ')' : '' }}
+                    {{ $initialDistanceTo != $distanceTo || $distanceFrom != 0 ? 'Distance (' . $distanceFrom . ' - ' . $distanceTo . ')' : '' }}
+                </p>
+            </div>
+            <div>
+                <button type="button" wire:click="resetAll" class="bg-red-600 text-white p-2 hover:bg-red-300 rounded-lg">
+                    <span class="px-2"><i class="fa-solid fa-x"></i></span>
+                </button>
+            </div>
         </div>
     @endif
 
@@ -65,11 +206,11 @@
                                 <th></th>
                                 <th scope="col" class="p-4 hover:cursor-pointer hover:text-orange-500 {{ $column == 'id' ? 'bg-yellow-300 text-black' : '' }}" wire:click="sorting('id')">id {!! $sortLink !!}</th>
                                 <th scope="col" class="p-4 hover:cursor-pointer hover:text-orange-500 {{ $column == 'title' ? 'bg-yellow-300 text-black' : '' }}" wire:click="sorting('title')">title {!! $sortLink !!}</th>
-                                <th scope="col" class="p-4 hover:cursor-pointer hover:text-orange-500 {{ $column == 'category_name' ? 'bg-yellow-300 text-black' : '' }}" wire:click="sorting('category_name')">category {!! $sortLink !!}</th>
-                                <th scope="col" class="p-4 hover:cursor-pointer hover:text-orange-500 {{ $column == 'category_name' ? 'bg-yellow-300 text-black' : '' }}" wire:click="sorting('location')">location {!! $sortLink !!}</th>
-                                <th scope="col" class="p-4 hover:cursor-pointer hover:text-orange-500 {{ $column == 'category_name' ? 'bg-yellow-300 text-black' : '' }}" wire:click="sorting('duration')">duration {!! $sortLink !!}</th>
-                                <th scope="col" class="p-4 hover:cursor-pointer hover:text-orange-500 {{ $column == 'category_name' ? 'bg-yellow-300 text-black' : '' }}" wire:click="sorting('distance')">distance {!! $sortLink !!}</th>
-                                <th scope="col" class="p-4 hover:cursor-pointer hover:text-orange-500 {{ $column == 'updated_at' ? 'bg-yellow-300 text-black' : '' }}" wire:click="sorting('date')">date {!! $sortLink !!}</th>
+                                <th scope="col" class="p-4 hover:cursor-pointer hover:text-orange-500 {{ $column == 'category_name' ? 'bg-yellow-300 text-black' : '' }}" wire:click="sorting('category_name')">category {{-- {{ '(' . $differentCategories . ')' }} --}} {!! $sortLink !!}</th>
+                                <th scope="col" class="p-4 hover:cursor-pointer hover:text-orange-500 {{ $column == 'location' ? 'bg-yellow-300 text-black' : '' }}" wire:click="sorting('location')">location {{-- {{ '(' . $differentLocations . ')' }} --}} {!! $sortLink !!}</th>
+                                <th scope="col" class="p-4 hover:cursor-pointer hover:text-orange-500 {{ $column == 'duration' ? 'bg-yellow-300 text-black' : '' }}" wire:click="sorting('duration')">duration {{ '(' . $totalDuration . ')' }} {!! $sortLink !!}</th>
+                                <th scope="col" class="p-4 hover:cursor-pointer hover:text-orange-500 {{ $column == 'distance' ? 'bg-yellow-300 text-black' : '' }}" wire:click="sorting('distance')">distance {{ '(' . $totalDistance . ')' }} {!! $sortLink !!}</th>
+                                <th scope="col" class="p-4 hover:cursor-pointer hover:text-orange-500 {{ $column == 'date' ? 'bg-yellow-300 text-black' : '' }}" wire:click="sorting('date')">date {{-- {{ '(' . $differentDates . ')' }} --}} {!! $sortLink !!}</th>
                                 <th scope="col" class="p-4 hover:cursor-pointer hover:text-orange-500 {{ $column == 'created_at' ? 'bg-yellow-300 text-black' : '' }}" wire:click="sorting('created_at')">created {!! $sortLink !!}</th>
                                 <th scope="col" class="p-4 uppercase"> actions </th>
                             </tr>
@@ -85,7 +226,7 @@
                                         <td class="p-4 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">{{ $entry->location }}</td>
                                         <td class="p-4 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">{{ $entry->duration }}</td>
                                         <td class="p-4 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">{{ $entry->distance }}</td>
-                                        <td class="p-4 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">{{ $entry->date }}</td>
+                                        <td class="p-4 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">{{ date('d-m-Y', strtotime($entry->date)) }}</td>
                                         <td class="p-4 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">{{ date('d-m-Y', strtotime($entry->created_at)) }}</td>
                                         <td class="p-4">
                                             <div class="flex items-center gap-1">
@@ -117,7 +258,7 @@
                                 @endforeach
                             @else
                                 <tr class="bg-slate-200">
-                                    <td colspan="5" class="py-8 px-4 whitespace-nowrap text-xl leading-6 font-medium text-red-600 ">No entries found</td>
+                                    <td colspan="10" class="py-8 px-4 whitespace-nowrap text-xl leading-6 font-medium text-red-600 ">No entries found</td>
                                 </tr>
                             @endif
                         </tbody>

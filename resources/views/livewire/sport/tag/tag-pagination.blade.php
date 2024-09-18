@@ -109,7 +109,7 @@
                                 @endforeach
                             @else
                                 <tr class="bg-slate-200">
-                                    <td colspan="5" class="py-8 px-4 whitespace-nowrap text-xl leading-6 font-medium text-red-600 ">No tags found</td>
+                                    <td colspan="6" class="py-8 px-4 whitespace-nowrap text-xl leading-6 font-medium text-red-600 ">No tags found</td>
                                 </tr>
                             @endif
                         </tbody>

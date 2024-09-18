@@ -22,11 +22,13 @@ class Sport extends Model
     protected $fillable = [
         'user_id',
         'category_id',
+        'status',
         'title',
         'date',
         'location',
         'duration',
         'distance',
+        'url',
         'info'
     ];
 

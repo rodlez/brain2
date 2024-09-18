@@ -14,9 +14,9 @@ use Illuminate\Http\Request;
 
 use App\Services\SportService;
 
-class EntryCreate extends Component
+class EntryEdit extends Component
 {
-    public $inputs;
+    public $entry;
     public $show = 0;
     public $title;
     public $date;
@@ -26,7 +26,6 @@ class EntryCreate extends Component
     public $info;
     public $category_id;
     public $selectedTags = [];
-
 
 
     protected $rules = [
@@ -56,9 +55,15 @@ class EntryCreate extends Component
 
     public function mount()
     {
-        $this->fill([
-            'inputs' => collect([['name' => '']])
-        ]);
+        $this->title = $this->entry->title;
+        $this->date = $this->entry->date;
+        $this->category_id = $this->entry->category_id;
+        $this->location = $this->entry->location;
+        $this->duration = $this->entry->duration;
+        $this->distance = $this->entry->distance;
+        $this->info = $this->entry->info;
+
+        $this->selectedTags = $this->sportService->getEntryTags($this->entry);
     }
 
     /* protected function rules(): array
@@ -71,25 +76,26 @@ class EntryCreate extends Component
         $this->show++;
     }
 
-    public function save(Request $request)
+    public function save()
     {
 
         $validated = $this->validate();
-        $validated['user_id'] = $request->user()->id;
+        $validated['user_id'] = $this->entry->user->id;
 
-        $entry = $this->sportService->insertEntry($validated);
+        $entry = $this->sportService->updateEntry($this->entry, $validated);
 
-        return to_route('sportentry.index', $entry)->with('message', 'Entry (' . $entry->title . ') created.');
+        return to_route('sportentry.index', $entry)->with('message', 'Entry (' . $entry->title . ') updated.');
     }
 
     public function render()
     {
+
         $categories = $this->sportService->getCategories();
         $tags = $this->sportService->getTags();
 
-        return view('livewire.sport.entry.entry-create', [
+        return view('livewire.sport.entry.entry-edit', [
             'categories'    => $categories,
-            'tags'         => $tags
+            'tags'          => $tags,
         ]);
     }
 }

@@ -43,17 +43,27 @@ class SportEntryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Sport $entry)
     {
-        //
+        $tags = $this->sportService->displayEntryTags($entry, '/');
+
+        return view('sport/entry/show', [
+            'entry' => $entry,
+            'tags' => $tags,
+        ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Sport $entry)
     {
-        //
+        $selectedTags = $this->sportService->getEntryTags($entry);
+
+        return view('sport/entry/edit', [
+            'entry' => $entry,
+            //'selectedTags' => $selectedTags
+        ]);
     }
 
     /**
@@ -77,5 +87,20 @@ class SportEntryController extends Controller
     public function test()
     {
         return view('sport/entry/test');
+    }
+
+    // Show the Sport Main Menu
+
+    public function main()
+    {
+        $entries = $this->sportService->totalEntries();
+        $categories = $this->sportService->totalCategories();
+        $tags = $this->sportService->totalTags();
+
+        return view('sport/main', [
+            'totalEntries' => $entries,
+            'totalCategories' => $categories,
+            'totalTags' => $tags,
+        ]);
     }
 }

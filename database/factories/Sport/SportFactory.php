@@ -24,10 +24,12 @@ class SportFactory extends Factory
             'title' => fake()->word(),
             'user_id' => implode(User::get()->pluck('id')->random(1)->toArray()),
             'category_id' => implode(SportCategory::get()->pluck('id')->random(1)->toArray()),
+            'status' => fake()->boolean(),
             'date' => fake()->dateTimeBetween('2024-01-01', 'now'),
             'location' => fake()->word(),
             'duration' => fake()->numberBetween(10, 200),
-            'distance' => fake()->numberBetween(1, 20),
+            'distance' => fake()->randomFloat(1, 0, 30),
+            'url' => fake()->url(),
             'info' => fake()->text(),
         ];
     }

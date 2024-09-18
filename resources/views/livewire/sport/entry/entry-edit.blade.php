@@ -6,7 +6,7 @@
             <h4 class="text-2xl text-zinc-600 leading-6 font-bold">
                 <span style="font-size: 2rem; color: orange; padding-right: 10px;">
                     <i class="fa-solid fa-basketball"></i></span>
-                New Entry
+                Edit Entry
             </h4>
         </div>
         <div>
@@ -18,7 +18,6 @@
 
         </div>
     </div>
-
     <form wire:submit="save">
         <!-- Add Token to prevent Cross-Site Request Forgery (CSRF) -->
         @csrf
@@ -29,7 +28,7 @@
                 <span class="bg-zinc-200 px-3 py-2 rounded-lg">
                     <i class="fa-solid fa-pen-to-square"></i>
                 </span>
-                <input wire:model="title" name="title" id="title" type="text" value="{{ old('title') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg w-2/3 pl-4 p-2  dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-orange-500 focus:border-orange-500">
+                <input wire:model="title" name="title" id="title" type="text" value="{{ $entry->title }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg w-2/3 pl-4 p-2  dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-orange-500 focus:border-orange-500">
             </div>
         </div>
         <div class="pl-6 pb-0 pt-2 text-red-400 italic">
@@ -75,7 +74,7 @@
         <!-- Help -->
         @if ($show % 2 != 0)
             <div class="text-white py-4 m-4 bg-zinc-400 rounded-lg">
-                <p class="px-4">Use Ctrl + select to select multiple tags</p>
+                <p class="px-4">Keep Ctrl press + click to select multiple tags</p>
             </div>
         @endif
         <!-- Tags -->
@@ -87,8 +86,7 @@
                 </span>
                 <select wire:model.live="selectedTags" name="selectedTags" id="selectedTags" multiple class="bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg w-2/3 pl-4 p-2  dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-orange-500 focus:border-orange-500">
                     @foreach ($tags as $tag)
-                        <option value="{{ $tag->id }}"
-                                @if (old('selectedTags') == $tag->id) selected @endif>{{ $tag->name }}</option>
+                        <option value="{{ $tag->id }}" @foreach ($selectedTags as $selectedTag) @if ($tag->id == $selectedTag) selected class="bg-orange-500 text-white" @endif @endforeach>{{ $tag->name }}</option>
                     @endforeach
                 </select>
             </div>
@@ -98,9 +96,12 @@
                 {{ $message }}
             @enderror
         </div>
-        <div class="bg-red-400">
-            {{ var_export($selectedTags) }}
+        {{-- <div class="bg-green-400">
+            USER {{ $entry->user->id }}
         </div>
+        <div class="bg-red-400">
+            Selected {{ var_export($selectedTags) }}
+        </div> --}}
         <!-- Location -->
         <div class="py-0 px-4">
             <h2 class="text-lg font-semibold py-2">Location <span class="text-red-400">*</span></h2>
@@ -123,7 +124,7 @@
                 <span class="bg-zinc-200 px-3 py-2 rounded-lg">
                     <i class="fa-regular fa-clock"></i>
                 </span>
-                <input wire:model="duration" name="duration" id="duration" type="number" step="1" value="{{ old('duration') }}" class="inline-flex w-20 bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-orange-500 focus:border-orange-500">
+                <input wire:model="duration" name="duration" id="duration" type="number" step="1" value="{{ $entry->duration }}" class="inline-flex w-20 bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-orange-500 focus:border-orange-500">
                 <p class="text-md pl-4 pt-4">minutes</p>
             </div>
         </div>
@@ -162,8 +163,11 @@
 
         <!-- Buttons -->
         <div class="flex flex-col justify-start sm:flex-row sm:justify-between p-4 gap-4 border-t-2">
-            <button type="submit" class="order-3 sm:order-3 w-full sm:w-1/3 bg-orange-500 hover:bg-orange-400 text-white text-center font-bold py-2 px-4 rounded-md">Save</button>
-
+            <!-- Save -->
+            <button type="submit" class="order-3 sm:order-3 w-full sm:w-1/3 bg-orange-500 hover:bg-orange-400 text-white text-center font-bold py-2 px-4 rounded-md">
+                <span>Save</span>
+                <i class="fa-regular fa-share-from-square px-2"></i>
+            </button>
             <!-- Back -->
             <a href="{{ route('sportentry.index') }}" class="order-3 sm:order-3 w-full sm:w-1/3 bg-black hover:bg-slate-800 text-white text-center font-bold py-2 px-4 rounded-md">
                 Back

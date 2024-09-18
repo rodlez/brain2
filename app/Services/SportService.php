@@ -3,8 +3,10 @@
 namespace App\Services;
 
 // Models
-use App\Models\Sport\SportTag;
 use App\Models\Sport\Sport;
+use App\Models\Sport\SportTag;
+use App\Models\Sport\SportCategory;
+
 // Request
 use Illuminate\Http\Request;
 use App\Http\Requests\SportStoreRequest;
@@ -27,25 +29,93 @@ class SportService
     {
         dd('test injection SportService');
     }
-    /**
-     * Append to the FormData the pending boolean value and the user_id to prepare the data for DB Insertion   
-     */
-    public function appendUserIdToFormData(Request $request, array $formData): array
-    {
-        $formData['user_id'] = $request->user()->id;
-
-        return $formData;
-    }
 
     /**
-     * Inset new Note and insert the tags in the intermediate table note_tag   
+     * Inset new Entry and insert the tags in the pivot table sport_entry_tag   
      */
     public function insertEntry(array $data): Sport
     {
         $entry = Sport::create($data);
-        // insert selectedTags in the pivot table sport_entry_tag
         $entry->tags()->sync($data['selectedTags']);
 
         return $entry;
+    }
+
+    /**
+     * Update an Entry and insert the tags in the pivot table sport_entry_tag   
+     */
+    public function updateEntry(Sport $entry, array $data): Sport
+    {
+        $entry->update($data);
+        $entry->tags()->sync($data['selectedTags']);
+
+        return $entry;
+    }
+
+    /**
+     *  Get all the categories orderby asc
+     */
+    public function getCategories(): Collection
+    {
+        return SportCategory::orderBy('name')->get();
+    }
+
+    /**
+     *  Get all the categories orderby asc
+     */
+    public function getTags(): Collection
+    {
+        return SportTag::orderBy('name')->get();
+    }
+
+    /**
+     *  Get tags for this entry
+     * 
+     * @param Sport $entry
+     * @param string $separator Value to separate between tags (- / *) 
+     */
+    public function displayEntryTags(Sport $entry, string $separator): array
+    {
+        $tags = $entry->tags;
+        $count = 0;
+        $result = [];
+
+        foreach ($tags as $tag) {
+            $count++;
+            if ($count == count($tags))
+                $result[] = $tag->name;
+
+            else {
+                $result[] = $tag->name . ' ' . $separator . ' ';
+            }
+        }
+
+        return $result;
+    }
+
+    public function getEntryTags(Sport $entry): array
+    {
+        $tags = [];
+        foreach ($entry->tags as $tag) {
+            $tags[] = $tag->pivot->sport_tag_id;
+        }
+
+        return $tags;
+    }
+
+    /**
+     * Stats 
+     */
+    public function totalEntries(): int
+    {
+        return Sport::get()->count();
+    }
+    public function totalCategories(): int
+    {
+        return SportCategory::get()->count();
+    }
+    public function totalTags(): int
+    {
+        return SportTag::get()->count();
     }
 }

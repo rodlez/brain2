@@ -11,19 +11,19 @@
 
                 <a href="{{ route('sportentry.index') }}">
                     <div class="flex flex-col justify-center items-center w-40 h-40 border-4 border-black rounded-lg gap-10 bg-green-600 text-white hover:bg-yellow-200 hover:text-black hover:border-black">
-                        <span class="text-xl">Entries</span>
+                        <span class="text-xl">Entries ({{ $totalEntries }})</span>
                         <i class="fa-solid fa-dumbbell fa-2xl"></i>
                     </div>
                 </a>
                 <a href="{{ route('sportcategory.index') }}">
                     <div class="flex flex-col justify-center items-center w-40 h-40 border-4 border-black rounded-lg gap-10 bg-blue-600 text-white hover:bg-yellow-200 hover:text-black hover:border-black">
-                        <span>Categories</span>
+                        <span>Categories ({{ $totalCategories }})</span>
                         <i class="fa-solid fa-list fa-2xl"></i>
                     </div>
                 </a>
                 <a href="{{ route('sporttag.index') }}">
                     <div class="flex flex-col justify-center items-center w-40 h-40 border-4 border-black rounded-lg gap-10 bg-orange-500 text-white hover:bg-yellow-200 hover:text-black hover:border-black">
-                        <span>Tags</span>
+                        <span>Tags ({{ $totalTags }})</span>
                         <i class="fa-solid fa-tags fa-2xl"></i>
                     </div>
                 </a>

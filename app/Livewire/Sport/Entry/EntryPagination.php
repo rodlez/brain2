@@ -14,18 +14,82 @@ class EntryPagination extends Component
     use WithPagination;
 
     //protected $paginationTheme = "bootstrap";
+
+    // order and pagination
     public $orderColumn = "id";
     public $sortOrder = "desc";
     public $sortLink = '<i class="px-1 sorticon fa-solid fa-caret-down"></i>';
-    public $search = "";
     public $perPage = 25;
 
+    // search
+    public $showSearch = 0;
+    public $search = "";
+
+    // filters
+    public $showFilter = 0;
+    public $dateFrom = '';
+    public $initialDateFrom;
+    public $dateTo = '';
+    public $initialDateTo;
+    public $cat = 0;
+    public $durationFrom = 0;
+    public $durationTo;
+    public $initialDurationTo;
+    public $distanceFrom = 0;
+    public $initialDistanceTo;
+    public $distanceTo;
+
+    // multiple batch selections
     public $selections = [];
 
     public function updated()
     {
         $this->resetPage();
     }
+
+    public function mount()
+    {
+        $this->durationTo = Sport::max('duration');
+        $this->initialDurationTo = Sport::max('duration');
+        $this->distanceTo = Sport::max('distance');
+        $this->initialDistanceTo = Sport::max('distance');
+        $this->dateFrom = Sport::min('date');
+        $this->initialDateFrom = Sport::min('date');
+        $this->dateTo = Sport::max('date');
+        $this->initialDateTo = Sport::max('date');
+    }
+
+    public function activateFilter()
+    {
+        $this->showFilter++;
+    }
+
+    public function activateSearch()
+    {
+        $this->showSearch++;
+    }
+
+    public function clearFilters()
+    {
+        $this->dateFrom = Sport::min('date');
+        $this->dateTo = Sport::max('date');
+        $this->cat = 0;
+        $this->durationFrom = 0;
+        $this->durationTo = Sport::max('duration');
+        $this->distanceFrom = 0;
+        $this->distanceTo = Sport::max('distance');
+    }
+
+    public function clearSearch()
+    {
+        $this->search = '';
+    }
+
+    public function bulkClear()
+    {
+        $this->selections = [];
+    }
+
 
     public function bulkDelete()
     {
@@ -35,6 +99,13 @@ class EntryPagination extends Component
         }
 
         return to_route('sportentry.index')->with('message', 'entries: deleted.');
+    }
+
+    public function resetAll()
+    {
+        $this->clearFilters();
+        $this->clearSearch();
+        $this->bulkClear();
     }
 
     public function sorting($columnName = "")
@@ -53,14 +124,17 @@ class EntryPagination extends Component
     }
     public function render()
     {
-        //echo "search -> " . $this->search;
         $found = 0;
 
-        $categories = SportCategory::orderBy('name', 'asc')->get();
+        // get only the categories that have at least one entry
+        //$categories = SportCategory::orderBy('name', 'asc')->get();
+        $categories = Sport::select(
+            'sport_categories.id as id',
+            'sport_categories.name as name'
+        )
+            ->join('sport_categories', 'sport_entries.category_id', '=', 'sport_categories.id')->distinct('category_id')->orderBy('name', 'asc')->get()->toArray();
 
-        //$entries = Sport::orderby($this->orderColumn, $this->sortOrder)->select('*');
-        //->where('name', "like", "%" . 'al' . "%");
-        // JOIN TO order category by name
+        // Main Selection, Join tables sport_entries and sport_categories
         $entries = Sport::select(
             'sport_entries.id as id',
             'sport_categories.name as category_name',
@@ -76,19 +150,64 @@ class EntryPagination extends Component
             ->join('sport_categories', 'sport_entries.category_id', '=', 'sport_categories.id')
             ->orderby($this->orderColumn, $this->sortOrder);
 
-        if (!empty($this->search)) {
-
-            // search by id or name
-            //$entries->orWhere('id', "like", "%" . $this->search . "%");
-            $found = $entries->where('title', "like", "%" . $this->search . "%")->count();
+        // interval date
+        if (isset($this->dateFrom)) {
+            if ($this->dateFrom <= $this->dateTo) {
+                $entries = $entries->whereBetween('date', [$this->dateFrom, $this->dateTo]);
+            }
         }
 
+        // category filter
+        if ($this->cat != 0) {
+            $entries = $entries->where('sport_categories.name', '=', $this->cat);
+        }
+
+        // interval duration    
+        if ($this->durationFrom <= $this->durationTo) {
+            $entries = $entries->whereBetween('duration', [$this->durationFrom, $this->durationTo]);
+        }
+
+        // interval distance    
+        if ($this->distanceFrom <= $this->distanceTo) {
+            $entries = $entries->whereBetween('distance', [$this->distanceFrom, $this->distanceTo]);
+        }
+
+        // Search
+        if (!empty($this->search)) {
+            // search by id or name
+            //$entries->orWhere('id', "like", "%" . $this->search . "%");
+            //->orWhere('location', "like", "%" . $this->search . "%")
+            $entries = $entries->where('title', "like", "%" . $this->search . "%");
+            $found = $entries->count();
+        }
+
+        // total values for display stats
+        $stats = $entries;
+        //dd($stats->count());
+        $totalEntries = $entries->count();
+        $totalDuration = $entries->sum('duration');
+        $totalDistance = $entries->sum('distance');
+        /*
+        $differentCategories = $stats->distinct('sport_categories.id')->count();
+        $differentLocations = $stats->distinct('location')->count();
+        $differentDates = $stats->distinct('date')->count(); */
+
+        //dd($entries->count());
         $entries = $entries->paginate($this->perPage);
+
+
 
         return view('livewire.sport.entry.entry-pagination', [
             'entries' => $entries,
             'found' => $found,
-            'column' => $this->orderColumn
+            'total' => $totalEntries,
+            /* 'differentLocations' => $differentLocations,
+            'differentCategories' => $differentCategories,
+            'differentDates' => $differentDates,*/
+            'totalDuration' => $totalDuration,
+            'totalDistance' => $totalDistance,
+            'column' => $this->orderColumn,
+            'categories' => $categories,
         ]);
     }
 }
