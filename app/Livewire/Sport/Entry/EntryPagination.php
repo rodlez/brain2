@@ -27,6 +27,7 @@ class EntryPagination extends Component
 
     // filters
     public $showFilter = 0;
+    public $pending = 2;
     public $dateFrom = '';
     public $initialDateFrom;
     public $dateTo = '';
@@ -41,6 +42,9 @@ class EntryPagination extends Component
 
     // multiple batch selections
     public $selections = [];
+
+    //public $selectAll = false;
+
 
     public function updated()
     {
@@ -59,6 +63,17 @@ class EntryPagination extends Component
         $this->initialDateTo = Sport::max('date');
     }
 
+    /*
+    TODO: Make selectAll with search and filters
+    public function updatedSelectAll($value)
+    {
+        if ($value) {
+            $this->selections = Sport::pluck('id')->toArray();
+        } else {
+            $this->selections = [];
+        }
+    } */
+
     public function activateFilter()
     {
         $this->showFilter++;
@@ -71,6 +86,7 @@ class EntryPagination extends Component
 
     public function clearFilters()
     {
+        $this->pending = 2;
         $this->dateFrom = Sport::min('date');
         $this->dateTo = Sport::max('date');
         $this->cat = 0;
@@ -140,15 +156,22 @@ class EntryPagination extends Component
             'sport_categories.name as category_name',
             'sport_entries.title as title',
             'sport_entries.user_id as user_id',
+            'sport_entries.status as status',
             'sport_entries.location as location',
             'sport_entries.duration as duration',
             'sport_entries.distance as distance',
+            'sport_entries.url as url',
             'sport_entries.info as info',
             'sport_entries.date as date',
             'sport_entries.created_at as created_at',
         )
             ->join('sport_categories', 'sport_entries.category_id', '=', 'sport_categories.id')
             ->orderby($this->orderColumn, $this->sortOrder);
+
+        // status filter
+        if ($this->pending != 2) {
+            $entries = $entries->where('status', '=', $this->pending);
+        }
 
         // interval date
         if (isset($this->dateFrom)) {

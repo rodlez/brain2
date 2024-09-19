@@ -19,33 +19,34 @@ class EntryEdit extends Component
     public $entry;
     public $show = 0;
     public $title;
+    public $status;
     public $date;
     public $location;
     public $duration;
     public $distance;
+    public $url;
     public $info;
     public $category_id;
     public $selectedTags = [];
 
 
     protected $rules = [
-        'title' => 'required|min:3',
-        'category_id' => 'required',
-        'selectedTags' => 'required',
-        'date' => 'required',
-        'location' => 'required|min:3',
-        'duration' => 'required',
-        'distance' => 'nullable',
-        'info' => 'nullable|min:3'
+        'title'         => 'required|min:3',
+        'status'        => 'nullable',
+        'category_id'   => 'required',
+        'selectedTags'  => 'required',
+        'date'          => 'required|after:01/01/2024',
+        'location'      => 'required|min:2',
+        'duration'      => 'required|gte:5',
+        'distance'      => 'nullable|gte:0',
+        'url'           => 'nullable|url',
+        'info'          => 'nullable|min:3'
     ];
 
     protected $messages = [
         'category_id.required' => 'The category field is required',
         'selectedTags.required' => 'At least 1 tag must be selected',
     ];
-
-    private SomeService $someService;
-    private OneMoreService $oneMoreService;
 
     public function boot(
         SportService $sportService,
@@ -56,11 +57,13 @@ class EntryEdit extends Component
     public function mount()
     {
         $this->title = $this->entry->title;
+        $this->status = $this->entry->status;
         $this->date = $this->entry->date;
         $this->category_id = $this->entry->category_id;
         $this->location = $this->entry->location;
         $this->duration = $this->entry->duration;
         $this->distance = $this->entry->distance;
+        $this->url = $this->entry->url;
         $this->info = $this->entry->info;
 
         $this->selectedTags = $this->sportService->getEntryTags($this->entry);
@@ -80,11 +83,12 @@ class EntryEdit extends Component
     {
 
         $validated = $this->validate();
+        $validated['distance'] != "" ?: $validated['distance'] = 0;
         $validated['user_id'] = $this->entry->user->id;
 
         $entry = $this->sportService->updateEntry($this->entry, $validated);
 
-        return to_route('sportentry.index', $entry)->with('message', 'Entry (' . $entry->title . ') updated.');
+        return to_route('sportentry.show', $entry)->with('message', 'Entry (' . $entry->title . ') updated.');
     }
 
     public function render()

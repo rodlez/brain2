@@ -21,7 +21,7 @@ class SportFactory extends Factory
     {
 
         return [
-            'title' => fake()->word(),
+            'title' => fake()->sentence(),
             'user_id' => implode(User::get()->pluck('id')->random(1)->toArray()),
             'category_id' => implode(SportCategory::get()->pluck('id')->random(1)->toArray()),
             'status' => fake()->boolean(),

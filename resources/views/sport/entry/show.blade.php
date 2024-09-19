@@ -12,7 +12,7 @@
         <div class="bg-white shadow rounded-xl">
 
             <!-- Header -->
-            <div class="flex flex-row justify-between items-center border-b-2 py-4 px-4">
+            <div class="flex flex-row justify-between items-center border-b-2 py-2 px-4">
                 <div>
                     <h4 class="text-2xl text-zinc-600 leading-6 font-bold">
                         <span style="font-size: 2rem; color: orange; padding-right: 10px;">
@@ -21,46 +21,70 @@
                     </h4>
                 </div>
             </div>
-
-
+            <!-- Status -->
+            <div class="pt-6 px-4 sm:mx-12">
+                <div class="px-16">
+                    <h2 class="text-lg font-semibold py-2">Status</h2>
+                </div>
+                <div class="flex flex-row justify-start items-center gap-4">
+                    <span class="bg-zinc-200 px-3 py-2 rounded-lg">
+                        <i class="fa-solid fa-toggle-on"></i>
+                    </span>
+                    <input name="status" id="status" type="text" value="{{ $entry->status == 0 ? 'Complete' : 'Pending' }}" disabled class="text-md rounded-lg w-28 p-2 {{ $entry->status == 0 ? 'bg-green-400' : 'bg-red-400' }}  border border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-orange-500 focus:border-orange-500 cursor-not-allowed">
+                </div>
+            </div>
             <!-- Title -->
-            <div class="pt-6 px-4">
-                <h2 class="text-lg font-semibold py-2">Title <span class="text-red-400">*</span></h2>
-                <div class="flex flex-row justify-start items-center gap-1">
+            <div class="py-2 px-4 sm:mx-12">
+                <div class="px-16">
+                    <h2 class="text-lg font-semibold py-2">Title</h2>
+                </div>
+                <div class="flex flex-row justify-start items-center gap-4">
                     <span class="bg-zinc-200 px-3 py-2 rounded-lg">
                         <i class="fa-solid fa-pen-to-square"></i>
                     </span>
-                    <input name="title" id="title" type="text" value="{{ $entry->title }}" disabled class="bg-gray-200 border border-gray-300 text-gray-900 text-md rounded-lg w-2/3 pl-4 p-2  dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-orange-500 focus:border-orange-500 cursor-not-allowed">
+                    <div value="{{ $entry->title }}" class="w-full p-2 text-md rounded-lg bg-gray-200 border border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-orange-500 focus:border-orange-500">
+                        {{ $entry->title }}
+                    </div>
                 </div>
             </div>
             <!-- Date -->
-            <div class="py-0 px-4">
-                <h2 class="text-lg font-semibold py-2">Date <span class="text-red-400">*</span></h2>
-                <div class="flex flex-row justify-start items-center gap-1">
+            <div class="py-2 px-4 sm:mx-12">
+                <div class="px-16">
+                    <h2 class="text-lg font-semibold py-2">Date</h2>
+                </div>
+                <div class="flex flex-row justify-start items-center gap-4">
                     <span class="bg-zinc-200 px-3 py-2 rounded-lg">
                         <i class="fa-solid fa-calendar-days"></i>
                     </span>
-                    <input name="date" id="date" type="date" min="2024-01-01" value="{{ $entry->date }}" disabled class="bg-gray-200 border border-gray-300 text-gray-900 text-md rounded-lg w-2/3 pl-4 p-2  dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-orange-500 focus:border-orange-500 cursor-not-allowed">
+                    <div class="w-full sm:w-1/3 p-2 text-md rounded-lg bg-gray-200 border border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-orange-500 focus:border-orange-500 cursor-not-allowed">
+                        {{ $entry->date }}
+                    </div>
                 </div>
             </div>
             <!-- Category -->
-            <div class="py-0 px-4">
-                <h2 class="text-lg font-semibold py-2">Category <span class="text-red-400">*</span></h2>
-                <div class="flex flex-row justify-start items-center gap-1">
+            <div class="py-2 px-4 sm:mx-12">
+                <div class="px-16">
+                    <h2 class="text-lg font-semibold py-2">Category</h2>
+                </div>
+                <div class="flex flex-row justify-start items-center gap-4">
                     <span class="bg-zinc-200 px-3 py-2 rounded-lg">
                         <i class="fa-solid fa-list"></i>
                     </span>
-                    <input name="category" id="category" type="text" value="{{ $entry->category->name }}" disabled class="bg-gray-200 border border-gray-300 text-gray-900 text-md rounded-lg w-2/3 pl-4 p-2  dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-orange-500 focus:border-orange-500 cursor-not-allowed">
+                    <div class="w-full p-2 text-md rounded-lg bg-gray-200 border border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-orange-500 focus:border-orange-500 cursor-not-allowed">
+                        {{ $entry->category->name }}
+                    </div>
                 </div>
             </div>
             <!-- Tags -->
-            <div class="py-0 px-4">
-                <h2 class="text-lg font-semibold py-2">Tags <span class="text-red-400">*</span></h2>
-                <div class="flex flex-row justify-start items-center gap-1">
+            <div class="py-2 px-4 sm:mx-12">
+                <div class="px-16">
+                    <h2 class="text-lg font-semibold py-2">Tags</h2>
+                </div>
+                <div class="flex flex-row justify-start items-center gap-4">
                     <span class="bg-zinc-200 px-3 py-2 rounded-lg">
                         <i class="fa-solid fa-tags"></i>
                     </span>
-                    <div class="bg-gray-200 border w-100 p-2 rounded-lg cursor-not-allowed">
+                    <div class="bg-gray-200 border border-zinc-300 w-full p-2 text-md rounded-lg cursor-not-allowed">
                         @foreach ($tags as $tag)
                             {{ $tag }}
                         @endforeach
@@ -68,44 +92,77 @@
                 </div>
             </div>
             <!-- Location -->
-            <div class="py-0 px-4">
-                <h2 class="text-lg font-semibold py-2">Location <span class="text-red-400">*</span></h2>
-                <div class="flex flex-row justify-start items-center gap-1">
+            <div class="py-2 px-4 sm:mx-12">
+                <div class="px-16">
+                    <h2 class="text-lg font-semibold py-2">Location</h2>
+                </div>
+                <div class="flex flex-row justify-start items-center gap-4">
                     <span class="bg-zinc-200 px-3 py-2 rounded-lg">
                         <i class="fa-solid fa-location-dot"></i>
                     </span>
-                    <input name="location" id="location" type="text" value="{{ $entry->location }}" disabled class="bg-gray-200 border border-gray-300 text-gray-900 text-md rounded-lg w-2/3 pl-4 p-2  dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-orange-500 focus:border-orange-500 cursor-not-allowed">
+                    <div class="w-full p-2 text-md rounded-lg bg-gray-200 border border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-orange-500 focus:border-orange-500 cursor-not-allowed">
+                        {{ $entry->location }}
+                    </div>
                 </div>
             </div>
             <!-- Duration -->
-            <div class="py-0 px-4">
-                <h2 class="text-lg font-semibold py-2">Duration <span class="text-red-400">*</span></h2>
-                <div class="flex flex-row justify-start items-center gap-1">
+            <div class="py-2 px-4 sm:mx-12">
+                <div class="px-16">
+                    <h2 class="text-lg font-semibold py-2">Duration</h2>
+                </div>
+                <div class="flex flex-row justify-start items-end gap-4">
                     <span class="bg-zinc-200 px-3 py-2 rounded-lg">
                         <i class="fa-regular fa-clock"></i>
                     </span>
-                    <input name="duration" id="duration" type="number" value="{{ $entry->duration }}" disabled class="inline-flex w-20 bg-gray-200 border border-gray-300 text-gray-900 text-md rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-orange-500 focus:border-orange-500 cursor-not-allowed">
-                    <p class="text-md pl-4 pt-4">minutes</p>
+                    <div class="w-20 p-2 bg-gray-200 border border-gray-300 text-gray-900 text-md rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-orange-500 focus:border-orange-500 cursor-not-allowed">
+                        {{ $entry->duration }}
+                    </div>
+                    <p class="text-sm">minutes</p>
                 </div>
             </div>
             <!-- Distance -->
-            <div class="py-0 px-4">
-                <h2 class="text-lg font-semibold py-2">Distance</h2>
-                <div class="flex flex-row justify-start items-center gap-1">
+            <div class="py-2 px-4 sm:mx-12">
+                <div class="px-16">
+                    <h2 class="text-lg font-semibold py-2">Distance</h2>
+                </div>
+                <div class="flex flex-row justify-start items-end gap-4">
                     <span class="bg-zinc-200 px-3 py-2 rounded-lg">
                         <i class="fa-solid fa-route"></i>
                     </span>
-                    <input name="distance" id="distance" type="text" value="{{ $entry->distance === null ? '---' : $entry->distance }}" disabled class="inline-flex w-20 bg-gray-200 border border-gray-300 text-gray-900 text-md rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-orange-500 focus:border-orange-500 cursor-not-allowed">
-                    <p class="text-md pl-4 pt-4">km</p>
+                    <div class="w-20 p-2 bg-gray-200 border border-gray-300 text-gray-900 text-md rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-orange-500 focus:border-orange-500 cursor-not-allowed">
+                        {{ $entry->distance }}
+                    </div>
+                    <p class="text-sm">km</p>
                 </div>
             </div>
-            @if ($entry->info !== null)
-                <!-- Info -->
-                <div class="py-0 px-4">
-                    <h2 class="text-lg font-semibold py-2">Info</h2>
-                    <textarea rows="8" cols="20"wire:model="info" name="info" id="info" type="text" class="appearance-none block w-full bg-gray-200 border border-gray-300 text-gray-900 text-md rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-orange-500 focus:border-orange-500 cursor-not-allowed">{{ $entry->info }}</textarea>
+            <!-- Url -->
+            <div class="py-2 px-4 sm:mx-12">
+                <div class="px-16">
+                    <h2 class="text-lg font-semibold py-2">Url</h2>
                 </div>
-            @endif
+                <div class="flex flex-row justify-start items-center gap-4">
+                    <span class="bg-zinc-200 px-3 py-2 rounded-lg">
+                        <i class="fa-solid fa-globe"></i>
+                    </span>
+                    <div class="w-full p-2 text-md rounded-lg bg-gray-200 border border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-orange-500 focus:border-orange-500 cursor-not-allowed">
+                        {{ $entry->url === null ? '-' : $entry->url }}
+                    </div>
+                </div>
+            </div>
+            <!-- Info -->
+            <div class="py-2 px-4 sm:mx-12">
+                <div class="px-16">
+                    <h2 class="text-lg font-semibold py-2">Info</h2>
+                </div>
+                <div class="flex flex-row justify-start items-start gap-4">
+                    <span class="bg-zinc-200 px-3 py-2 rounded-lg">
+                        <i class="fa-solid fa-circle-info"></i>
+                    </span>
+                    <div class="w-full p-2 text-md rounded-lg bg-gray-200 border border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-orange-500 focus:border-orange-500 cursor-not-allowed">
+                        {{ $entry->info === null ? '-' : $entry->info }}
+                    </div>
+                </div>
+            </div>
 
             <!-- Buttons -->
             <div class="flex flex-col justify-start sm:flex-row sm:justify-between p-4 gap-4 border-t-2 mt-8">

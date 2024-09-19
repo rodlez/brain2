@@ -16,37 +16,35 @@ use App\Services\SportService;
 
 class EntryCreate extends Component
 {
-    public $inputs;
     public $show = 0;
+    public $status;
     public $title;
     public $date;
     public $location;
     public $duration;
     public $distance;
+    public $url;
     public $info;
     public $category_id;
     public $selectedTags = [];
 
-
-
     protected $rules = [
-        'title' => 'required|min:3',
-        'category_id' => 'required',
-        'selectedTags' => 'required',
-        'date' => 'required',
-        'location' => 'required|min:3',
-        'duration' => 'required',
-        'distance' => 'nullable',
-        'info' => 'nullable|min:3'
+        'title'         => 'required|min:3',
+        'status'        => 'nullable',
+        'category_id'   => 'required',
+        'selectedTags'  => 'required',
+        'date'          => 'required|after:01/01/2024',
+        'location'      => 'required|min:2',
+        'duration'      => 'required|gte:5',
+        'distance'      => 'nullable|gte:0',
+        'url'           => 'nullable|url',
+        'info'          => 'nullable|min:3'
     ];
 
     protected $messages = [
-        'category_id.required' => 'The category field is required',
-        'selectedTags.required' => 'At least 1 tag must be selected',
+        'category_id.required' => 'Select one category.',
+        'selectedTags.required' => 'At least 1 tag must be selected.',
     ];
-
-    private SomeService $someService;
-    private OneMoreService $oneMoreService;
 
     public function boot(
         SportService $sportService,
@@ -56,9 +54,10 @@ class EntryCreate extends Component
 
     public function mount()
     {
-        $this->fill([
-            'inputs' => collect([['name' => '']])
-        ]);
+        $this->date = date('Y-m-d');
+        $this->status = false;
+        $this->distance = 0;
+        $this->category_id = SportCategory::orderBy('name', 'asc')->pluck('id')->first();
     }
 
     /* protected function rules(): array
@@ -75,6 +74,7 @@ class EntryCreate extends Component
     {
 
         $validated = $this->validate();
+        $validated['distance'] != "" ?: $validated['distance'] = 0;
         $validated['user_id'] = $request->user()->id;
 
         $entry = $this->sportService->insertEntry($validated);

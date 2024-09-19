@@ -19,6 +19,7 @@
         <div>
             <span class="px-2 text-xl text-zinc-800">Filters
                 <span class="text-sm font-semibold text-orange-400">
+                    {{ $pending != 2 ? '(Status)' : '' }}
                     {{ $initialDateTo != $dateTo || $initialDateFrom != $dateFrom ? '(Date)' : '' }}
                     {{ $cat != 0 ? '(Category)' : '' }}
                     {{ $initialDurationTo != $durationTo || $durationFrom != 0 ? '(Duration)' : '' }}
@@ -39,11 +40,26 @@
 
     @if ($showFilter % 2 != 0)
         <div class="bg-orange-200 mx-4 rounded-lg py-4 mt-4">
+            <!-- Status -->
+            <div class="flex flex-col justify-start items-start sm:flex-row sm:justify-start sm:items-center gap-4 px-4 py-2">
+                <div>
+                    <span><i class="fa-solid fa-circle-check"></i></span>
+                    <span class="pl-2">Status</span>
+                </div>
+                <div class="sm:pl-20">
+                    <select wire:model.live="pending"
+                            class="rounded-lg">
+                        <option value="2">All</option>
+                        <option value="0">0 - Complete</option>
+                        <option value="1">1 - Pending</option>
+                    </select>
+                </div>
+            </div>
             <!-- Date -->
             <div class="flex flex-col justify-start items-start sm:flex-row sm:justify-start sm:items-center gap-4 px-4 py-2">
                 <div>
-                    <span class="pr-4"><i class="fa-solid fa-calendar-days"></i></span>
-                    <span class="sm:pr-16">Date</span>
+                    <span><i class="fa-solid fa-calendar-days"></i></span>
+                    <span class="pl-2 sm:pr-20">Date</span>
                 </div>
                 <div class="sm:pl-4"><input type="date" class="rounded-lg" placeholder="From" style="width: 140px;" wire:model.live="dateFrom"></div>
                 <div><input type="date" class="rounded-lg" placeholder="To" style="width: 140px;" wire:model.live="dateTo"></div>
@@ -52,7 +68,7 @@
             <div class="flex flex-col justify-start items-start sm:flex-row sm:justify-start sm:items-center gap-4 px-4 py-2">
                 <div>
                     <span><i class="fa-solid fa-list"></i></span>
-                    <span>Category (<span class="font-semibold text-sm">{{ count($categories) }}</span>)</span>
+                    <span class="sm:pl-2">Category (<span class="font-semibold text-sm">{{ count($categories) }}</span>)</span>
                 </div>
                 <div class="sm:pl-7">
                     <select wire:model.live="cat"
@@ -68,7 +84,7 @@
             <div class="flex flex-col justify-start items-start sm:flex-row sm:justify-start sm:items-center gap-4 px-4 py-2">
                 <div>
                     <span><i class="fa-regular fa-clock"></i></span>
-                    <span class="sm:pr-2">Duration (<span class="font-semibold text-sm">mins</span>)</span>
+                    <span class="sm:pl-2 sm:pr-2">Duration (<span class="font-semibold text-sm">mins</span>)</span>
                 </div>
                 <div class="sm:pl-3">
                     <input type="number" class="rounded-lg" placeholder="From" style="width: 80px;" wire:model.live="durationFrom">
@@ -80,7 +96,7 @@
                 <div>
                     <span>
                         <i class="fa-solid fa-route"></i></span>
-                    <span class="pr-2 sm:pr-4">Distance (<span class="font-semibold text-sm">km</span>)</span>
+                    <span class="pr-2 sm:pl-2 sm:pr-4">Distance (<span class="font-semibold text-sm">km</span>)</span>
                 </div>
                 <div class="sm:pl-3.5">
                     <input type="number" class="rounded-lg" placeholder="From" style="width: 80px;" wire:model.live="distanceFrom">
@@ -175,11 +191,12 @@
     </div>
 
     <!-- Criteria -->
-    @if ($search != '' || $initialDateTo != $dateTo || $initialDateFrom != $dateFrom || $cat > 0 || $initialDurationTo != $durationTo || $durationFrom != 0 || $initialDistanceTo != $distanceTo || $distanceFrom != 0)
+    @if ($search != '' || $pending != 2 || $initialDateTo != $dateTo || $initialDateFrom != $dateFrom || $cat > 0 || $initialDurationTo != $durationTo || $durationFrom != 0 || $initialDistanceTo != $distanceTo || $distanceFrom != 0)
         <div class="flex flex-row justify-between items-center rounded-lg mx-4 p-4 bg-zinc-100">
             <div>
                 <p class="text-green-600 text-md font-bold">
                     {{ $search != '' ? 'Search (' . $search . ')' : '' }}
+                    {{ $pending != 2 ? 'Status (' . $pending . ')' : '' }}
                     {{ $initialDateTo != $dateTo || $initialDateFrom != $dateFrom ? 'Dates (' . date('d-m-Y', strtotime($dateFrom)) . ' - ' . date('d-m-Y', strtotime($dateTo)) . ')' : '' }}
                     {{ $cat > 0 ? 'Category (' . $cat . ')' : '' }}
                     {{ $initialDurationTo != $durationTo || $durationFrom != 0 ? 'Duration (' . $durationFrom . ' - ' . $durationTo . ')' : '' }}
@@ -193,6 +210,10 @@
             </div>
         </div>
     @endif
+    {{-- 
+    <div class="bg-red-400">
+        {{ var_dump($selections) }}
+    </div> --}}
 
     <!-- Table -->
     <div class="flex flex-col pt-4 pb-8 px-4">
@@ -203,15 +224,16 @@
                     <table class="min-w-full">
                         <thead>
                             <tr class="bg-black text-left text-sm leading-6 font-bold text-white uppercase">
+                                {{-- <th class="p-4"><input wire:model.live="selectAll" type="checkbox" class="text-green-600 outline-none focus:ring-0 checked:bg-green-500"></th> --}}
                                 <th></th>
                                 <th scope="col" class="p-4 hover:cursor-pointer hover:text-orange-500 {{ $column == 'id' ? 'bg-yellow-300 text-black' : '' }}" wire:click="sorting('id')">id {!! $sortLink !!}</th>
                                 <th scope="col" class="p-4 hover:cursor-pointer hover:text-orange-500 {{ $column == 'title' ? 'bg-yellow-300 text-black' : '' }}" wire:click="sorting('title')">title {!! $sortLink !!}</th>
                                 <th scope="col" class="p-4 hover:cursor-pointer hover:text-orange-500 {{ $column == 'category_name' ? 'bg-yellow-300 text-black' : '' }}" wire:click="sorting('category_name')">category {{-- {{ '(' . $differentCategories . ')' }} --}} {!! $sortLink !!}</th>
+                                <th scope="col" class="p-4 hover:cursor-pointer hover:text-orange-500 {{ $column == 'status' ? 'bg-yellow-300 text-black' : '' }}" wire:click="sorting('status')">status {!! $sortLink !!}</th>
                                 <th scope="col" class="p-4 hover:cursor-pointer hover:text-orange-500 {{ $column == 'location' ? 'bg-yellow-300 text-black' : '' }}" wire:click="sorting('location')">location {{-- {{ '(' . $differentLocations . ')' }} --}} {!! $sortLink !!}</th>
                                 <th scope="col" class="p-4 hover:cursor-pointer hover:text-orange-500 {{ $column == 'duration' ? 'bg-yellow-300 text-black' : '' }}" wire:click="sorting('duration')">duration {{ '(' . $totalDuration . ')' }} {!! $sortLink !!}</th>
                                 <th scope="col" class="p-4 hover:cursor-pointer hover:text-orange-500 {{ $column == 'distance' ? 'bg-yellow-300 text-black' : '' }}" wire:click="sorting('distance')">distance {{ '(' . $totalDistance . ')' }} {!! $sortLink !!}</th>
                                 <th scope="col" class="p-4 hover:cursor-pointer hover:text-orange-500 {{ $column == 'date' ? 'bg-yellow-300 text-black' : '' }}" wire:click="sorting('date')">date {{-- {{ '(' . $differentDates . ')' }} --}} {!! $sortLink !!}</th>
-                                <th scope="col" class="p-4 hover:cursor-pointer hover:text-orange-500 {{ $column == 'created_at' ? 'bg-yellow-300 text-black' : '' }}" wire:click="sorting('created_at')">created {!! $sortLink !!}</th>
                                 <th scope="col" class="p-4 uppercase"> actions </th>
                             </tr>
                         </thead>
@@ -221,13 +243,13 @@
                                     <tr class="even:bg-zinc-200 odd:bg-white transition-all duration-500 hover:bg-yellow-100">
                                         <td class="p-4 whitespace-nowrap text-sm leading-6 font-medium text-gray-900"><input wire:model.live="selections" type="checkbox" class="text-green-600 outline-none focus:ring-0 checked:bg-green-500" value={{ $entry->id }}></td>
                                         <td class="p-4 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">{{ $entry->id }}</td>
-                                        <td class="p-4 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">{{ $entry->title }}</td>
+                                        <td class="p-4 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">{{ excerpt($entry->title, 20) }}</td>
                                         <td class="p-4 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">{{ $entry->category_name }}</td>
+                                        <td class="p-4 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">{{ $entry->status }}</td>
                                         <td class="p-4 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">{{ $entry->location }}</td>
                                         <td class="p-4 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">{{ $entry->duration }}</td>
                                         <td class="p-4 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">{{ $entry->distance }}</td>
                                         <td class="p-4 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">{{ date('d-m-Y', strtotime($entry->date)) }}</td>
-                                        <td class="p-4 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">{{ date('d-m-Y', strtotime($entry->created_at)) }}</td>
                                         <td class="p-4">
                                             <div class="flex items-center gap-1">
                                                 <!-- Show -->
