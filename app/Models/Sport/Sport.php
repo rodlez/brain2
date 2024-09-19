@@ -65,4 +65,15 @@ class Sport extends Model
             foreignPivotKey: 'sport_entry_id'
         )->withTimestamps();
     }
+
+    /**
+     * Get the Images associated with the Sport entry.
+     */
+    public function images()
+    {
+        return $this->hasMany(
+            SportImage::class,
+            foreignKey: 'sport_id'
+        );
+    }
 }

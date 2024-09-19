@@ -21,9 +21,7 @@ Route::get('/dashboard', function () {
 
 Route::get('/dashboard/sport', [SportEntryController::class, 'main'])->name('sport.main')->middleware(['auth', 'verified']);
 
-
 Route::get('/dashboard/sport/entry/test', [SportEntryController::class, 'test'])->name('sportentry.test')->middleware(['auth', 'verified']);
-
 
 Route::get('/dashboard/sport/entry', [SportEntryController::class, 'index'])->name('sportentry.index')->middleware(['auth', 'verified']);
 Route::post('/dashboard/sport/entry', [SportEntryController::class, 'store'])->name('sportentry.store')->middleware(['auth', 'verified']);
@@ -33,7 +31,12 @@ Route::put('/dashboard/sport/entry/{entry}', [SportEntryController::class, 'upda
 Route::delete('/dashboard/sport/entry/{entry}', [SportEntryController::class, 'destroy'])->name('sportentry.destroy')->middleware(['auth', 'verified']);
 Route::get('/dashboard/sport/entry/edit/{entry}', [SportEntryController::class, 'edit'])->name('sportentry.edit')->middleware(['auth', 'verified']);
 
+// IMAGES
 
+Route::get('/dashboard/sport/entry/{entry}/image', [SportImageController::class, 'index'])->name('sportimage.index')->middleware(['auth', 'verified']);
+Route::post('/dashboard/sport/entry/{entry}/image', [SportImageController::class, 'store'])->name('sportimage.store')->middleware(['auth', 'verified']);
+//Route::get('/note/{id}/image/{imageId}', [ImageController::class, 'download'])->name('image.download')->middleware(['auth', 'verified']);
+//Route::delete('/note/{id}/image/{imageId}', [ImageController::class, 'destroy'])->name('image.destroy')->middleware(['auth', 'verified']);
 
 // CATEGORIES
 
@@ -47,8 +50,6 @@ Route::get('/dashboard/sport/category/{category}', [SportCategoryController::cla
 Route::put('/dashboard/sport/category/{category}', [SportCategoryController::class, 'update'])->name('sportcategory.update')->middleware(['auth', 'verified']);
 Route::delete('/dashboard/sport/category/{category}', [SportCategoryController::class, 'destroy'])->name('sportcategory.destroy')->middleware(['auth', 'verified']);
 Route::get('/dashboard/sport/category/edit/{category}', [SportCategoryController::class, 'edit'])->name('sportcategory.edit')->middleware(['auth', 'verified']);
-
-
 
 // TAGS 
 Route::get('/dashboard/sport/tag', [SportTagController::class, 'index'])->name('sporttag.index')->middleware(['auth', 'verified']);
