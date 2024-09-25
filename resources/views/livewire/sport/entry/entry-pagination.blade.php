@@ -14,6 +14,8 @@
         </div>
     </div>
 
+    {{ var_dump($selectedTags) }}
+
     <!-- Filters -->
     <div class="flex flex-row justify-between items-center py-2 mx-4 border-green-600 border-b-2 w-100 sm:w-100">
         <div>
@@ -22,6 +24,7 @@
                     {{ $pending != 2 ? '(Status)' : '' }}
                     {{ $initialDateTo != $dateTo || $initialDateFrom != $dateFrom ? '(Date)' : '' }}
                     {{ $cat != 0 ? '(Category)' : '' }}
+                    {{ !in_array('0', $this->selectedTags) && count($this->selectedTags) != 0 ? '(Tags)' : '' }}
                     {{ $initialDurationTo != $durationTo || $durationFrom != 0 ? '(Duration)' : '' }}
                     {{ $initialDistanceTo != $distanceTo || $distanceFrom != 0 ? '(Distance)' : '' }}
                 </span>
@@ -84,6 +87,22 @@
                     </select>
                 </div>
             </div>
+            <!-- Tags -->
+            <div class="flex flex-col justify-start items-start sm:flex-row sm:justify-start sm:items-center gap-2 px-4 py-4">
+                <div class="text-white text-lg w-100 sm:w-1/3">
+                    <span><i class="fa-xl fa-solid fa-tags"></i></span>
+                    <span class="pl-2">Tags (<span class="font-semibold text-sm">{{ count($tags) }}</span>)</span>
+                </div>
+                <div class="w-full pl-2">
+                    <select wire:model.live="selectedTags" name="selectedTags" id="selectedTags" multiple
+                            class="rounded-lg w-full sm:w-1/2" size="6">
+                        <option value="0">All</option>
+                        @foreach ($tags as $tag)
+                            <option value="{{ $tag['id'] }}">{{ $tag['name'] }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
             <!-- Duration -->
             <div class="flex flex-col justify-start items-start sm:flex-row sm:justify-start sm:items-center gap-2 px-4 py-4">
                 <div class="text-white text-lg w-100 sm:w-1/3">
@@ -130,6 +149,8 @@
 
         </div>
     @endif
+
+
 
     <!-- Search -->
     <div class="flex flex-row justify-between items-center py-2 mx-4 my-4 border-green-600 border-b-2 w-100 sm:w-100">
@@ -190,6 +211,7 @@
                     {{ $pending != 2 ? 'Status (' . $pending . ')' : '' }}
                     {{ $initialDateTo != $dateTo || $initialDateFrom != $dateFrom ? 'Dates (' . date('d-m-Y', strtotime($dateFrom)) . ' - ' . date('d-m-Y', strtotime($dateTo)) . ')' : '' }}
                     {{ $cat > 0 ? 'Category (' . $cat . ')' : '' }}
+                    {{ !in_array('0', $this->selectedTags) && count($this->selectedTags) != 0 ? 'Tags (' . implode(',', $selectedTags) . ')' : '' }}
                     {{ $initialDurationTo != $durationTo || $durationFrom != 0 ? 'Duration (' . $durationFrom . ' - ' . $durationTo . ')' : '' }}
                     {{ $initialDistanceTo != $distanceTo || $distanceFrom != 0 ? 'Distance (' . $distanceFrom . ' - ' . $distanceTo . ')' : '' }}
                 </p>

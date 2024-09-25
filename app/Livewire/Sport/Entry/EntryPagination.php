@@ -7,6 +7,7 @@ use Livewire\WithPagination;
 
 use App\Models\Sport\Sport;
 use App\Models\Sport\SportCategory;
+use App\Models\Sport\SportTag;
 
 class EntryPagination extends Component
 {
@@ -33,6 +34,7 @@ class EntryPagination extends Component
     public $dateTo = '';
     public $initialDateTo;
     public $cat = 0;
+    public $selectedTags = [];
     public $durationFrom = 0;
     public $durationTo;
     public $initialDurationTo;
@@ -42,6 +44,10 @@ class EntryPagination extends Component
 
     // multiple batch selections
     public $selections = [];
+
+    // Tags
+
+
 
     //public $selectAll = false;
 
@@ -90,6 +96,7 @@ class EntryPagination extends Component
         $this->dateFrom = Sport::min('date');
         $this->dateTo = Sport::max('date');
         $this->cat = 0;
+        $this->selectedTags = [];
         $this->durationFrom = 0;
         $this->durationTo = Sport::max('duration');
         $this->distanceFrom = 0;
@@ -143,12 +150,20 @@ class EntryPagination extends Component
         $found = 0;
 
         // get only the categories that have at least one entry
-        //$categories = SportCategory::orderBy('name', 'asc')->get();
         $categories = Sport::select(
             'sport_categories.id as id',
             'sport_categories.name as name'
         )
             ->join('sport_categories', 'sport_entries.category_id', '=', 'sport_categories.id')->distinct('category_id')->orderBy('name', 'asc')->get()->toArray();
+
+        // get only the tags that have at least one entry    
+        $tags = SportTag::select(
+            'sport_tags.id as id',
+            'sport_tags.name as name'
+        )
+            ->join('sport_entry_tag', 'sport_entry_tag.sport_tag_id', '=', 'sport_tags.id')->distinct('sport_tags.id')->orderBy('name', 'asc')->get()->toArray();
+
+
 
         // Main Selection, Join tables sport_entries and sport_categories
         $entries = Sport::select(
@@ -166,6 +181,8 @@ class EntryPagination extends Component
             'sport_entries.created_at as created_at',
         )
             ->join('sport_categories', 'sport_entries.category_id', '=', 'sport_categories.id')
+            ->join('sport_entry_tag', 'sport_entries.id', '=', 'sport_entry_tag.sport_entry_id')
+            ->distinct('sport_entries.id')
             ->orderby($this->orderColumn, $this->sortOrder);
 
         // status filter
@@ -185,6 +202,11 @@ class EntryPagination extends Component
             $entries = $entries->where('sport_categories.name', '=', $this->cat);
         }
 
+        // tag filter        
+        if (!in_array('0', $this->selectedTags) && (count($this->selectedTags) != 0)) {
+            $entries = $entries->whereIn('sport_entry_tag.sport_tag_id', $this->selectedTags);
+            //dd(implode(', ', $this->selectedTags));
+        }
         // interval duration    
         if ($this->durationFrom <= $this->durationTo) {
             $entries = $entries->whereBetween('duration', [$this->durationFrom, $this->durationTo]);
@@ -231,6 +253,7 @@ class EntryPagination extends Component
             'totalDistance' => $totalDistance,
             'column' => $this->orderColumn,
             'categories' => $categories,
+            'tags' => $tags
         ]);
     }
 }

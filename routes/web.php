@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Sport\SportEntryController;
 use App\Http\Controllers\Sport\SportCategoryController;
+use App\Http\Controllers\Sport\SportTagController;
 use App\Http\Controllers\Sport\SportImageController;
 
 use Illuminate\Support\Facades\Route;
