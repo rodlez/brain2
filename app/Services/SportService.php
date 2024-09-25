@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Exception;
 use Illuminate\Database\QueryException;
 use App\Exceptions\CustomException;
+use App\Models\Sport\SportImage;
 // Log
 use Illuminate\Support\Facades\Log;
 use stdClass;
@@ -101,6 +102,11 @@ class SportService
         }
 
         return $tags;
+    }
+
+    public function getImages(Sport $entry): Collection
+    {
+        return SportImage::where('sport_id', $entry->id)->get();
     }
 
     /**

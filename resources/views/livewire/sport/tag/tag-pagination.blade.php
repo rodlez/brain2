@@ -6,7 +6,7 @@
             <h4 class="text-2xl text-zinc-600 leading-6 font-bold">
                 <span style="font-size: 2rem; color: orange; padding-right: 10px;">
                     <i class="fa-solid fa-basketball"></i></span>
-                Tags
+                <span>Tags ({{ $search != '' ? $found : $total }})</span>
             </h4>
         </div>
         <div>
@@ -14,19 +14,18 @@
         </div>
     </div>
 
-    <!-- Search and Pagination -->
-    <div class="flex flex-col justify-start sm:flex-row sm:justify-between  gap-6 py-6 px-4">
+    <!-- Search -->
+    <div class="flex flex-col justify-between sm:flex-row items-center p-4 w-100 sm:w-100 gap-2 sm:gap-4">
         <!-- Search -->
-        <div class="relative">
-            <div class="absolute top-2.5 bottom-0 left-4 text-slate-700">
+        <div class="relative w-full">
+            <div class="absolute top-2.5 bottom-0 left-6 text-slate-700">
                 <i class="fa-solid fa-magnifying-glass"></i>
             </div>
-            <input type="search" class="rounded-xl pl-10 placeholder-zinc-400 focus:outline-none focus:ring-0 focus:border-orange-500 border-2 border-zinc-200" placeholder="Search by name" style="width: 250px;" wire:model.live="search">
+            <input type="search" class="w-full rounded-lg pl-14 placeholder-zinc-400 focus:outline-none focus:ring-0 focus:border-orange-500 border-2 border-zinc-200" placeholder="Search by tag name" wire:model.live="search">
         </div>
         <!-- Pagination -->
-        <div>
-            Pagination
-            <select wire:model.live="perPage" class="focus:outline-none focus:ring-0 focus:border-orange-500 border-2 border-zinc-200 rounded-lg">
+        <div class="flex flex-row items-center w-full sm:w-28 pt-4 sm:pt-0 w-100">
+            <select wire:model.live="perPage" class="w-full focus:outline-none focus:ring-0 focus:border-orange-500 border-2 border-zinc-200 rounded-lg">
                 <option class="bg-zinc-200 text-black" value="10">10</option>
                 <option value="25">25</option>
                 <option class="bg-zinc-200 text-black" value="50">50</option>
@@ -34,22 +33,18 @@
             </select>
         </div>
     </div>
-    <!-- Founded Entries -->
-    @if ($found !== 0)
-        <div class="flex flex-row justify-start items-center rounded-lg mx-4 p-4 bg-zinc-100">
-            <p class="text-green-600 text-md font-bold italic">{{ $found > 0 ? 'Found ' . $found . ' tags with name (' . $search . ')' : '' }}</p>
-        </div>
-    @endif
 
     <!-- Bulk Actions -->
     @if (count($selections) > 0)
-        <div class="flex flex-row justify-start items-center sm:flex-row sm:justify-end gap-6 py-2 px-4">
-            Bulk Actions
-            <button type="button" class="w-1/3 sm:w-24 bg-red-600 text-white p-2 hover:bg-red-300 rounded-lg"
-                    wire:click="bulkDelete"
-                    wire:confirm="Are you sure you want to delete this tags?">
-                Delete
-            </button>
+        <div class="flex flex-row justify-start items-end sm:flex-row sm:justify-start gap-6 py-0 px-6">
+            <span class="text-sm font-semibold">Tags Selected</span>
+            <a wire:click.prevent="bulkClear" class="cursor-pointer" title="Unselect All">
+                <span><i class="fa-solid fa-arrow-rotate-left text-green-600"></i></span>
+            </a>
+            <a wire:click.prevent="bulkDelete" wire:confirm="Are you sure you want to delete this entries?" class="cursor-pointer text-red-600" title="Delete">
+                <span><i class="fa-solid fa-trash"></i></span>
+                <span class="px-1">({{ count($selections) }})</span>
+            </a>
         </div>
     @endif
 
@@ -59,39 +54,41 @@
             <div class="min-w-full inline-block align-middle">
 
                 <div class="overflow-hidden">
-                    <table class="min-w-full">
-                        <thead>
-                            <tr class="bg-black text-left text-sm leading-6 font-bold text-white uppercase">
-                                <th></th>
-                                <th scope="col" class="p-4 hover:cursor-pointer hover:text-orange-500 {{ $column == 'id' ? 'bg-yellow-300 text-black' : '' }}" wire:click="sorting('id')">id {!! $sortLink !!}</th>
-                                <th scope="col" class="p-4 hover:cursor-pointer hover:text-orange-500 {{ $column == 'name' ? 'bg-yellow-300 text-black' : '' }}" wire:click="sorting('name')">name {!! $sortLink !!}</th>
-                                <th scope="col" class="p-4 hover:cursor-pointer hover:text-orange-500 {{ $column == 'created_at' ? 'bg-yellow-300 text-black' : '' }}" wire:click="sorting('created_at')">created {!! $sortLink !!}</th>
-                                <th scope="col" class="p-4 hover:cursor-pointer hover:text-orange-500 {{ $column == 'updated_at' ? 'bg-yellow-300 text-black' : '' }}" wire:click="sorting('updated_at')">updated {!! $sortLink !!}</th>
-                                <th scope="col" class="p-4 uppercase"> actions </th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-zinc-200">
-                            @if ($tags->count())
+
+                    @if ($tags->count())
+                        <table class="min-w-full  border-black border">
+                            <thead>
+                                <tr class="bg-black text-left text-md leading-6 font-bold text-white capitalize">
+                                    <th></th>
+                                    <th scope="col" class="p-4 hover:cursor-pointer hover:text-yellow-400 {{ $column == 'id' ? 'text-yellow-400' : '' }}" wire:click="sorting('id')">id {!! $sortLink !!}</th>
+                                    <th scope="col" class="p-4 hover:cursor-pointer hover:text-yellow-400 {{ $column == 'name' ? 'text-yellow-400' : '' }}" wire:click="sorting('name')">name {!! $sortLink !!}</th>
+                                    <th scope="col" class="p-4 hover:cursor-pointer hover:text-yellow-400 {{ $column == 'created_at' ? 'text-yellow-400' : '' }}" wire:click="sorting('created_at')">created {!! $sortLink !!}</th>
+                                    <th scope="col" class="p-4 hover:cursor-pointer hover:text-yellow-400 {{ $column == 'updated_at' ? 'text-yellow-400' : '' }}" wire:click="sorting('updated_at')">updated {!! $sortLink !!}</th>
+                                    <th scope="col" class="p-4 text-center"> actions </th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-zinc-200">
+
                                 @foreach ($tags as $tag)
-                                    <tr class="even:bg-zinc-200 odd:bg-white transition-all duration-500 hover:bg-yellow-100">
-                                        <td class="p-4 whitespace-nowrap text-sm leading-6 font-medium text-gray-900"><input wire:model.live="selections" type="checkbox" class="text-green-600 outline-none focus:ring-0 checked:bg-green-500" value={{ $tag->id }}></td>
-                                        <td class="p-4 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">{{ $tag->id }}</td>
-                                        <td class="p-4 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">{{ $tag->name }}</td>
-                                        <td class="p-4 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">{{ date('d-m-Y', strtotime($tag->created_at)) }}</td>
-                                        <td class="p-4 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">{{ date('d-m-Y', strtotime($tag->updated_at)) }}</td>
+                                    <tr class="even:bg-zinc-200 odd:bg-white transition-all duration-1000 hover:bg-yellow-400">
+                                        <td class="p-4 whitespace-nowrap text-md text-center leading-6 font-medium text-gray-900"><input wire:model.live="selections" type="checkbox" class="text-green-600 outline-none focus:ring-0 checked:bg-green-500" value={{ $tag->id }}></td>
+                                        <td class="p-4 whitespace-nowrap text-md leading-6 font-medium text-gray-900">{{ $tag->id }}</td>
+                                        <td class="p-4 whitespace-nowrap text-md leading-6 font-medium text-gray-900">{{ $tag->name }}</td>
+                                        <td class="p-4 whitespace-nowrap text-md leading-6 font-medium text-gray-900">{{ date('d-m-Y', strtotime($tag->created_at)) }}</td>
+                                        <td class="p-4 whitespace-nowrap text-md leading-6 font-medium text-gray-900">{{ date('d-m-Y', strtotime($tag->updated_at)) }}</td>
                                         <td class="p-4">
-                                            <div class="flex items-center gap-1">
+                                            <div class="flex justify-center items-center gap-4">
+                                                <!-- Entries for this Tag -->
+                                                <a href="{{ route('sporttag.entries', $tag) }}" title="See Entries for this Tag">
+                                                    <span class="text-orange-600 hover:text-black transition-all duration-500"><i class="fa-lg fa-solid fa-basketball"></i></span>
+                                                </a>
                                                 <!-- Show -->
-                                                <a href="{{ route('sporttag.show', $tag) }}">
-                                                    <button class="p-2 rounded-full  group transition-all duration-500  flex item-center">
-                                                        <span style="font-size: 1rem; color: rgb(32, 131, 7);"><i class="fa-solid fa-eye"></i></span>
-                                                    </button>
+                                                <a href="{{ route('sporttag.show', $tag) }}" title="See this Tag">
+                                                    <span class="text-green-600 hover:text-black transition-all duration-500"><i class="fa-lg fa-solid fa-circle-info"></i></span>
                                                 </a>
                                                 <!-- Edit -->
-                                                <a href="{{ route('sporttag.edit', $tag) }}">
-                                                    <button class="p-2  rounded-full  group transition-all duration-500  flex item-center">
-                                                        <span style="font-size: 1rem; color: rgb(20, 19, 20);"><i class="fa-solid fa-pen-to-square"></i></span>
-                                                    </button>
+                                                <a href="{{ route('sporttag.edit', $tag) }}" title="Edit this Tag">
+                                                    <span class="text-blue-600 hover:text-black transition-all duration-500"><i class="fa-lg fa-solid fa-pen-to-square"></i></span>
                                                 </a>
                                                 <!-- Delete -->
                                                 <form action="{{ route('sporttag.destroy', $tag) }}" method="POST">
@@ -99,24 +96,23 @@
                                                     @csrf
                                                     <!-- Dirtective to Override the http method -->
                                                     @method('DELETE')
-                                                    <button class="p-2 rounded-full  group transition-all duration-500  flex item-center" onclick="return confirm('Are you sure you want to delete the tag: {{ $tag->name }}?')">
-                                                        <span style="font-size: 1rem; color: rgb(209, 29, 5);"><i class="fa-solid fa-trash"></i></span>
+                                                    <button onclick="return confirm('Are you sure you want to delete the tag: {{ $tag->name }}?')" title="Delete this Tag">
+                                                        <span class="text-red-600 hover:text-black transition-all duration-500"><i class="fa-lg fa-solid fa-trash"></i></span>
                                                     </button>
                                                 </form>
                                             </div>
                                         </td>
                                     </tr>
                                 @endforeach
-                            @else
-                                <tr class="bg-slate-200">
-                                    <td colspan="6" class="py-8 px-4 whitespace-nowrap text-xl leading-6 font-medium text-red-600 ">No tags found</td>
-                                </tr>
-                            @endif
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    @else
+                        <div>
+                            <span class="text-lg text-red-600 px-4">No tags found</span>
+                        </div>
+                    @endif
 
                 </div>
-
 
             </div>
         </div>

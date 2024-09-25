@@ -65,12 +65,15 @@ class CategoryPagination extends Component
             $found = $categories->where('name', "like", "%" . $this->search . "%")->count();
         }
 
+        $total = $categories->count();
+
         $categories = $categories->paginate($this->perPage);
 
         return view('livewire.sport.category.category-pagination', [
             'categories' => $categories,
             'found' => $found,
-            'column' => $this->orderColumn
+            'column' => $this->orderColumn,
+            'total'     => $total
         ]);
     }
 }

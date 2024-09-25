@@ -57,3 +57,20 @@ function excerpt(string $input, int $length, bool $ellipses = true, bool $strip_
 
     return $trimmed_text;
 }
+
+/**
+ * Get the filename without extension
+ */
+
+function getFileName($filename): string
+{
+    return pathinfo($filename, PATHINFO_FILENAME);
+}
+
+/**
+ * Get the filename with the length of characters from start
+ */
+function shortFilename($filename, $length): string
+{
+    return substr($filename, 0, $length);
+}

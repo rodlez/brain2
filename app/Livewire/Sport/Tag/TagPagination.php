@@ -16,7 +16,11 @@ class TagPagination extends Component
     public $orderColumn = "id";
     public $sortOrder = "desc";
     public $sortLink = '<i class="px-1 sorticon fa-solid fa-caret-down"></i>';
+
+    // search
+    public $showSearch = 0;
     public $search = "";
+
     public $perPage = 25;
 
     public $selections = [];
@@ -24,6 +28,21 @@ class TagPagination extends Component
     public function updated()
     {
         $this->resetPage();
+    }
+
+    public function activateSearch()
+    {
+        $this->showSearch++;
+    }
+
+    public function clearSearch()
+    {
+        $this->search = '';
+    }
+
+    public function bulkClear()
+    {
+        $this->selections = [];
     }
 
     public function bulkDelete()
@@ -65,12 +84,15 @@ class TagPagination extends Component
             $found = $tags->where('name', "like", "%" . $this->search . "%")->count();
         }
 
+        $total = $tags->count();
+
         $tags = $tags->paginate($this->perPage);
 
         return view('livewire.sport.tag.tag-pagination', [
-            'tags' => $tags,
-            'found' => $found,
-            'column' => $this->orderColumn
+            'tags'      => $tags,
+            'found'     => $found,
+            'column'    => $this->orderColumn,
+            'total'     => $total
         ]);
     }
 }

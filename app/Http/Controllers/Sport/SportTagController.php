@@ -83,6 +83,14 @@ class SportTagController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     */
+    public function entries(SportTag $tag): View
+    {
+        return view('sport/tag.entries', ['tag' => $tag]);
+    }
+
+    /**
      * Test
      */
     public function test()

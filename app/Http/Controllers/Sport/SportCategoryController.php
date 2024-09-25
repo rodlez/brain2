@@ -89,6 +89,14 @@ class SportCategoryController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     */
+    public function entries(SportCategory $category): View
+    {
+        return view('sport/category.entries', ['category' => $category]);
+    }
+
+    /**
      * Test
      */
     public function test()

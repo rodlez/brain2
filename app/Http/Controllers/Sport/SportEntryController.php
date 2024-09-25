@@ -46,10 +46,12 @@ class SportEntryController extends Controller
     public function show(Sport $entry)
     {
         $tags = $this->sportService->displayEntryTags($entry, '/');
+        $images = $this->sportService->getImages($entry);
 
         return view('sport/entry/show', [
-            'entry' => $entry,
-            'tags' => $tags,
+            'entry'     => $entry,
+            'tags'      => $tags,
+            'images'    => $images
         ]);
     }
 

@@ -163,6 +163,95 @@
                     </div>
                 </div>
             </div>
+            <!-- Files -->
+            <div class="py-2 px-4 sm:mx-12">
+                <div class="px-16">
+                    <h2 class="text-lg font-semibold py-2">Files ({{ $images->count() }})</h2>
+                </div>
+                <div class="flex flex-row justify-start items-start gap-4">
+                    <span class="bg-zinc-200 px-3 py-2 rounded-lg">
+                        <i class="fa-solid fa-file"></i>
+                    </span>
+                    <!-- Image Table -->
+                    <div>
+                        @if ($images->count() !== 0)
+                            <table class="table-fixed w-full bg-white">
+                                <thead class="text-center text-black bg-gray-200">
+                                    <th></th>
+                                    <th class="py-2 max-xl:hidden">Filename</th>
+                                    <th class="py-2 max-sm:hidden">Created</th>
+                                    <th class="py-2 max-sm:hidden">Size (KB)</th>
+                                    <th class="py-2 max-sm:hidden">Format</th>
+                                    <th></th>
+                                </thead>
+
+                                @foreach ($images as $image)
+                                    <tr class="bg-white border-b-2 text-center">
+                                        <td class="py-2">
+                                            @if ($image->media_type === 'application/pdf')
+                                                <a href="{{ asset('storage/' . $image->path) }}">
+                                                    <i class="fa-regular fa-file-pdf fa-2xl"></i>
+                                                </a>
+                                            @else
+                                                {{-- <a href="{{ url($image->path)}}">
+                                <img src="{{ url($image->path)}}" alt="{{$image->original_filename}}" width="250">                     
+                            </a> --}}
+                                                <a href="{{ asset('storage/' . $image->path) }}">
+                                                    <img src="{{ asset('storage/' . $image->path) }}" alt="{{ $image->original_filename }}" width="250">
+                                                </a>
+                                            @endif
+                                        </td>
+                                        <td class="py-2 max-xl:hidden">{{ shortFilename(getFileName($image->original_filename), 20) }}</td>
+                                        <td class="py-2 max-sm:hidden">{{ $image->created_at->format('d-m-Y') }}</td>
+                                        <td class="py-2 max-sm:hidden">{{ round($image->size / 1000) }} </td>
+                                        <td class="py-2 max-sm:hidden">{{ basename($image->media_type) }}</td>
+                                        <td class="py-2">
+                                            <div class="flex justify-center items-center gap-2">
+                                                <!-- Download Image -->
+                                                <a href="{{ route('sportimage.download', [$entry, $image]) }}" title="Download File">
+                                                    <span class="text-black hover:text-green-600 transition-all duration-500">
+                                                        <i class="fa-lg fa-solid fa-file-arrow-down"></i>
+                                                    </span>
+                                                </a>
+                                                <!-- Delete Image -->
+                                                <form action="{{ route('sportimage.destroy', [$entry, $image]) }}" method="POST">
+                                                    <!-- Add Token to prevent Cross-Site Request Forgery (CSRF) -->
+                                                    @csrf
+                                                    <!-- Dirtective to Override the http method -->
+                                                    @method('DELETE')
+                                                    <button onclick="return confirm('Are you sure you want to delete the image: {{ $image->original_filename }}?')" title="Delete Image">
+                                                        <span class="text-black hover:text-red-600 transition-all duration-500"><i class="fa-lg fa-solid fa-trash"></i></span>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+
+                                    </tr>
+                                @endforeach
+
+                                <tr class="bg-white border-b-2 text-left">
+                                    <td class="py-6">
+                                        <!-- Upload Image -->
+                                        <a href="{{ route('sportimage.index', $entry) }}" class="w-full text-white text-center bg-green-600 hover:bg-green-500 focus:ring-4 focus:ring-violet-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                                            <span> Upload File</span>
+                                            <span class="px-2"><i class="fa-lg fa-solid fa-file-arrow-up"></i></span>
+                                        </a>
+                                    </td>
+                                </tr>
+
+                            </table>
+                        @else
+                            <div class="py-2">
+                                <!-- Upload Image -->
+                                <a href="{{ route('sportimage.index', $entry) }}" class="w-full text-white text-center bg-green-600 hover:bg-green-500 focus:ring-4 focus:ring-violet-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                                    <span> Upload File</span>
+                                    <span class="px-2"><i class="fa-lg fa-solid fa-file-arrow-up"></i></span>
+                                </a>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            </div>
 
             <!-- Buttons -->
             <div class="flex flex-col justify-start sm:flex-row sm:justify-between p-4 gap-4 border-t-2 mt-8">
