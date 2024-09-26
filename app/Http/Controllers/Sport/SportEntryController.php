@@ -4,19 +4,22 @@ namespace App\Http\Controllers\Sport;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SportStoreRequest;
-use App\Models\Sport\Sport;
+
 use Illuminate\Http\Request;
 
-use App\Services\SportService;
-
+use App\Models\Sport\Sport;
 use App\Models\Sport\SportCategory;
 use App\Models\Sport\SportTag;
+
+use App\Services\SportService;
+use App\Services\SportImageService;
 
 class SportEntryController extends Controller
 {
     // Service Injection
     public function __construct(
         private SportService $sportService,
+        private SportImageService $sportImageService,
     ) {}
 
     /**
@@ -81,6 +84,10 @@ class SportEntryController extends Controller
      */
     public function destroy(Sport $entry)
     {
+        $images = $this->sportService->getImages($entry);
+        //dd($images->count());
+        $this->sportImageService->deleteImages($images);
+
         $entry->delete();
         return to_route('sportentry.index')->with('message', 'Entry: ' . $entry->title . ' deleted.');
     }

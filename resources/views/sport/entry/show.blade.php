@@ -21,8 +21,22 @@
                     </h4>
                 </div>
             </div>
-            <!-- Status -->
+            <!-- Id -->
             <div class="pt-6 px-4 sm:mx-12">
+                <div class="px-16">
+                    <h2 class="text-lg font-semibold py-2">Id</h2>
+                </div>
+                <div class="flex flex-row justify-start items-center gap-4">
+                    <span class="bg-zinc-200 px-3 py-2 rounded-lg">
+                        <i class="fa-solid fa-fingerprint"></i>
+                    </span>
+                    <div class="w-32 p-2 text-md rounded-lg bg-gray-200 border border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-orange-500 focus:border-orange-500">
+                        {{ $entry->id }}
+                    </div>
+                </div>
+            </div>
+            <!-- Status -->
+            <div class="py-2 px-4 sm:mx-12">
                 <div class="px-16">
                     <h2 class="text-lg font-semibold py-2">Status</h2>
                 </div>

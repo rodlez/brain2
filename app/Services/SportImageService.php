@@ -130,6 +130,8 @@ class SportImageService
     public function deleteOneImage(SportImage $image)
     {
         if (Storage::disk('public')->exists($image->path)) {
+            /*  echo $image->path;
+            dd('borradito'); */
             Storage::disk('public')->delete($image->path);
             $image->delete();
         }

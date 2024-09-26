@@ -110,6 +110,22 @@ class SportService
     }
 
     /**
+     * Get the tag names given an array with the tag ids
+     */
+
+    public function getTagNames(array $tags): array
+    {
+
+        $tagsNames = [];
+        foreach ($tags as $key => $value) {
+
+            $tagInfo = SportTag::find($value);
+            $tagsNames[] = $tagInfo->name;
+        }
+        return $tagsNames;
+    }
+
+    /**
      * Stats 
      */
     public function totalEntries(): int

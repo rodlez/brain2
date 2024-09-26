@@ -9,6 +9,8 @@ use App\Models\Sport\Sport;
 use App\Models\Sport\SportCategory;
 use App\Models\Sport\SportTag;
 
+use App\Services\SportService;
+
 class EntryPagination extends Component
 {
 
@@ -45,11 +47,12 @@ class EntryPagination extends Component
     // multiple batch selections
     public $selections = [];
 
-    // Tags
 
-
-
-    //public $selectAll = false;
+    public function boot(
+        SportService $sportService,
+    ) {
+        $this->sportService = $sportService;
+    }
 
 
     public function updated()
@@ -164,8 +167,7 @@ class EntryPagination extends Component
             ->join('sport_entry_tag', 'sport_entry_tag.sport_tag_id', '=', 'sport_tags.id')->distinct('sport_tags.id')->orderBy('name', 'asc')->get()->toArray();
 
 
-
-        // Main Selection, Join tables sport_entries and sport_categories
+        // Main Selection, Join tables sport_entries, sport_categories and sport_entry_tag
         $entries = Sport::select(
             'sport_entries.id as id',
             'sport_categories.name as category_name',
@@ -179,9 +181,11 @@ class EntryPagination extends Component
             'sport_entries.info as info',
             'sport_entries.date as date',
             'sport_entries.created_at as created_at',
+            //'sport_images.id as files'
         )
             ->join('sport_categories', 'sport_entries.category_id', '=', 'sport_categories.id')
             ->join('sport_entry_tag', 'sport_entries.id', '=', 'sport_entry_tag.sport_entry_id')
+            //->join('sport_images', 'sport_entries.id', '=', 'sport_images.sport_id')
             ->distinct('sport_entries.id')
             ->orderby($this->orderColumn, $this->sortOrder);
 
@@ -190,7 +194,7 @@ class EntryPagination extends Component
             $entries = $entries->where('status', '=', $this->pending);
         }
 
-        // interval date
+        // interval date filter
         if (isset($this->dateFrom)) {
             if ($this->dateFrom <= $this->dateTo) {
                 $entries = $entries->whereBetween('date', [$this->dateFrom, $this->dateTo]);
@@ -202,17 +206,17 @@ class EntryPagination extends Component
             $entries = $entries->where('sport_categories.name', '=', $this->cat);
         }
 
-        // tag filter        
+        // tags filter        
         if (!in_array('0', $this->selectedTags) && (count($this->selectedTags) != 0)) {
             $entries = $entries->whereIn('sport_entry_tag.sport_tag_id', $this->selectedTags);
-            //dd(implode(', ', $this->selectedTags));
         }
-        // interval duration    
+
+        // interval duration filter
         if ($this->durationFrom <= $this->durationTo) {
             $entries = $entries->whereBetween('duration', [$this->durationFrom, $this->durationTo]);
         }
 
-        // interval distance    
+        // interval distance filter   
         if ($this->distanceFrom <= $this->distanceTo) {
             $entries = $entries->whereBetween('distance', [$this->distanceFrom, $this->distanceTo]);
         }
@@ -227,33 +231,36 @@ class EntryPagination extends Component
         }
 
         // total values for display stats
-        $stats = $entries;
-        //dd($stats->count());
-        $totalEntries = $entries->count();
-        $totalDuration = $entries->sum('duration');
-        $totalDistance = $entries->sum('distance');
-        /*
+        // clone to make a copy and not have the same values as entries
+        $stats = clone $entries;
+        $totalEntries = $stats->count();
+        $totalDistance = $stats->get()->sum('distance');
+        $totalDuration = $stats->get()->sum('duration');
         $differentCategories = $stats->distinct('sport_categories.id')->count();
         $differentLocations = $stats->distinct('location')->count();
-        $differentDates = $stats->distinct('date')->count(); */
+        $differentDates = $stats->distinct('date')->count();
 
-        //dd($entries->count());
         $entries = $entries->paginate($this->perPage);
 
-
+        if (!in_array('0', $this->selectedTags)) {
+            $tagNames = $this->sportService->getTagNames($this->selectedTags);
+        } else {
+            $tagNames = [];
+        }
 
         return view('livewire.sport.entry.entry-pagination', [
             'entries' => $entries,
             'found' => $found,
             'total' => $totalEntries,
-            /* 'differentLocations' => $differentLocations,
+            'differentLocations' => $differentLocations,
             'differentCategories' => $differentCategories,
-            'differentDates' => $differentDates,*/
-            'totalDuration' => $totalDuration,
+            'differentDates' => $differentDates,
             'totalDistance' => $totalDistance,
+            'totalDuration' => $totalDuration,
             'column' => $this->orderColumn,
             'categories' => $categories,
-            'tags' => $tags
+            'tags' => $tags,
+            'tagNames' => $tagNames
         ]);
     }
 }
