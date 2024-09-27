@@ -136,7 +136,7 @@ class EntryPagination extends Component
 
     public function sorting($columnName = "")
     {
-        $caretOrder = "up";
+        $caretOrder = 'up';
         if ($this->sortOrder == 'asc') {
             $this->sortOrder = 'desc';
             $caretOrder = 'down';

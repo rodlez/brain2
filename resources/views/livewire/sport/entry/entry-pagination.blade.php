@@ -244,19 +244,19 @@
                 <div class="overflow-hidden">
 
                     @if ($entries->count())
-                        <table class="min-w-full border border-green-600">
+                        <table class="table-auto min-w-full border border-green-600">
                             <thead>
                                 <tr class="bg-green-600 text-left text-md leading-6 font-bold text-white capitalize">
                                     {{-- <th class="p-2"><input wire:model.live="selectAll" type="checkbox" class="text-green-600 outline-none focus:ring-0 checked:bg-green-500"></th> --}}
                                     <th></th>
                                     <th scope="col" class="p-2 hover:cursor-pointer hover:text-black {{ $column == 'id' ? 'bg-yellow-400 text-black' : '' }}" wire:click="sorting('id')">id {!! $sortLink !!}</th>
                                     <th scope="col" class="p-2 hover:cursor-pointer hover:text-black {{ $column == 'title' ? 'bg-yellow-400 text-black' : '' }}" wire:click="sorting('title')">title {!! $sortLink !!}</th>
-                                    <th scope="col" class="p-2 hover:cursor-pointer hover:text-black {{ $column == 'category_name' ? 'bg-yellow-400 text-black' : '' }}" wire:click="sorting('category_name')">category {{ '(' . $differentCategories . ')' }} {!! $sortLink !!}</th>
+                                    <th scope="col" class="p-2 hover:cursor-pointer hover:text-black {{ $column == 'category_name' ? 'bg-yellow-400 text-black' : '' }}" wire:click="sorting('category_name')">category {!! $sortLink !!} <br> <span class="text-xs">{{ '(' . $differentCategories . ')' }}</span></th>
                                     <th scope="col" class="p-2 hover:cursor-pointer hover:text-black {{ $column == 'status' ? 'bg-yellow-400 text-black' : '' }}" wire:click="sorting('status')" title="0 - Complete, 1 - Pending">p {!! $sortLink !!}</th>
-                                    <th scope="col" class="p-2 hover:cursor-pointer hover:text-black {{ $column == 'location' ? 'bg-yellow-400 text-black' : '' }}" wire:click="sorting('location')">location {{ '(' . $differentLocations . ')' }} {!! $sortLink !!}</th>
-                                    <th scope="col" class="p-2 hover:cursor-pointer hover:text-black {{ $column == 'duration' ? 'bg-yellow-400 text-black' : '' }}" wire:click="sorting('duration')">duration {{ '(' . $totalDuration . ')' }} {!! $sortLink !!}</th>
-                                    <th scope="col" class="p-2 hover:cursor-pointer hover:text-black {{ $column == 'distance' ? 'bg-yellow-400 text-black' : '' }}" wire:click="sorting('distance')">distance {{ '(' . $totalDistance . ')' }} {!! $sortLink !!}</th>
-                                    <th scope="col" class="p-2 hover:cursor-pointer hover:text-black {{ $column == 'date' ? 'bg-yellow-400 text-black' : '' }}" wire:click="sorting('date')">date {{ '(' . $differentDates . ')' }} {!! $sortLink !!}</th>
+                                    <th scope="col" class="p-2 hover:cursor-pointer hover:text-black {{ $column == 'location' ? 'bg-yellow-400 text-black' : '' }}" wire:click="sorting('location')">location {!! $sortLink !!} <br> <span class="text-xs">{{ '(' . $differentLocations . ')' }}</span></th>
+                                    <th scope="col" class="p-2 hover:cursor-pointer hover:text-black {{ $column == 'duration' ? 'bg-yellow-400 text-black' : '' }}" wire:click="sorting('duration')">min {!! $sortLink !!} <br> <span class="text-xs">{{ '(' . $totalDuration . ')' }}</span> </th>
+                                    <th scope="col" class="p-2 hover:cursor-pointer hover:text-black {{ $column == 'distance' ? 'bg-yellow-400 text-black' : '' }}" wire:click="sorting('distance')">km {!! $sortLink !!} <br> <span class="text-xs">{{ '(' . $totalDistance . ')' }}</span> </th>
+                                    <th scope="col" class="p-2 hover:cursor-pointer hover:text-black {{ $column == 'date' ? 'bg-yellow-400 text-black' : '' }}" wire:click="sorting('date')">date {!! $sortLink !!} <br> <span class="text-xs">{{ '(' . $differentDates . ')' }}</span> </th>
                                     <th scope="col" class="p-2 text-center">Tags</th>
                                     <th scope="col" class="p-2 text-center">Files</th>
                                     <th scope="col" class="p-2 text-center"> actions </th>
@@ -276,7 +276,7 @@
                                         </td>
 
                                         <td class="p-2 border-l border-l-green-600 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">{{ $entry->category_name }}</td>
-                                        <td class="p-2 border-l border-l-green-600 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">{{ $entry->status }}</td>
+                                        <td class="p-2 border-l border-l-green-600 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">{!! $entry->status == 1 ? '<span class="text-red-600">' . $entry->status . '</span>' : '<span class="text-green-600">' . $entry->status . '</span>' !!}</td>
                                         <td class="p-2 border-l border-l-green-600 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">{{ $entry->location }}</td>
                                         <td class="p-2 border-l border-l-green-600 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">{{ $entry->duration }}</td>
                                         <td class="p-2 border-l border-l-green-600 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">{{ $entry->distance }}</td>
@@ -287,21 +287,33 @@
                                             @endforeach
                                         </td>
                                         <td class="p-2 border-l border-l-green-600 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
-                                            {{ $entry->images->count() }}
+                                            <div class="flex flex-col items-center gap-2">
+                                                @foreach ($entry->images as $image)
+                                                    @if ($image->media_type === 'application/pdf')
+                                                        <a href="{{ asset('storage/' . $image->path) }}" title="{{ $image->original_filename }}">
+                                                            <i class="fa-regular fa-file-pdf fa-xl"></i>
+                                                        </a>
+                                                    @else
+                                                        <a href="{{ asset('storage/' . $image->path) }}" title="{{ $image->original_filename }}">
+                                                            <i class="fa-regular fa-image fa-xl"></i>
+                                                        </a>
+                                                    @endif
+                                                @endforeach
+                                            </div>
                                         </td>
                                         <td class="p-2 border-l border-l-green-600">
                                             <div class="flex items-center gap-2">
                                                 <!-- Show -->
                                                 <a href="{{ route('sportentry.show', $entry) }}" title="See this entry">
-                                                    <span class="text-black hover:text-orange-600 transition-all duration-500"><i class="fa-lg fa-solid fa-circle-info"></i></span>
+                                                    <span class="text-orange-400 hover:text-black transition-all duration-500"><i class="fa-lg fa-solid fa-circle-info"></i></span>
                                                 </a>
                                                 <!-- Upload File -->
                                                 <a href="{{ route('sportimage.index', $entry) }}" title="Upload File">
-                                                    <span class="text-black hover:text-green-600 transition-all duration-500"><i class="fa-lg fa-solid fa-file-arrow-up"></i></span>
+                                                    <span class="text-green-600 hover:text-black transition-all duration-500"><i class="fa-lg fa-solid fa-file-arrow-up"></i></span>
                                                 </a>
                                                 <!-- Edit -->
                                                 <a href="{{ route('sportentry.edit', $entry) }}" title="Edit this entry">
-                                                    <span class="text-black hover:text-blue-600 transition-all duration-500"><i class="fa-lg fa-solid fa-pen-to-square"></i></span>
+                                                    <span class="text-blue-600 hover:text-black transition-all duration-500"><i class="fa-lg fa-solid fa-pen-to-square"></i></span>
                                                 </a>
                                                 <!-- Delete -->
                                                 <form action="{{ route('sportentry.destroy', $entry) }}" method="POST">
@@ -310,7 +322,7 @@
                                                     <!-- Dirtective to Override the http method -->
                                                     @method('DELETE')
                                                     <button onclick="return confirm('Are you sure you want to delete the entry: {{ $entry->title }}?')" title="Delete this entry">
-                                                        <span class="text-black hover:text-red-600 transition-all duration-500"><i class="fa-lg fa-solid fa-trash"></i></span>
+                                                        <span class="text-red-600 hover:text-black transition-all duration-500"><i class="fa-lg fa-solid fa-trash"></i></span>
                                                     </button>
                                                 </form>
                                             </div>

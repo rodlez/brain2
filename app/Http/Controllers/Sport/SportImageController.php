@@ -67,7 +67,9 @@ class SportImageController extends Controller
 
         $this->sportImageService->deleteOneImage($image);
 
-        return to_route('sportentry.show', $entry)->with('message', 'Image ' . $image->original_filename . ' for : ' . $entry->title . ' deleted.');
+        //request()->headers->get('referer')
+        //return to_route('sportentry.show', $entry)->with('message', 'Image ' . $image->original_filename . ' for : ' . $entry->title . ' deleted.');
+        return back()->with('message', 'Image ' . $image->original_filename . ' for : ' . $entry->title . ' deleted.');
     }
 
     public function download(Sport $entry, SportImage $image)

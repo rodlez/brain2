@@ -16,12 +16,13 @@ class ImageUpload extends Component
     public $images = [];
 
     protected $rules = [
-        'images' => 'required|array',
+        'images' => 'array|min:1|max:5',
         'images.*' => 'required|mimes:pdf,jpeg,png,jpg|max:2048',
     ];
 
     protected $messages = [
-        'images.required' => 'Select at least one file to upload',
+        'images.min' => 'Select at least 1 file to upload (max 5 files)',
+        'images.max' => 'Limited to 5 files to upload',
         'images.*.required' => 'Select at least one file to upload',
         'images.*.mimes' => 'At least one file is not one of the allowed formats: PDF, JPG, JPEG or PNG',
     ];

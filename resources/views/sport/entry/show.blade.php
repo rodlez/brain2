@@ -189,41 +189,38 @@
                     <!-- Image Table -->
                     <div>
                         @if ($images->count() !== 0)
-                            <table class="table-fixed w-full bg-white">
+                            <table class="table-auto w-full border-2 mb-4">
                                 <thead class="text-center text-black bg-gray-200">
                                     <th></th>
-                                    <th class="py-2 max-xl:hidden">Filename</th>
-                                    <th class="py-2 max-sm:hidden">Created</th>
-                                    <th class="py-2 max-sm:hidden">Size (KB)</th>
-                                    <th class="py-2 max-sm:hidden">Format</th>
+                                    <th class="p-2 max-xl:hidden">Filename</th>
+                                    <th class="p-2 max-sm:hidden">Created</th>
+                                    <th class="p-2 max-sm:hidden">Size <span class="text-xs">(KB)</span></th>
+                                    <th class="p-2 ">Format</th>
                                     <th></th>
                                 </thead>
 
                                 @foreach ($images as $image)
                                     <tr class="bg-white border-b-2 text-center">
-                                        <td class="py-2">
+                                        <td class="p-2">
                                             @if ($image->media_type === 'application/pdf')
-                                                <a href="{{ asset('storage/' . $image->path) }}">
+                                                <a href="{{ asset('storage/' . $image->path) }}" title="{{ $image->original_filename }}">
                                                     <i class="fa-regular fa-file-pdf fa-2xl"></i>
                                                 </a>
                                             @else
-                                                {{-- <a href="{{ url($image->path)}}">
-                                <img src="{{ url($image->path)}}" alt="{{$image->original_filename}}" width="250">                     
-                            </a> --}}
                                                 <a href="{{ asset('storage/' . $image->path) }}">
-                                                    <img src="{{ asset('storage/' . $image->path) }}" alt="{{ $image->original_filename }}" width="250">
+                                                    <img src="{{ asset('storage/' . $image->path) }}" class="w-24 mx-auto rounded-lg" title="{{ $image->original_filename }}">
                                                 </a>
                                             @endif
                                         </td>
-                                        <td class="py-2 max-xl:hidden">{{ shortFilename(getFileName($image->original_filename), 20) }}</td>
-                                        <td class="py-2 max-sm:hidden">{{ $image->created_at->format('d-m-Y') }}</td>
-                                        <td class="py-2 max-sm:hidden">{{ round($image->size / 1000) }} </td>
-                                        <td class="py-2 max-sm:hidden">{{ basename($image->media_type) }}</td>
-                                        <td class="py-2">
+                                        <td class="p-2 max-xl:hidden">{{ shortFilename(getFileName($image->original_filename), 20) }}</td>
+                                        <td class="p-2 max-sm:hidden">{{ $image->created_at->format('d-m-Y') }}</td>
+                                        <td class="p-2 max-sm:hidden">{{ round($image->size / 1000) }} </td>
+                                        <td class="p-2 ">{{ basename($image->media_type) }}</td>
+                                        <td class="p-2">
                                             <div class="flex justify-center items-center gap-2">
                                                 <!-- Download Image -->
                                                 <a href="{{ route('sportimage.download', [$entry, $image]) }}" title="Download File">
-                                                    <span class="text-black hover:text-green-600 transition-all duration-500">
+                                                    <span class="text-green-600 hover:text-black transition-all duration-500">
                                                         <i class="fa-lg fa-solid fa-file-arrow-down"></i>
                                                     </span>
                                                 </a>
@@ -234,7 +231,7 @@
                                                     <!-- Dirtective to Override the http method -->
                                                     @method('DELETE')
                                                     <button onclick="return confirm('Are you sure you want to delete the image: {{ $image->original_filename }}?')" title="Delete Image">
-                                                        <span class="text-black hover:text-red-600 transition-all duration-500"><i class="fa-lg fa-solid fa-trash"></i></span>
+                                                        <span class="text-red-600 hover:text-black transition-all duration-500"><i class="fa-lg fa-solid fa-trash"></i></span>
                                                     </button>
                                                 </form>
                                             </div>
@@ -243,7 +240,7 @@
                                     </tr>
                                 @endforeach
 
-                                <tr class="bg-white border-b-2 text-left">
+                                {{-- <tr class="bg-white border-b-2 text-left">
                                     <td class="py-6">
                                         <!-- Upload Image -->
                                         <a href="{{ route('sportimage.index', $entry) }}" class="w-full text-white text-center bg-green-600 hover:bg-green-500 focus:ring-4 focus:ring-violet-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
@@ -251,18 +248,22 @@
                                             <span class="px-2"><i class="fa-lg fa-solid fa-file-arrow-up"></i></span>
                                         </a>
                                     </td>
-                                </tr>
+                                </tr> --}}
 
                             </table>
-                        @else
-                            <div class="py-2">
+                        @endif
+                        <div class="py-2">
+                            @if ($images->count() >= 5)
+                                <span class="text-red-400 font-semibold">Max files (5) reached. Delete some to upload a new File.</span>
+                            @else
                                 <!-- Upload Image -->
                                 <a href="{{ route('sportimage.index', $entry) }}" class="w-full text-white text-center bg-green-600 hover:bg-green-500 focus:ring-4 focus:ring-violet-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                                     <span> Upload File</span>
                                     <span class="px-2"><i class="fa-lg fa-solid fa-file-arrow-up"></i></span>
                                 </a>
-                            </div>
-                        @endif
+                            @endif
+                        </div>
+
                     </div>
                 </div>
             </div>
