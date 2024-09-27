@@ -11,43 +11,35 @@
     {{-- {{ request()->headers->get('referer') }} --}}
 
     <div class="mx-16 my-2 pt-4 pb-1 border-b-2 border-b-orange-400">
-        <span class="text-xl font-semibold">Entry Title - <span class="text-gray-600 text-md font-normal">{{ excerpt($entry->title, 50) }}</span></span>
+        <span class="text-xl font-semibold">Entry Title - <span class="text-gray-600 text-sm sm:text-md font-normal">{{ excerpt($entry->title, 50) }}</span></span>
     </div>
 
     <div class="mx-16 py-1 text-xs font-semibold">Files in this entry ({{ $entry->images->count() }} of 5)</div>
 
     @if ($entry->images->count() > 0)
-        <div class="mx-16 py-2 flex flex-row justify-start items-center gap-4">
+        <div class="mx-16 py-2 flex flex-col sm:flex-row justify-start items-center w-fit px-4 border-2 rounded-lg gap-4 bg-gray-200">
             @foreach ($entry->images as $image)
-                @if ($image->media_type === 'application/pdf')
-                    <a href="{{ asset('storage/' . $image->path) }}" title="{{ $image->original_filename }}">
-                        <i class="fa-regular fa-file-pdf fa-2xl"></i>
-                    </a>
+                <div class="relative py-2">
+                    @if ($image->media_type === 'application/pdf')
+                        <a href="{{ asset('storage/' . $image->path) }}" title="{{ $image->original_filename }}">
+                            <i class="fa-regular fa-file-pdf fa-3x"></i>
+                        </a>
+                    @else
+                        <a href="{{ asset('storage/' . $image->path) }}">
+                            <img src="{{ asset('storage/' . $image->path) }}" class="w-full sm:w-12 sm:h-12 mx-auto rounded-lg" title="{{ $image->original_filename }}">
+                        </a>
+                    @endif
                     <!-- Delete Image -->
                     <form action="{{ route('sportimage.destroy', [$entry, $image]) }}" method="POST">
                         <!-- Add Token to prevent Cross-Site Request Forgery (CSRF) -->
                         @csrf
                         <!-- Dirtective to Override the http method -->
                         @method('DELETE')
-                        <button onclick="return confirm('Are you sure you want to delete the image: {{ $image->original_filename }}?')" title="Delete Image">
-                            <span class="text-red-600 hover:text-black transition-all duration-500"><i class="fa-lg fa-solid fa-trash"></i></span>
+                        <button class="absolute top-0 right-0" onclick="return confirm('Are you sure you want to delete the image: {{ $image->original_filename }}?')" title="Delete Image">
+                            <span class="text-red-600 hover:text-red-700 transition-all duration-500"><i class="fa-solid fa-circle-xmark fa-md"></i></i></span>
                         </button>
                     </form>
-                @else
-                    <a href="{{ asset('storage/' . $image->path) }}">
-                        <img src="{{ asset('storage/' . $image->path) }}" class="w-24 mx-auto rounded-lg" title="{{ $image->original_filename }}">
-                    </a>
-                    <!-- Delete Image -->
-                    <form action="{{ route('sportimage.destroy', [$entry, $image]) }}" method="POST">
-                        <!-- Add Token to prevent Cross-Site Request Forgery (CSRF) -->
-                        @csrf
-                        <!-- Dirtective to Override the http method -->
-                        @method('DELETE')
-                        <button onclick="return confirm('Are you sure you want to delete the image: {{ $image->original_filename }}?')" title="Delete Image">
-                            <span class="text-red-600 hover:text-black transition-all duration-500"><i class="fa-lg fa-solid fa-trash"></i></span>
-                        </button>
-                    </form>
-                @endif
+                </div>
             @endforeach
         </div>
     @endif
