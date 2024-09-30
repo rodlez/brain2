@@ -44,7 +44,7 @@
                     <span class="bg-zinc-200 px-3 py-2 rounded-lg">
                         <i class="fa-solid fa-toggle-on"></i>
                     </span>
-                    <input name="status" id="status" type="text" value="{{ $entry->status == 0 ? 'Complete' : 'Pending' }}" disabled class="text-md rounded-lg w-28 p-2 {{ $entry->status == 0 ? 'bg-green-400' : 'bg-red-400' }}  border border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-orange-500 focus:border-orange-500 cursor-not-allowed">
+                    <input name="status" id="status" type="text" value="{{ $entry->status == 0 ? 'Complete' : 'Pending' }}" disabled class="text-md rounded-lg w-28 p-2 {{ $entry->status == 0 ? 'bg-green-400' : 'bg-red-400' }}  border border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-orange-500 focus:border-orange-500 ">
                 </div>
             </div>
             <!-- Title -->
@@ -70,7 +70,7 @@
                     <span class="bg-zinc-200 px-3 py-2 rounded-lg">
                         <i class="fa-solid fa-calendar-days"></i>
                     </span>
-                    <div class="w-full sm:w-1/3 p-2 text-md rounded-lg bg-gray-200 border border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-orange-500 focus:border-orange-500 cursor-not-allowed">
+                    <div class="w-full sm:w-1/3 p-2 text-md rounded-lg bg-gray-200 border border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-orange-500 focus:border-orange-500 ">
                         {{ $entry->date }}
                     </div>
                 </div>
@@ -84,7 +84,7 @@
                     <span class="bg-zinc-200 px-3 py-2 rounded-lg">
                         <i class="fa-solid fa-list"></i>
                     </span>
-                    <div class="w-full p-2 text-md rounded-lg bg-gray-200 border border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-orange-500 focus:border-orange-500 cursor-not-allowed">
+                    <div class="w-full p-2 text-md rounded-lg bg-gray-200 border border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-orange-500 focus:border-orange-500 ">
                         {{ $entry->category->name }}
                     </div>
                 </div>
@@ -98,7 +98,7 @@
                     <span class="bg-zinc-200 px-3 py-2 rounded-lg">
                         <i class="fa-solid fa-tags"></i>
                     </span>
-                    <div class="bg-gray-200 border border-zinc-300 w-full p-2 text-md rounded-lg cursor-not-allowed">
+                    <div class="bg-gray-200 border border-zinc-300 w-full p-2 text-md rounded-lg ">
                         @foreach ($tags as $tag)
                             {{ $tag }}
                         @endforeach
@@ -114,7 +114,7 @@
                     <span class="bg-zinc-200 px-3 py-2 rounded-lg">
                         <i class="fa-solid fa-location-dot"></i>
                     </span>
-                    <div class="w-full p-2 text-md rounded-lg bg-gray-200 border border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-orange-500 focus:border-orange-500 cursor-not-allowed">
+                    <div class="w-full p-2 text-md rounded-lg bg-gray-200 border border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-orange-500 focus:border-orange-500 ">
                         {{ $entry->location }}
                     </div>
                 </div>
@@ -128,7 +128,7 @@
                     <span class="bg-zinc-200 px-3 py-2 rounded-lg">
                         <i class="fa-regular fa-clock"></i>
                     </span>
-                    <div class="w-20 p-2 bg-gray-200 border border-gray-300 text-gray-900 text-md rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-orange-500 focus:border-orange-500 cursor-not-allowed">
+                    <div class="w-20 p-2 bg-gray-200 border border-gray-300 text-gray-900 text-md rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-orange-500 focus:border-orange-500 ">
                         {{ $entry->duration }}
                     </div>
                     <p class="text-sm">minutes</p>
@@ -143,7 +143,7 @@
                     <span class="bg-zinc-200 px-3 py-2 rounded-lg">
                         <i class="fa-solid fa-route"></i>
                     </span>
-                    <div class="w-20 p-2 bg-gray-200 border border-gray-300 text-gray-900 text-md rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-orange-500 focus:border-orange-500 cursor-not-allowed">
+                    <div class="w-20 p-2 bg-gray-200 border border-gray-300 text-gray-900 text-md rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-orange-500 focus:border-orange-500 ">
                         {{ $entry->distance }}
                     </div>
                     <p class="text-sm">km</p>
@@ -154,14 +154,27 @@
                 <div class="px-16">
                     <h2 class="text-lg font-semibold py-2">Url</h2>
                 </div>
-                <div class="flex flex-row justify-start items-center gap-4">
-                    <span class="bg-zinc-200 px-3 py-2 rounded-lg">
-                        <i class="fa-solid fa-globe"></i>
-                    </span>
-                    <div class="w-full p-2 text-md rounded-lg bg-gray-200 border border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-orange-500 focus:border-orange-500 cursor-not-allowed">
-                        {{ $entry->url === null ? '-' : $entry->url }}
+                @if ($entry->url != null && $entry->url != '[]')
+                    @foreach (json_decode($entry->url) as $url)
+                        <div class="flex flex-row justify-start items-center gap-4 py-2">
+                            <span class="bg-zinc-200 px-3 py-2 rounded-lg">
+                                <i class="fa-solid fa-globe"></i>
+                            </span>
+                            <div class="w-full p-2 text-md rounded-lg bg-gray-200 border border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-orange-500 focus:border-orange-500">
+                                {{ $url }}
+                            </div>
+                        </div>
+                    @endforeach
+                @else
+                    <div class="flex flex-row justify-start items-center gap-4 py-2">
+                        <span class="bg-zinc-200 px-3 py-2 rounded-lg">
+                            <i class="fa-solid fa-globe"></i>
+                        </span>
+                        <div class="w-full p-2 text-md rounded-lg bg-gray-200 border border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-orange-500 focus:border-orange-500">
+                            -
+                        </div>
                     </div>
-                </div>
+                @endif
             </div>
             <!-- Info -->
             <div class="py-2 px-4 sm:mx-12">
@@ -172,7 +185,7 @@
                     <span class="bg-zinc-200 px-3 py-2 rounded-lg">
                         <i class="fa-solid fa-circle-info"></i>
                     </span>
-                    <div class="w-full p-2 text-md rounded-lg bg-gray-200 border border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-orange-500 focus:border-orange-500 cursor-not-allowed">
+                    <div class="w-full p-2 text-md rounded-lg bg-gray-200 border border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-orange-500 focus:border-orange-500 ">
                         {{ $entry->info === null ? '-' : $entry->info }}
                     </div>
                 </div>

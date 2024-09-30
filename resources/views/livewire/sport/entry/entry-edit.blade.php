@@ -170,24 +170,94 @@
                 {{ $message }}
             @enderror
         </div>
+
+        url entry <br>{{ var_dump(json_decode($urljson)) }}
+        <br><br>inputs <br>{{ var_dump($inputs) }}
         <!-- Url -->
         <div class="py-0 px-4 sm:mx-12">
+            <div class="flex flex-row px-16">
+                <h2 class="text-lg font-semibold py-2">Url
+                    @if ($inputs->count() < 5)
+                        <button type="button" wire:click="add()" class="align-middle mx-2 px-2">
+                            <i class="fa-solid fa-circle-plus" title="Add Url"></i>
+                        </button>
+                    @else
+                        <span class="text-red-400 text-xs px-4">You have reached the limit of Urls (5)</span>
+                    @endif
+                </h2>
+            </div>
+            @php $count = 0 @endphp
+            @foreach ($inputs as $key => $value)
+                {{ $inputs->count() }}
+                <div class="flex flex-row justify-start items-center gap-4">
+                    <span class="bg-zinc-200 px-3 py-2 rounded-lg">
+                        <i class="fa-solid fa-globe"></i>
+                    </span>
+                    <input wire:model.live="inputs.{{ $key }}.url" id="inputs.{{ $key }}.url" type="text" class="w-2/3 pl-4 p-2 bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-orange-500 focus:border-orange-500">
+                    {{--  @if ($count > 0)
+                        <button type="button" wire:click="remove({{ $key }})" class="align-middle mx-2 px-2">
+                            <span style="font-size: 1.2rem; color: rgba(204, 13, 13, 0.849);"><i class="fa-solid fa-trash"></i></span>
+                        </button>
+                    @else
+                        <button type="button" wire:click="add()" class="align-middle mx-2 px-2">
+                            <i class="fa-solid fa-plus"></i>
+                        </button>
+                    @endif --}}
+
+                    <button type="button" wire:click="remove({{ $key }})" class="align-middle mx-2 px-2">
+                        <span style="font-size: 1.2rem; color: rgba(204, 13, 13, 0.849);"><i class="fa-solid fa-trash"></i></span>
+                    </button>
+
+                </div>
+                <div class="py-2 px-20 sm:mx-12 text-sm text-red-600 font-semibold">
+                    @error('inputs.' . $key . '.url')
+                        {{ $message }}
+                    @enderror
+                </div>
+                @php $count++ @endphp
+            @endforeach
+        </div>
+
+
+
+        {{--         <div class="py-0 px-4 sm:mx-12">
             <div class="px-16">
                 <h2 class="text-lg font-semibold py-2">Url</h2>
             </div>
-            <div class="flex flex-row justify-start items-center gap-4">
-                <span class="bg-zinc-200 px-3 py-2 rounded-lg">
-                    <i class="fa-solid fa-globe"></i>
-                </span>
-                <input wire:model="url" name="url" id="url" type="text" value="{{ old('url') }}" class="w-full pl-4 p-2 text-md rounded-lg bg-gray-50 border border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-orange-500 focus:border-orange-500">
-            </div>
+            @php $count = 0 @endphp
+            @foreach ($inputs as $key => $value)
+               
+                {{ $key }} {{ $value }}
+
+                <div class="flex flex-row justify-start items-center gap-4">
+                    <span class="bg-zinc-200 px-3 py-2 rounded-lg">
+                        <i class="fa-solid fa-globe"></i>
+                    </span>
+                    <input wire:model.live="inputs.{{ $key }}.url" id="inputs.{{ $key }}.url" type="text" value="caca" class="w-2/3 pl-4 p-2 bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-orange-500 focus:border-orange-500">
+                    @if ($count > 0)
+                        <button type="button" wire:click="remove({{ $key }})" class="align-middle mx-2 px-2">
+                            <span style="font-size: 1.2rem; color: rgba(204, 13, 13, 0.849);"><i class="fa-solid fa-trash"></i></span>
+                        </button>
+                    @else
+                        <button type="button" wire:click="add()" class="align-middle mx-2 px-2">
+                            <i class="fa-solid fa-plus"></i>
+                        </button>
+                    @endif
+                </div>
+                <div class="py-2 px-20 sm:mx-12 text-sm text-red-600 font-semibold">
+                    @error('inputs.' . $key . '.url')
+                        {{ $message }}
+                    @enderror
+                </div>
+                @php $count++ @endphp
+            @endforeach
         </div>
         <div class="py-2 px-20 sm:mx-12 text-red-600 font-semibold">
             @error('url')
                 {{ $message }}
             @enderror
         </div>
-        <!-- Info -->
+ --}} <!-- Info -->
         <div class="py-0 px-4 sm:mx-12">
             <div class="px-16">
                 <h2 class="text-lg font-semibold py-2">Info</h2>

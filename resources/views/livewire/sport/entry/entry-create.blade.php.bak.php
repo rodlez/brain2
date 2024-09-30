@@ -48,7 +48,7 @@
         </div>
         <div class="py-2 px-20 sm:mx-12 text-red-600 font-semibold">
             @error('title')
-                {{ $message }}
+            {{ $message }}
             @enderror
         </div>
         <!-- Date -->
@@ -65,7 +65,7 @@
         </div>
         <div class="py-2 px-20 sm:mx-12 text-red-600 font-semibold">
             @error('date')
-                {{ $message }}
+            {{ $message }}
             @enderror
         </div>
         <!-- Category -->
@@ -79,22 +79,22 @@
                 </span>
                 <select wire:model="category_id" name="category_id" id="category_id" class="w-full pl-4 p-2 text-md rounded-lg bg-gray-50 border border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-orange-500 focus:border-orange-500">
                     @foreach ($categories as $category)
-                        <option value="{{ $category->id }}" class="text-orange-500"
-                                @if (old('category_id') == $category->id) selected @endif>{{ $category->name }}</option>
+                    <option value="{{ $category->id }}" class="text-orange-500"
+                        @if (old('category_id')==$category->id) selected @endif>{{ $category->name }}</option>
                     @endforeach
                 </select>
             </div>
         </div>
         <div class="py-2 px-20 sm:mx-12 text-red-600 font-semibold">
             @error('category_id')
-                {{ $message }}
+            {{ $message }}
             @enderror
         </div>
         <!-- Help -->
         @if ($show % 2 != 0)
-            <div class="text-white py-4 m-4 bg-zinc-400 rounded-lg">
-                <p class="px-4">Use Ctrl + select to select multiple tags</p>
-            </div>
+        <div class="text-white py-4 m-4 bg-zinc-400 rounded-lg">
+            <p class="px-4">Use Ctrl + select to select multiple tags</p>
+        </div>
         @endif
         <!-- Tags -->
         <div class="py-0 px-4 sm:mx-12">
@@ -107,15 +107,15 @@
                 </span>
                 <select wire:model.live="selectedTags" name="selectedTags" id="selectedTags" multiple class="w-full pl-4 p-2 text-md rounded-lg bg-gray-50 border border-gray-300 text-gray-900  dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-orange-500 focus:border-orange-500">
                     @foreach ($tags as $tag)
-                        <option value="{{ $tag->id }}"
-                                @if (old('selectedTags') == $tag->id) selected @endif>{{ $tag->name }}</option>
+                    <option value="{{ $tag->id }}"
+                        @if (old('selectedTags')==$tag->id) selected @endif>{{ $tag->name }}</option>
                     @endforeach
                 </select>
             </div>
         </div>
         <div class="py-2 px-20 sm:mx-12 text-red-600 font-semibold">
             @error('selectedTags')
-                {{ $message }}
+            {{ $message }}
             @enderror
         </div>
         <!-- Location -->
@@ -132,7 +132,7 @@
         </div>
         <div class="py-2 px-20 sm:mx-12 text-red-600 font-semibold">
             @error('location')
-                {{ $message }}
+            {{ $message }}
             @enderror
         </div>
         <!-- Duration -->
@@ -150,7 +150,7 @@
         </div>
         <div class="py-2 px-20 sm:mx-12 text-red-600 font-semibold">
             @error('duration')
-                {{ $message }}
+            {{ $message }}
             @enderror
         </div>
         <!-- Distance -->
@@ -168,48 +168,26 @@
         </div>
         <div class="py-2 px-20 sm:mx-12 text-red-600 font-semibold">
             @error('distance')
-                {{ $message }}
+            {{ $message }}
             @enderror
         </div>
-        {{ var_dump($inputs) }}
-
         <!-- Url -->
         <div class="py-0 px-4 sm:mx-12">
-            <div class="flex flex-row px-16">
-                <h2 class="text-lg font-semibold py-2">Url
-                    @if ($inputs->count() < 5)
-                        <button type="button" wire:click="add()" class="align-middle mx-2 px-2">
-                            <i class="fa-solid fa-circle-plus" title="Add Url"></i>
-                        </button>
-                    @else
-                        <span class="text-red-400 text-xs px-4">You have reached the limit of Urls (5)</span>
-                    @endif
-                </h2>
+            <div class="px-16">
+                <h2 class="text-lg font-semibold py-2">Url</h2>
             </div>
-
-            @php $count = 0 @endphp
-            @foreach ($inputs as $key => $value)
-                <div class="flex flex-row justify-start items-center gap-4">
-                    <span class="bg-zinc-200 px-3 py-2 rounded-lg">
-                        <i class="fa-solid fa-globe"></i>
-                    </span>
-                    <input wire:model.live="inputs.{{ $key }}.url" id="inputs.{{ $key }}.url" type="text" value="{{ old('url') }}" class="w-2/3 pl-4 p-2 bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-orange-500 focus:border-orange-500">
-                    @if ($count > 0)
-                        <button type="button" wire:click="remove({{ $key }})" class="align-middle mx-2 px-2">
-                            <span style="font-size: 1.2rem; color: rgba(204, 13, 13, 0.849);"><i class="fa-solid fa-trash"></i></span>
-                        </button>
-                    @else
-                    @endif
-                </div>
-                <div class="py-2 px-20 sm:mx-12 text-sm text-red-600 font-semibold">
-                    @error('inputs.' . $key . '.url')
-                        {{ $message }}
-                    @enderror
-                </div>
-                @php $count++ @endphp
-            @endforeach
+            <div class="flex flex-row justify-start items-center gap-4">
+                <span class="bg-zinc-200 px-3 py-2 rounded-lg">
+                    <i class="fa-solid fa-globe"></i>
+                </span>
+                <input wire:model="url" name="url" id="url" type="text" value="{{ old('url') }}" class="w-full pl-4 p-2 bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-orange-500 focus:border-orange-500">
+            </div>
         </div>
-
+        <div class="py-2 px-20 sm:mx-12 text-sm text-red-600 font-semibold">
+            @error('url')
+            {{ $message }}
+            @enderror
+        </div>
         <!-- Info -->
         <div class="py-0 px-4 sm:mx-12">
             <div class="px-16">
@@ -225,7 +203,7 @@
         <!-- Errors -->
         <div class="py-2 px-20 sm:mx-12 text-red-600 font-semibold">
             @error('info')
-                {{ $message }}
+            {{ $message }}
             @enderror
         </div>
 

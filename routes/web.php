@@ -68,6 +68,11 @@ Route::get('/dashboard/sport/tag/edit/{tag}', [SportTagController::class, 'edit'
 
 Route::get('/dashboard/sport/tag/{tag}/entries', [SportTagController::class, 'entries'])->name('sporttag.entries')->middleware(['auth', 'verified']);
 
+// ******************************************************* CODE ********************************************************************************
+
+Route::get('/dashboard/sport', [CodeEntryController::class, 'main'])->name('code.main')->middleware(['auth', 'verified']);
+
+
 
 
 /* Route::middleware(['auth', 'verified'])->group(function () {

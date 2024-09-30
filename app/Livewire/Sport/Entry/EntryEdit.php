@@ -24,10 +24,12 @@ class EntryEdit extends Component
     public $location;
     public $duration;
     public $distance;
-    public $url;
+    public $urljson;
     public $info;
     public $category_id;
     public $selectedTags = [];
+
+    public $inputs;
 
 
     protected $rules = [
@@ -39,13 +41,15 @@ class EntryEdit extends Component
         'location'      => 'required|min:2',
         'duration'      => 'required|gte:5',
         'distance'      => 'nullable|gte:0',
-        'url'           => 'nullable|url',
-        'info'          => 'nullable|min:3'
+        //'url'           => 'nullable|url',
+        'info'          => 'nullable|min:3',
+        'inputs.*.url'  => 'nullable|min:3'
     ];
 
     protected $messages = [
         'category_id.required' => 'The category field is required',
         'selectedTags.required' => 'At least 1 tag must be selected',
+        'inputs.*.url.min' => 'The field url must have at least 3 characters',
     ];
 
     public function boot(
@@ -63,10 +67,44 @@ class EntryEdit extends Component
         $this->location = $this->entry->location;
         $this->duration = $this->entry->duration;
         $this->distance = $this->entry->distance;
-        $this->url = $this->entry->url;
+        $this->urljson = $this->entry->url;
         $this->info = $this->entry->info;
 
         $this->selectedTags = $this->sportService->getEntryTags($this->entry);
+
+        /* $this->fill([
+            'inputs' => collect([
+                ['url' => '23']
+            ])
+        ]); */
+
+        $testini = [];
+        foreach (json_decode($this->urljson) as $value) {
+            $testini[] = ['url' => $value];
+        }
+
+        $this->fill([
+            'inputs' => collect($testini)
+        ]);
+
+        /* $this->fill([
+            'inputs' => collect([
+                ['url' => 'https://www.amazon.es/'],
+                ['url' => 'https://durgga.com/']
+            ])
+        ]); */
+    }
+
+    public function remove($key)
+    {
+        $this->inputs->pull($key);
+    }
+
+    public function add()
+    {
+        //dd('oli');
+        $this->inputs->push(['url' => '']);
+        //$this->inputs->push('');
     }
 
     /* protected function rules(): array
@@ -85,6 +123,17 @@ class EntryEdit extends Component
         $validated = $this->validate();
         $validated['distance'] != "" ?: $validated['distance'] = 0;
         $validated['user_id'] = $this->entry->user->id;
+
+        //dd($this->inputs);
+
+        $urlList = [];
+        foreach ($this->inputs as $input) {
+            $urlList[] = $input['url'];
+        }
+        // filter the empty possible url arrays and reorder the indexes        
+        $urlListFiltered = array_values(array_filter($urlList));
+
+        $validated['url'] = json_encode($urlListFiltered);
 
         $entry = $this->sportService->updateEntry($this->entry, $validated);
 
