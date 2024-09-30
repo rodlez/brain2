@@ -39,7 +39,7 @@
             </div>
 
             <div class="flex justify-center items-center bg-green-600 w-4/5 mx-auto sm:w-1/4 lg:w-1/5 h-44 my-4 sm:mx-0 rounded-xl text-white">
-                <a href="{{ route('sport.main') }}">
+                <a href="{{ route('code.main') }}">
                     <div class="text-center">
                         <i class="fa-solid fa-laptop-code fa-4x"></i>
                     </div>
