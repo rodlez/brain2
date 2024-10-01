@@ -1,10 +1,13 @@
 <?php
 
+
 use App\Http\Controllers\Sport\SportEntryController;
 use App\Http\Controllers\Sport\SportCategoryController;
 use App\Http\Controllers\Sport\SportTagController;
 use App\Http\Controllers\Sport\SportImageController;
 use App\Http\Controllers\Code\CodeEntryController;
+use App\Http\Controllers\Code\CodeCategoryController;
+
 use App\Http\Controllers\ProfileController;
 
 
@@ -74,15 +77,19 @@ Route::get('/dashboard/sport/tag/{tag}/entries', [SportTagController::class, 'en
 
 Route::get('/dashboard/code', [CodeEntryController::class, 'main'])->name('code.main')->middleware(['auth', 'verified']);
 
+// CATEGORIES
+Route::get('/dashboard/code/category', [CodeCategoryController::class, 'index'])->name('codecategory.index')->middleware(['auth', 'verified']);
+Route::get('/dashboard/code/category/create', [CodeCategoryController::class, 'create'])->name('codecategory.create')->middleware(['auth', 'verified']);
+Route::get('/dashboard/code/category/{category}', [CodeCategoryController::class, 'show'])->name('codecategory.show')->middleware(['auth', 'verified']);
+Route::put('/dashboard/code/category/{category}', [CodeCategoryController::class, 'update'])->name('codecategory.update')->middleware(['auth', 'verified']);
+Route::delete('/dashboard/code/category/{category}', [CodeCategoryController::class, 'destroy'])->name('codecategory.destroy')->middleware(['auth', 'verified']);
+Route::get('/dashboard/code/category/edit/{category}', [CodeCategoryController::class, 'edit'])->name('codecategory.edit')->middleware(['auth', 'verified']);
 
 
 
-/* Route::middleware(['auth', 'verified'])->group(function () {
-    Route::resource('/dashboard/sport/category', SportCategoryController::class);
-});
- */
 
-// PROFILE
+// ***************************************************** PROFILE *******************************************************************************
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

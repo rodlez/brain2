@@ -21,8 +21,9 @@ class CategoryStoreRequest extends FormRequest
      */
     public function rules(): array
     {
+        $tableName = $this->route('category')->getTable();
         return [
-            'name' => 'bail|required|min:3|string|unique:sport_categories,name'
+            'name' => 'bail|required|min:3|string|unique:' . $tableName . ',name'
         ];
     }
 }
