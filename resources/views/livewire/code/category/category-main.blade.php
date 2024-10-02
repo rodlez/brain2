@@ -111,7 +111,6 @@
                         <a wire:click.prevent="clearSearch" title="Reset">
                             <i class="fa-lg fa-solid fa-circle-xmark px-2"></i>
                         </a>
-
                     </span>
                 </div>
             @endif

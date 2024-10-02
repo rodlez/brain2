@@ -80,6 +80,15 @@ Route::get('/dashboard/sport/tag/{tag}/entries', [SportTagController::class, 'en
 
 Route::get('/dashboard/code', [CodeEntryController::class, 'main'])->name('code.main')->middleware(['auth', 'verified']);
 
+// ENTRIES
+Route::get('/dashboard/code/entry', [CodeEntryController::class, 'index'])->name('codeentry.index')->middleware(['auth', 'verified']);
+//Route::post('/dashboard/code/entry', [CodeEntryController::class, 'store'])->name('codeentry.store')->middleware(['auth', 'verified']);
+Route::get('/dashboard/code/entry/create', [CodeEntryController::class, 'create'])->name('codeentry.create')->middleware(['auth', 'verified']);
+Route::get('/dashboard/code/entry/{entry}', [CodeEntryController::class, 'show'])->name('codeentry.show')->middleware(['auth', 'verified']);
+Route::put('/dashboard/code/entry/{entry}', [CodeEntryController::class, 'update'])->name('codeentry.update')->middleware(['auth', 'verified']);
+Route::delete('/dashboard/code/entry/{entry}', [CodeEntryController::class, 'destroy'])->name('codeentry.destroy')->middleware(['auth', 'verified']);
+Route::get('/dashboard/code/entry/edit/{entry}', [CodeEntryController::class, 'edit'])->name('codeentry.edit')->middleware(['auth', 'verified']);
+
 // TYPE
 Route::get('/dashboard/code/type', [CodeTypeController::class, 'index'])->name('codetype.index')->middleware(['auth', 'verified']);
 Route::get('/dashboard/code/type/create', [CodeTypeController::class, 'create'])->name('codetype.create')->middleware(['auth', 'verified']);

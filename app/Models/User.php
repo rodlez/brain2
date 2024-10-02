@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 use App\Models\Sport\Sport;
+use App\Models\Code\Code;
 
 class User extends Authenticatable
 {
@@ -54,6 +55,17 @@ class User extends Authenticatable
     {
         return $this->hasMany(
             Sport::class,
+            foreignKey: 'user_id'
+        );
+    }
+
+    /**
+     * Get the sports entries associated with the user.
+     */
+    public function codes()
+    {
+        return $this->hasMany(
+            Code::class,
             foreignKey: 'user_id'
         );
     }

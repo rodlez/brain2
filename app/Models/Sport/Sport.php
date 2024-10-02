@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 use App\Models\User;
 
+use App\Models\Sport\SportCategory;
+use App\Models\Sport\SportTag;
+use App\Models\Sport\SportImage;
+
 class Sport extends Model
 {
     use HasFactory;

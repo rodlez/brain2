@@ -42,6 +42,7 @@ function datesInterval(string $date): DateInterval
  */
 function excerpt(string $input, int $length, bool $ellipses = true, bool $strip_html = true): string
 {
+    //TODO: check
     //strip tags, if desired
     if ($strip_html) $input = strip_tags($input);
 
@@ -50,6 +51,7 @@ function excerpt(string $input, int $length, bool $ellipses = true, bool $strip_
 
     //find last space within length
     $last_space = strrpos(substr($input, 0, $length), ' ');
+    dd($last_space);
     $trimmed_text = substr($input, 0, $last_space);
 
     //add ellipses (...)

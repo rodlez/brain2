@@ -17,7 +17,6 @@
                     <i class="fa-lg sm:fa-2x fa-solid fa-laptop-code pl-4 text-white"></i>
                     <span class="text-lg text-white px-4">Category Info</span>
                 </div>
-
             </div>
             <!-- Info -->
             <div class="mx-auto w-11/12 py-4 px-2">

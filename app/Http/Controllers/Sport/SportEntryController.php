@@ -13,6 +13,7 @@ use App\Models\Sport\SportTag;
 
 use App\Services\SportService;
 use App\Services\SportImageService;
+use Illuminate\View\View;
 
 class SportEntryController extends Controller
 {
@@ -25,7 +26,7 @@ class SportEntryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): View
     {
         return view('sport/entry.index');
     }
@@ -33,7 +34,7 @@ class SportEntryController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): View
     {
         return view('sport/entry/create');
     }
@@ -46,7 +47,7 @@ class SportEntryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Sport $entry)
+    public function show(Sport $entry): View
     {
         $tags = $this->sportService->displayEntryTags($entry, '/');
         $images = $this->sportService->getImages($entry);
@@ -61,7 +62,7 @@ class SportEntryController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Sport $entry)
+    public function edit(Sport $entry): View
     {
         $selectedTags = $this->sportService->getEntryTags($entry);
 
@@ -100,7 +101,7 @@ class SportEntryController extends Controller
 
     // Show the Sport Main Menu
 
-    public function main()
+    public function main(): View
     {
         $entries = $this->sportService->totalEntries();
         $categories = $this->sportService->totalCategories();

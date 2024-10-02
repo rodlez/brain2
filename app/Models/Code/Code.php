@@ -5,6 +5,12 @@ namespace App\Models\Code;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use App\Models\User;
+
+use App\Models\Code\CodeType;
+use App\Models\Code\CodeCategory;
+use App\Models\Code\CodeTag;
+
 class Code extends Model
 {
     use HasFactory;
@@ -23,7 +29,8 @@ class Code extends Model
         'category_id',
         'title',
         'url',
-        'info'
+        'info',
+        'code'
     ];
 
     /**
@@ -57,5 +64,17 @@ class Code extends Model
             CodeCategory::class,
             foreignKey: 'category_id'
         );
+    }
+
+    /**
+     * Get the tags associated.
+     */
+    public function tags()
+    {
+        return $this->belongsToMany(
+            CodeTag::class,
+            table: 'code_entry_tag',
+            foreignPivotKey: 'code_entry_id'
+        )->withTimestamps();
     }
 }
