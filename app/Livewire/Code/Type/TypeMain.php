@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Livewire\Code\Category;
+namespace App\Livewire\Code\Type;
 
 use Livewire\Component;
 use Livewire\WithPagination;
 
-use App\Models\Code\CodeCategory;
+use App\Models\Code\CodeType;
 
-class CategoryMain extends Component
+class TypeMain extends Component
 {
 
     use WithPagination;
@@ -39,11 +39,11 @@ class CategoryMain extends Component
     public function bulkDelete()
     {
         foreach ($this->selections as $selection) {
-            $category = CodeCategory::find($selection);
-            $category->delete();
+            $type = CodeType::find($selection);
+            $type->delete();
         }
 
-        return to_route('codecategory.index')->with('message', 'Categories successfully deleted.');
+        return to_route('codetype.index')->with('message', 'Types successfully deleted.');
     }
 
     public function sorting($columnName = "")
@@ -64,21 +64,21 @@ class CategoryMain extends Component
     {
         $found = 0;
 
-        $categories = CodeCategory::orderby($this->orderColumn, $this->sortOrder)->select('*');
+        $types = CodeType::orderby($this->orderColumn, $this->sortOrder)->select('*');
 
         if (!empty($this->search)) {
 
-            $found = $categories->where('name', "like", "%" . $this->search . "%")->count();
+            $found = $types->where('name', "like", "%" . $this->search . "%")->count();
         }
 
-        $total = $categories->count();
+        $total = $types->count();
 
-        $categories = $categories->paginate($this->perPage);
+        $types = $types->paginate($this->perPage);
 
-        return view('livewire.code.category.category-main', [
-            'categories' => $categories,
-            'found' => $found,
-            'column' => $this->orderColumn,
+        return view('livewire.code.type.type-main', [
+            'types'     => $types,
+            'found'     => $found,
+            'column'    => $this->orderColumn,
             'total'     => $total
         ]);
     }

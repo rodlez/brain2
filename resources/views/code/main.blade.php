@@ -15,7 +15,7 @@
                         <i class="fa-solid fa-code fa-2xl"></i>
                     </div>
                 </a>
-                <a href="#">
+                <a href="{{ route('codetype.index') }}">
                     <div class="flex flex-col justify-center items-center w-40 h-40 border-4 border-black rounded-lg gap-10 bg-yellow-600 text-white hover:bg-yellow-200 hover:text-black hover:border-black">
                         <span>Types ()</span>
                         <i class="fa-solid fa-sitemap fa-2xl"></i>

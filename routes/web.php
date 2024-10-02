@@ -1,17 +1,19 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 
+// Sport
 use App\Http\Controllers\Sport\SportEntryController;
 use App\Http\Controllers\Sport\SportCategoryController;
 use App\Http\Controllers\Sport\SportTagController;
 use App\Http\Controllers\Sport\SportImageController;
+// Code
 use App\Http\Controllers\Code\CodeEntryController;
 use App\Http\Controllers\Code\CodeCategoryController;
-
+use App\Http\Controllers\Code\CodeTypeController;
+// Profile
 use App\Http\Controllers\ProfileController;
 
-
-use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
@@ -77,6 +79,14 @@ Route::get('/dashboard/sport/tag/{tag}/entries', [SportTagController::class, 'en
 
 Route::get('/dashboard/code', [CodeEntryController::class, 'main'])->name('code.main')->middleware(['auth', 'verified']);
 
+// TYPE
+Route::get('/dashboard/code/type', [CodeTypeController::class, 'index'])->name('codetype.index')->middleware(['auth', 'verified']);
+Route::get('/dashboard/code/type/create', [CodeTypeController::class, 'create'])->name('codetype.create')->middleware(['auth', 'verified']);
+Route::get('/dashboard/code/type/{type}', [CodeTypeController::class, 'show'])->name('codetype.show')->middleware(['auth', 'verified']);
+Route::put('/dashboard/code/type/{type}', [CodeTypeController::class, 'update'])->name('codetype.update')->middleware(['auth', 'verified']);
+Route::delete('/dashboard/code/type/{type}', [CodeTypeController::class, 'destroy'])->name('codetype.destroy')->middleware(['auth', 'verified']);
+Route::get('/dashboard/code/type/edit/{type}', [CodeTypeController::class, 'edit'])->name('codetype.edit')->middleware(['auth', 'verified']);
+
 // CATEGORIES
 Route::get('/dashboard/code/category', [CodeCategoryController::class, 'index'])->name('codecategory.index')->middleware(['auth', 'verified']);
 Route::get('/dashboard/code/category/create', [CodeCategoryController::class, 'create'])->name('codecategory.create')->middleware(['auth', 'verified']);
@@ -85,6 +95,13 @@ Route::put('/dashboard/code/category/{category}', [CodeCategoryController::class
 Route::delete('/dashboard/code/category/{category}', [CodeCategoryController::class, 'destroy'])->name('codecategory.destroy')->middleware(['auth', 'verified']);
 Route::get('/dashboard/code/category/edit/{category}', [CodeCategoryController::class, 'edit'])->name('codecategory.edit')->middleware(['auth', 'verified']);
 
+// TAGS
+Route::get('/dashboard/code/tag', [CodeTagController::class, 'index'])->name('codetag.index')->middleware(['auth', 'verified']);
+Route::get('/dashboard/code/tag/create', [CodeTagController::class, 'create'])->name('codetag.create')->middleware(['auth', 'verified']);
+Route::get('/dashboard/code/tag/{tag}', [CodeTagController::class, 'show'])->name('codetag.show')->middleware(['auth', 'verified']);
+Route::put('/dashboard/code/tag/{tag}', [CodeTagController::class, 'update'])->name('codetag.update')->middleware(['auth', 'verified']);
+Route::delete('/dashboard/code/tag/{tag}', [CodeTagController::class, 'destroy'])->name('codetag.destroy')->middleware(['auth', 'verified']);
+Route::get('/dashboard/code/tag/edit/{tag}', [CodeTagController::class, 'edit'])->name('codetag.edit')->middleware(['auth', 'verified']);
 
 
 
