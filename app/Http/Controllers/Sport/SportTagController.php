@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Sport;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\TagStoreRequest;
+use App\Http\Requests\StoreTagRequest;
 use App\Models\Sport\SportTag;
 use Illuminate\View\View;
 
@@ -61,7 +61,7 @@ class SportTagController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(TagStoreRequest $request, SportTag $tag)
+    public function update(StoreTagRequest $request, SportTag $tag)
     {
         $formData = $request->validated();
         SportTag::where('id', $tag->id)->update($formData);

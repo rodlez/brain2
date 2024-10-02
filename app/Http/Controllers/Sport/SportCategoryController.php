@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Sport;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CategoryStoreRequest;
+use App\Http\Requests\StoreCategoryRequest;
 use App\Models\Sport\SportCategory;
 use Exception;
 use Illuminate\View\View;
@@ -62,7 +62,7 @@ class SportCategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(CategoryStoreRequest $request, SportCategory $category)
+    public function update(StoreCategoryRequest $request, SportCategory $category)
     {
         $formData = $request->validated();
         SportCategory::where('id', $category->id)->update($formData);

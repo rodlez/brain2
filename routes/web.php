@@ -11,6 +11,7 @@ use App\Http\Controllers\Sport\SportImageController;
 use App\Http\Controllers\Code\CodeEntryController;
 use App\Http\Controllers\Code\CodeCategoryController;
 use App\Http\Controllers\Code\CodeTypeController;
+use App\Http\Controllers\Code\CodeTagController;
 // Profile
 use App\Http\Controllers\ProfileController;
 

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Code;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CategoryStoreRequest;
+use App\Http\Requests\StoreCategoryRequest;
 use App\Models\Code\CodeCategory;
 use Exception;
 use Illuminate\View\View;
@@ -14,7 +14,7 @@ class CodeCategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): View
     {
         return view('code/category.index');
     }
@@ -22,7 +22,7 @@ class CodeCategoryController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): View
     {
         return view('code/category/create');
     }
@@ -48,7 +48,7 @@ class CodeCategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(CategoryStoreRequest $request, CodeCategory $category)
+    public function update(StoreCategoryRequest $request, CodeCategory $category)
     {
         $formData = $request->validated();
         CodeCategory::where('id', $category->id)->update($formData);
