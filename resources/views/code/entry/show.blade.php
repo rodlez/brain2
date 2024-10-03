@@ -161,59 +161,115 @@
                 </div>
             </div>
             <!-- Files -->
-            {{--  <div class="py-2 px-4 sm:mx-12">
+            <div class="py-2 px-4 sm:mx-12">
                 <div class="px-16">
-                    <h2 class="text-lg font-semibold py-2">Files ({{ $images->count() }})</h2>
+                    <h2 class="text-lg font-semibold py-2">Files ({{ $files->count() }})</h2>
                 </div>
                 <div class="flex flex-row justify-start items-start gap-4">
                     <span class="bg-zinc-200 px-3 py-2 rounded-lg">
                         <i class="fa-solid fa-file"></i>
                     </span>
-                    <!-- Image Table -->
-                    <div>
-                        @if ($images->count() !== 0)
-                            <table class="table-auto w-full border-2 mb-4">
-                                <thead class="text-center text-black bg-gray-200">
+                    <!-- file Table -->
+                    <div class="w-full overflow-x-auto">
+                        @if ($files->count() !== 0)
+                            <table class="table-auto w-full border-2 mb-4 text-sm">
+                                <thead class="text-sm text-center text-black bg-gray-200">
                                     <th></th>
-                                    <th class="p-2 max-xl:hidden">Filename</th>
+                                    <th class="p-2 max-lg:hidden">Filename</th>
                                     <th class="p-2 max-sm:hidden">Created</th>
                                     <th class="p-2 max-sm:hidden">Size <span class="text-xs">(KB)</span></th>
-                                    <th class="p-2 ">Format</th>
+                                    <th class="p-2">Format</th>
                                     <th></th>
                                 </thead>
 
-                                @foreach ($images as $image)
+                                @foreach ($files as $file)
                                     <tr class="bg-white border-b-2 text-center">
-                                        <td class="p-2">
-                                            @if ($image->media_type === 'application/pdf')
-                                                <a href="{{ asset('storage/' . $image->path) }}" title="{{ $image->original_filename }}">
+
+                                        @switch($file->media_type)
+                                            @case('application/vnd.ms-excel')
+                                                <td class="py-2"><i class="fa-2x fa-regular fa-file-excel"></i></td>
+                                            @break
+
+                                            @case('text/csv')
+                                                <td class="py-2"><i class="fa-2x fa-solid fa-file-csv"></i></td>
+                                            @break
+
+                                            @case('text/plain')
+                                                <td class="py-2"><i class="fa-2x fa-regular fa-file-lines"></i></td>
+                                            @break
+
+                                            @case('application/javascript')
+                                                <td class="py-2"><i class="fa-2x fa-brands fa-js"></i></td>
+                                            @break
+
+                                            @case('application/pdf')
+                                                <td class="py-2"><i class="fa-2x fa-regular fa-file-pdf"></i></td>
+                                            @break
+
+                                            @case('text/html')
+                                                <td class="py-2"><i class="fa-2x fa-brands fa-html5"></i></td>
+                                            @break
+
+                                            @case('text/x-php')
+                                                <td class="py-2"><i class="fa-2x fa-brands fa-php"></i></td>
+                                            @break
+
+                                            @case('application/vnd.oasis.opendocument.text')
+                                                <td class="py-2"><i class="fa-2x fa-regular fa-file-word"></i></td>
+                                            @break
+
+                                            @case('application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+                                                <td class="py-2"><i class="fa-2x fa-regular fa-file-word"></i></td>
+                                            @break
+
+                                            @case('image/jpeg')
+                                                <td class="py-2">
+                                                    <a href="{{ asset('storage/' . $file->path) }}">
+                                                        <img src="{{ asset('storage/' . $file->path) }}" class="w-12 md:w-24 mx-auto rounded-lg" title="{{ $file->original_filename }}">
+                                                    </a>
+                                                </td>
+                                            @break
+
+                                            @case('image/png')
+                                                <td class="py-2">
+                                                    <a href="{{ asset('storage/' . $file->path) }}">
+                                                        <img src="{{ asset('storage/' . $file->path) }}" class="w-12 md:w-24 mx-auto rounded-lg" title="{{ $file->original_filename }}">
+                                                    </a>
+                                                </td>
+                                            @break
+
+                                            @default
+                                                <td class="py-2"><i class="fa-2x fa-solid fa-triangle-exclamation text-red-600 hover:text-red-400" title="Not a valid Format"></i></td>
+                                        @endswitch
+                                        {{-- @if ($file->media_type === 'application/pdf')
+                                                <a href="{{ asset('storage/' . $file->path) }}" title="{{ $file->original_filename }}">
                                                     <i class="fa-regular fa-file-pdf fa-2xl"></i>
                                                 </a>
                                             @else
-                                                <a href="{{ asset('storage/' . $image->path) }}">
-                                                    <img src="{{ asset('storage/' . $image->path) }}" class="w-24 mx-auto rounded-lg" title="{{ $image->original_filename }}">
+                                                <a href="{{ asset('storage/' . $file->path) }}">
+                                                    <img src="{{ asset('storage/' . $file->path) }}" class="w-24 mx-auto rounded-lg" title="{{ $file->original_filename }}">
                                                 </a>
-                                            @endif
-                                        </td>
-                                        <td class="p-2 max-xl:hidden">{{ shortFilename(getFileName($image->original_filename), 20) }}</td>
-                                        <td class="p-2 max-sm:hidden">{{ $image->created_at->format('d-m-Y') }}</td>
-                                        <td class="p-2 max-sm:hidden">{{ round($image->size / 1000) }} </td>
-                                        <td class="p-2 ">{{ basename($image->media_type) }}</td>
+                                            @endif --}}
+
+                                        <td class="p-2 max-lg:hidden">{{ shortFilename(getFileName($file->original_filename), 20) }}</td>
+                                        <td class="p-2 max-sm:hidden">{{ $file->created_at->format('d-m-Y') }}</td>
+                                        <td class="p-2 max-sm:hidden">{{ round($file->size / 1000) }} </td>
+                                        <td class="p-2 ">{{ basename($file->media_type) }}</td>
                                         <td class="p-2">
                                             <div class="flex justify-center items-center gap-2">
-                                                <!-- Download Image -->
-                                                <a href="{{ route('codeimage.download', [$entry, $image]) }}" title="Download File">
+                                                <!-- Download file -->
+                                                <a href="{{ route('codefile.download', [$entry, $file]) }}" title="Download File">
                                                     <span class="text-green-600 hover:text-black transition-all duration-500">
                                                         <i class="fa-lg fa-solid fa-file-arrow-down"></i>
                                                     </span>
                                                 </a>
-                                                <!-- Delete Image -->
-                                                <form action="{{ route('codeimage.destroy', [$entry, $image]) }}" method="POST">
+                                                <!-- Delete file -->
+                                                <form action="{{ route('codefile.destroy', [$entry, $file]) }}" method="POST">
                                                     <!-- Add Token to prevent Cross-Site Request Forgery (CSRF) -->
                                                     @csrf
                                                     <!-- Dirtective to Override the http method -->
                                                     @method('DELETE')
-                                                    <button onclick="return confirm('Are you sure you want to delete the image: {{ $image->original_filename }}?')" title="Delete Image">
+                                                    <button onclick="return confirm('Are you sure you want to delete the file: {{ $file->original_filename }}?')" title="Delete file">
                                                         <span class="text-red-600 hover:text-black transition-all duration-500"><i class="fa-lg fa-solid fa-trash"></i></span>
                                                     </button>
                                                 </form>
@@ -223,16 +279,16 @@
                                     </tr>
                                 @endforeach
 
-                                
+
 
                             </table>
                         @endif
                         <div class="py-2">
-                            @if ($images->count() >= 5)
+                            @if ($files->count() >= 5)
                                 <span class="text-red-400 font-semibold">Max files (5) reached. Delete some to upload a new File.</span>
                             @else
-                                <!-- Upload Image -->
-                                <a href="{{ route('codeimage.index', $entry) }}" class="w-full text-white text-center bg-green-600 hover:bg-green-500 focus:ring-4 focus:ring-violet-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                                <!-- Upload file -->
+                                <a href="{{ route('codefile.index', $entry) }}" class="w-full text-white text-center bg-green-600 hover:bg-green-500 focus:ring-4 focus:ring-violet-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                                     <span> Upload File</span>
                                     <span class="px-2"><i class="fa-lg fa-solid fa-file-arrow-up"></i></span>
                                 </a>
@@ -241,7 +297,7 @@
 
                     </div>
                 </div>
-            </div> --}}
+            </div>
 
             <!-- Buttons -->
             <div class="flex flex-col justify-start sm:flex-row sm:justify-between p-4 gap-4 border-t-2 mt-8">

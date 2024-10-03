@@ -78,6 +78,21 @@ class EntryMain extends Component
         $this->selectedTags = [];
     }
 
+    public function clearFilterTipo()
+    {
+        $this->tipo = 0;
+    }
+
+    public function clearFilterCat()
+    {
+        $this->cat = 0;
+    }
+
+    public function clearFilterTag()
+    {
+        $this->selectedTags = [];
+    }
+
     public function clearSearch()
     {
         $this->search = '';

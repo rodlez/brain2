@@ -7,7 +7,7 @@ use App\Models\Code\Code;
 use App\Models\Code\CodeTag;
 use App\Models\Code\CodeCategory;
 use App\Models\Code\CodeType;
-use App\Models\Code\CodeImage;
+use App\Models\Code\CodeFile;
 // Request
 use Illuminate\Http\Request;
 use App\Http\Requests\CodeStoreRequest;
@@ -112,9 +112,9 @@ class CodeService
         return $tags;
     }
 
-    public function getImages(Code $entry): Collection
+    public function getFiles(Code $entry): Collection
     {
-        return CodeImage::where('code_id', $entry->id)->get();
+        return CodeFile::where('code_id', $entry->id)->get();
     }
 
     /**

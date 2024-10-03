@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\Code\CodeType;
 use App\Models\Code\CodeCategory;
 use App\Models\Code\CodeTag;
+use App\Models\Code\CodeFile;
 
 class Code extends Model
 {
@@ -76,5 +77,16 @@ class Code extends Model
             table: 'code_entry_tag',
             foreignPivotKey: 'code_entry_id'
         )->withTimestamps();
+    }
+
+    /**
+     * Get the Files associated.
+     */
+    public function files()
+    {
+        return $this->hasMany(
+            CodeFile::class,
+            foreignKey: 'code_id'
+        );
     }
 }
