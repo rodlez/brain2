@@ -19,10 +19,7 @@ class EntryCreate extends Component
 {
     public $show = 0;
     public $status;
-    public $title;
-    public $location;
-    public $duration;
-    public $distance;
+    public $title;    
     //public $url;
     public $info;
     public $code;
