@@ -142,7 +142,7 @@
             @endforeach
         </div>
         <!-- Info -->
-        <div class="py-0 px-4 sm:mx-12">
+        {{-- <div class="py-0 px-4 sm:mx-12">
             <div class="px-16">
                 <h2 class="text-lg font-semibold py-2">Info</h2>
             </div>
@@ -151,6 +151,18 @@
                     <i class="fa-solid fa-circle-info"></i>
                 </span>
                 <textarea rows="8" cols="20" wire:model="info" name="info" id="info" type="text" class="appearance-none block w-full bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-orange-500 focus:border-orange-500">{{ old('info') }}</textarea>
+            </div>
+        </div> --}}
+        <div class="py-0 px-4 sm:mx-12">
+            <div class="px-16">
+                <h2 class="text-lg font-semibold py-2">Info</h2>
+            </div>
+            <div class="flex flex-row justify-start items-start gap-4">
+                <span class="bg-zinc-200 px-3 py-2 rounded-lg">
+                    <i class="fa-solid fa-circle-info"></i>
+                </span>
+                <label for="info">Info</label>
+                <livewire:quill :value="$info">
             </div>
         </div>
         <!-- Errors -->

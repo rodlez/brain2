@@ -76,3 +76,17 @@ function shortFilename($filename, $length): string
 {
     return substr($filename, 0, $length);
 }
+
+/**
+ * 
+ */
+
+ function displayText($textRaw)
+ {
+    var_dump($textRaw);
+    dd(strip_tags($textRaw));
+
+    $text = htmlspecialchars($textRaw);
+    
+    return preg_replace('/\n/', '<br>' . PHP_EOL, $text);
+ }

@@ -145,7 +145,7 @@
                         <i class="fa-solid fa-circle-info"></i>
                     </span>
                     <div class="w-full p-2 text-md rounded-lg bg-gray-200 border border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-orange-500 focus:border-orange-500 ">
-                        {{ $entry->info === null ? '-' : $entry->info }}
+                        {{ $entry->info === null ? '-' : displayText($entry->info) }}
                     </div>
                 </div>
             </div>
@@ -159,7 +159,7 @@
                         <i class="fa-solid fa-laptop-code"></i>
                     </span>
                     <div class="w-full p-2 text-md rounded-lg bg-gray-200 border border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-orange-500 focus:border-orange-500 ">
-                        {{ $entry->code === null ? '-' : $entry->code }}
+                        <pre><code style="border-radius: 16px; padding: 15px 30px 30px 30 px !important">{{ $entry->code === null ? '-' : $entry->code }}</code></pre>
                     </div>
                 </div>
             </div>
@@ -333,5 +333,9 @@
         </div>
 
     </div>
+
+    <script>
+        hljs.highlightAll();
+    </script>
 
 </x-app-layout>

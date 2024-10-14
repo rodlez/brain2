@@ -26,6 +26,17 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/tooltip/tooltip.min.css') }}">
     <script src="{{ asset('assets/tooltip/tooltip.min.js') }}"></script>
 
+    <!-- Quill Editor -->
+    {{-- <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet"> --}}
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
+    {{-- <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script> --}}
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+
+    <!-- Highlightjs -->
+    <link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    
+
     @livewireStyles
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -60,7 +71,7 @@
         </main>
     </div>
     @livewireScripts
-    @stack('js')
+   {{--  @stack('js') --}}
 </body>
 
 </html>

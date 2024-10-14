@@ -14,8 +14,13 @@ use Illuminate\Http\Request;
 
 use App\Services\CodeService;
 
+use App\Livewire\Quill;
+
 class EntryEdit extends Component
 {
+    // Dependency Injection CodeService to get the Types Categories and Tags
+    protected CodeService $codeService;
+    
     public $entry;
     public $show = 0;
     public $title;
@@ -33,7 +38,7 @@ class EntryEdit extends Component
         'type_id'       => 'required',
         'category_id'   => 'required',
         'selectedTags'  => 'required',
-        'info'          => 'nullable|min:3',
+        'info'          => 'nullable|min:13',
         'code'          => 'nullable|min:3',
         'inputs.*.url'  => 'nullable|min:3'
     ];
@@ -44,6 +49,18 @@ class EntryEdit extends Component
         'selectedTags.required' => 'At least 1 tag must be selected',
         'inputs.*.url.min'      => 'The field url must have at least 3 characters',
     ];
+
+     // TEST QUILL EDITOR
+
+    public $listeners = [
+        Quill::EVENT_VALUE_UPDATED
+
+    ];
+
+    public function quill_value_updated($value){
+
+        $this->info = $value;
+    }
 
     public function boot(
         CodeService $codeService,
@@ -97,6 +114,9 @@ class EntryEdit extends Component
 
         $validated = $this->validate();
         $validated['user_id'] = $this->entry->user->id;
+
+        // TEST
+        //dd($validated);
 
         $urlList = [];
         foreach ($this->inputs as $input) {

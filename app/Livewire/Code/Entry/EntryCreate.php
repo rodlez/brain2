@@ -15,6 +15,9 @@ use Illuminate\Http\Request;
 
 use App\Services\CodeService;
 
+// test editor
+use App\Livewire\Quill;
+
 class EntryCreate extends Component
 {
     // test push new branch
@@ -39,7 +42,7 @@ class EntryCreate extends Component
         'category_id'   => 'required',
         'selectedTags'  => 'required',
         //'url'           => 'nullable|url',
-        'info'          => 'nullable|min:3',
+        'info'          => 'nullable|min:12',
         'code'          => 'nullable|min:3',
         'inputs.*.url'  => 'nullable|min:3'
     ];
@@ -50,6 +53,19 @@ class EntryCreate extends Component
         'selectedTags.required' => 'At least 1 tag must be selected.',
         'inputs.*.url.min' => 'The field url must have at least 3 characters',
     ];
+
+    // TEST QUILL EDITOR
+
+    public $listeners = [
+        Quill::EVENT_VALUE_UPDATED
+    ];
+
+    public function quill_value_updated($value){
+
+        $this->info = $value;
+
+    }
+
 
     // Hook Runs on every request, immediately after the component is instantiated, but before any other lifecycle methods are called
     public function boot(
@@ -95,6 +111,9 @@ class EntryCreate extends Component
 
         $validated = $this->validate();
         $validated['user_id'] = $request->user()->id;
+
+        // TEST
+        //dd($validated);
 
         // TODO: JSONENCODE DECODE URL ARRAYS
 

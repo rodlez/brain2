@@ -13,9 +13,8 @@ class CodeTestController extends Controller
      */
     public function index(): View
     {
-        /* return view('codetest.index'); */
-        return view('code/test.index');
 
+        return view('code/test.index');               
     }
 
     /**

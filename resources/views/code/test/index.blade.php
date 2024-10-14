@@ -8,8 +8,28 @@
             <a href="/dashboard/code" class="px-2 hover:text-green-600">Code</a> /
             <a href="/dashboard/code/test" class="px-2 font-bold text-black border-b-2 border-b-green-600">Test</a>
         </div>
-        {{-- <livewire:code.entry.entry-main /> --}}
-        Mire usted
+
+
+        1 quill
+        <div class="bg-red-500">
+            {{-- <livewire:quill /> --}}
+            @livewire('quill', [
+                'value' => 'Hello <strong>Buddy!</strong>'
+            ])
+        </div>
+
+        2 quill
+        <div class="bg-green-500">
+            {{-- <livewire:quill /> --}}
+            @livewire('quill', [
+                'value' => 'Mire <strong>usted</strong>'
+            ])
+        </div>
+
+
+        
+
     </div>
+
 
 </x-app-layout>
