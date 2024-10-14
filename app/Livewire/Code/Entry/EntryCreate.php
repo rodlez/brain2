@@ -17,6 +17,7 @@ use App\Services\CodeService;
 
 class EntryCreate extends Component
 {
+    // test push new branch
     public $show = 0;
     public $status;
     public $title;    
