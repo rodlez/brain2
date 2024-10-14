@@ -119,6 +119,9 @@
                             <div class="w-full p-2 text-md rounded-lg bg-gray-200 border border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-orange-500 focus:border-orange-500">
                                 {{ $url }}
                             </div>
+                            <span class="bg-zinc-200 px-3 py-2 rounded-lg">
+                                <a href="{{ $url }}" target="_blank"><i class="fa-solid fa-up-right-from-square"></i></a>
+                            </span>
                         </div>
                     @endforeach
                 @else

@@ -30,6 +30,9 @@ class EntryCreate extends Component
 
     public $inputs;
 
+    // Dependency Injection CodeService to get the Types Categories and Tags
+    protected CodeService $codeService;
+
     protected $rules = [
         'title'         => 'required|min:3',
         'type_id'       => 'required',
@@ -48,13 +51,14 @@ class EntryCreate extends Component
         'inputs.*.url.min' => 'The field url must have at least 3 characters',
     ];
 
+    // Hook Runs on every request, immediately after the component is instantiated, but before any other lifecycle methods are called
     public function boot(
         CodeService $codeService,
     ) {
         $this->codeService = $codeService;
     }
 
-
+    // Hook Runs once, immediately after the component is instantiated, but before render() is called. This is only called once on initial page load and never called again, even on component refreshes
     public function mount()
     {
         $this->type_id = CodeType::orderBy('name', 'asc')->pluck('id')->first();
