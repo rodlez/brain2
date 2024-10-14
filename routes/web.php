@@ -13,6 +13,7 @@ use App\Http\Controllers\Code\CodeCategoryController;
 use App\Http\Controllers\Code\CodeTypeController;
 use App\Http\Controllers\Code\CodeTagController;
 use App\Http\Controllers\Code\CodeFileController;
+use App\Http\Controllers\Code\CodeTestController;
 // Profile
 use App\Http\Controllers\ProfileController;
 
@@ -119,7 +120,8 @@ Route::put('/dashboard/code/tag/{tag}', [CodeTagController::class, 'update'])->n
 Route::delete('/dashboard/code/tag/{tag}', [CodeTagController::class, 'destroy'])->name('codetag.destroy')->middleware(['auth', 'verified']);
 Route::get('/dashboard/code/tag/edit/{tag}', [CodeTagController::class, 'edit'])->name('codetag.edit')->middleware(['auth', 'verified']);
 
-
+// TEST
+Route::get('/dashboard/code/test', [CodeTestController::class, 'index'])->name('codetest.index')->middleware(['auth', 'verified']);
 
 // ***************************************************** PROFILE *******************************************************************************
 

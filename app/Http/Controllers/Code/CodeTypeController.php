@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Code;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTypeRequest;
 use App\Models\Code\CodeType;
+use Exception;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
+
 
 class CodeTypeController extends Controller
 {
