@@ -10,6 +10,7 @@ use App\Models\Code\CodeCategory;
 use App\Models\Code\CodeTag;
 
 use App\Services\CodeService;
+use Livewire\Attributes\Url;
 
 class EntryMain extends Component
 {
@@ -22,19 +23,24 @@ class EntryMain extends Component
     protected CodeService $codeService;
 
     // order and pagination
+    #[Url(as: 'o', except: '')]
     public $orderColumn = "id";
+    #[Url(as: 'so', except: '')]
     public $sortOrder = "desc";
     public $sortLink = '<i class="fa-solid fa-caret-down pl-2"></i>';
     public $perPage = 25;
 
     // search
-    public $showSearch = 0;
+    #[Url(as: 'se', except: '')]
     public $search = "";
 
-    // filters
-    public $showFilter = 0;
+    // filters    
+    public $showFilters = 0;
+    #[Url(as: 'ty', except: '')]
     public $tipo = 0;
+    #[Url(as: 'c', except: '')]
     public $cat = 0;
+    #[Url(as: 'ta', except: '')]
     public $selectedTags = [];
 
     // multiple batch selections
@@ -66,14 +72,9 @@ class EntryMain extends Component
 
     public function activateFilter()
     {
-        $this->showFilter++;
+        $this->showFilters++;
     }
-
-    public function activateSearch()
-    {
-        $this->showSearch++;
-    }
-
+    
     public function clearFilters()
     {
         $this->tipo = 0;

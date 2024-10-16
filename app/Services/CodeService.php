@@ -140,6 +140,10 @@ class CodeService
     {
         return Code::get()->count();
     }
+    public function totalTypes(): int
+    {
+        return CodeType::get()->count();
+    }
     public function totalCategories(): int
     {
         return CodeCategory::get()->count();

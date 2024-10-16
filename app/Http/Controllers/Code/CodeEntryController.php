@@ -12,26 +12,27 @@ use Illuminate\View\View;
 
 class CodeEntryController extends Controller
 {
-
     // Service Injection
-    public function __construct(
-        private CodeService $codeService,
+    public function __construct(private CodeService $codeService)
+    {
         //private SportImageService $sportImageService,
-    ) {}
+    }
 
     // Show the Code Main Menu
 
     public function main(): View
     {
-        /*  $entries = $this->sportService->totalEntries();
-        $categories = $this->sportService->totalCategories();
-        $tags = $this->sportService->totalTags();
+        $entries = $this->codeService->totalEntries();
+        $types = $this->codeService->totalTypes();
+        $categories = $this->codeService->totalCategories();
+        $tags = $this->codeService->totalTags();
 
-        return view('sport/main', [
+        return view('code/main', [
             'totalEntries' => $entries,
+            'totalTypes' => $types,
             'totalCategories' => $categories,
             'totalTags' => $tags,
-        ]); */
+        ]);
         return view('code/main');
     }
 
@@ -60,9 +61,9 @@ class CodeEntryController extends Controller
         $files = $this->codeService->getFiles($entry);
 
         return view('code/entry/show', [
-            'entry'     => $entry,
-            'tags'      => $tags,
-            'files'    => $files
+            'entry' => $entry,
+            'tags' => $tags,
+            'files' => $files,
         ]);
     }
 

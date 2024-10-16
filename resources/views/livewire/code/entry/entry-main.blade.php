@@ -29,19 +29,21 @@
             </span>
         </div>
         <div>
-            @if ($showFilter % 2 != 0)
-                <a wire:click="activateFilter" class="cursor-pointer" title="Close Filters">
+            @if ($showFilters % 2 != 0)
+                <a wire:click="activateFilter" class="cursor-pointer tooltip">
                     <i class="fa-solid fa-minus"></i>
+                    <span class="tooltiptext">Close Filters</span>
                 </a>
             @else
-                <a wire:click="activateFilter" class="cursor-pointer" title="Open Filters">
+                <a wire:click="activateFilter" class="cursor-pointer tooltip">
                     <i class="fa-solid fa-plus"></i>
+                    <span class="tooltiptext">Open Filters</span>
                 </a>
             @endif
         </div>
     </div>
 
-    @if ($showFilter % 2 != 0)
+    @if ($showFilters % 2 != 0)
         <div class="bg-zinc-300 mx-4 border-black border-2 rounded-lg py-2 my-2 w-100 text-black text-md">
             <!-- Type -->
             <div class="flex flex-col justify-start items-start sm:flex-row sm:justify-between sm:items-center gap-1 px-4 py-2 ">
@@ -153,6 +155,13 @@
                     <span class="text-orange-600">{{ !in_array('0', $this->selectedTags) && count($this->selectedTags) != 0 ? 'Tags (' . implode(', ', $tagNames) . ')' : '' }}</span>
                 </p>
             </div>
+            <div>
+                <span class="text-md text-red-600 font-semibold px-4">
+                    <a wire:click.prevent="resetAll" data-tooltip="Reset">
+                        <i class="fa-lg fa-solid fa-circle-xmark hover:text-red-400 cursor-pointer px-2"></i>
+                    </a>
+                </span>
+            </div>
 
         </div>
     @endif
@@ -199,7 +208,7 @@
                                 <td class="px-2"><input wire:model.live="selections" type="checkbox" class="text-green-600 outline-none focus:ring-0 checked:bg-green-500" value={{ $entry->id }}></td>
                                 <td>{{ $entry->id }}</td>
                                 <td class="cursor-pointer" title="{{ $entry->title }}">
-                                    <a href="{{ route('codeentry.show', $entry) }}" title="See this entry">
+                                    <a href="{{ route('codeentry.show', $entry) }}" data-tooltip="See this entry">
                                         {{-- {{ excerpt($entry->title, 20) }} --}}
                                         {{ $entry->title }}
                                     </a>
@@ -285,11 +294,14 @@
                                 <td class="p-2">
                                     <div class="flex justify-center items-center gap-2">
                                         <!-- Show -->
-                                        <a href="{{ route('codeentry.show', $entry) }}" title="See this entry">
-                                            <span class="text-orange-400 hover:text-black transition-all duration-500"><i class="fa-solid fa-circle-info"></i></span>
+                                        <a href="{{ route('codeentry.show', $entry) }}" >
+                                            <span class="text-orange-400 hover:text-black transition-all duration-500 tooltip">
+                                                <i class="fa-solid fa-circle-info"></i>
+                                                <span class="tooltiptext">See this Entry</span>
+                                            </span>
                                         </a>
                                         <!-- Upload File -->
-                                        <a href="{{ route('codefile.index', $entry) }}" title="Upload File">
+                                        <a href="{{ route('codefile.index', $entry) }}" data-tooltip="Upload File" data-tooltip-position="top">
                                             <span class="text-green-600 hover:text-black transition-all duration-500"><i class="fa-solid fa-file-arrow-up"></i></span>
                                         </a>
                                         <!-- Edit -->

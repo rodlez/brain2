@@ -11,25 +11,25 @@
 
                 <a href="{{ route('codeentry.index') }}">
                     <div class="flex flex-col justify-center items-center w-40 h-40 border-4 border-black rounded-lg gap-10 bg-green-600 text-white hover:bg-yellow-200 hover:text-black hover:border-black">
-                        <span class="text-xl">Entries ()</span>
+                        <span>Entries ({{ $totalEntries }})</span>
                         <i class="fa-solid fa-code fa-2xl"></i>
                     </div>
                 </a>
                 <a href="{{ route('codetype.index') }}">
                     <div class="flex flex-col justify-center items-center w-40 h-40 border-4 border-black rounded-lg gap-10 bg-yellow-600 text-white hover:bg-yellow-200 hover:text-black hover:border-black">
-                        <span>Types ()</span>
+                        <span>Types ({{ $totalTypes }})</span>
                         <i class="fa-solid fa-sitemap fa-2xl"></i>
                     </div>
                 </a>
                 <a href="{{ route('codecategory.index') }}">
                     <div class="flex flex-col justify-center items-center w-40 h-40 border-4 border-black rounded-lg gap-10 bg-violet-600 text-white hover:bg-yellow-200 hover:text-black hover:border-black">
-                        <span>Categories ()</span>
+                        <span>Categories ({{ $totalCategories }})</span>
                         <i class="fa-solid fa-list fa-2xl"></i>
                     </div>
                 </a>
                 <a href="{{ route('codetag.index') }}">
                     <div class="flex flex-col justify-center items-center w-40 h-40 border-4 border-black rounded-lg gap-10 bg-orange-500 text-white hover:bg-yellow-200 hover:text-black hover:border-black">
-                        <span>Tags ()</span>
+                        <span>Tags ({{ $totalTags }})</span>
                         <i class="fa-solid fa-tags fa-2xl"></i>
                     </div>
                 </a>
