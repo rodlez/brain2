@@ -1,0 +1,36 @@
+#quill_editor {
+  background-color: #f3f4f6;
+}
+#quill_editor a:link {
+    color: red;
+}
+#quill_editor a:visited {
+    color: pink;
+}
+#quill_editor a:hover {
+    color: green;
+}
+#quill_editor a:focus {
+    color: blue;
+}
+
+// Highlight js
+
+.pretest {
+	width: 50%;
+    height: 200px;
+	padding: 0;
+	margin: 0;
+	overflow: auto;
+	overflow-y: hidden;
+	font-size: 12px;
+	line-height: 20px;
+	background: #E4E2DA;
+	border: 1px solid #777;
+        font-family: "Lucida Console", Courier, monospace;
+	
+}
+pre code {
+	padding: 10px;
+	color: #333;
+}

@@ -38,7 +38,7 @@ class EntryEdit extends Component
         'type_id'       => 'required',
         'category_id'   => 'required',
         'selectedTags'  => 'required',
-        'info'          => 'nullable|min:13',
+        'info'          => 'nullable',
         'code'          => 'nullable|min:3',
         'inputs.*.url'  => 'nullable|min:3'
     ];

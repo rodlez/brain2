@@ -56,7 +56,7 @@ class CodeEntryController extends Controller
      */
     public function show(Code $entry): View
     {
-        $tags = $this->codeService->displayEntryTags($entry, '/');
+        $tags = $this->codeService->displayEntryTags($entry);
         $files = $this->codeService->getFiles($entry);
 
         return view('code/entry/show', [

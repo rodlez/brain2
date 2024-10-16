@@ -8,7 +8,7 @@
             style="
     font-size: 1rem;"
         >
-        {{$value}}
+        {!!$value!!}
         </div>
     </div>
  

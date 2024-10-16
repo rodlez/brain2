@@ -18,6 +18,9 @@ class EntryMain extends Component
 
     //protected $paginationTheme = "bootstrap";
 
+    // Dependency Injection CodeService to get the Types Categories and Tags
+    protected CodeService $codeService;
+
     // order and pagination
     public $orderColumn = "id";
     public $sortOrder = "desc";
@@ -202,10 +205,11 @@ class EntryMain extends Component
 
         // Search
         if (!empty($this->search)) {
+            // trim search in case copy paste or start the search with whitespaces
             // search by id or name
             //$entries->orWhere('id', "like", "%" . $this->search . "%");
             //->orWhere('location', "like", "%" . $this->search . "%")
-            $entries = $entries->where('title', "like", "%" . $this->search . "%");
+            $entries = $entries->where('title', "like", "%" . trim($this->search) . "%");
             $found = $entries->count();
         }
 

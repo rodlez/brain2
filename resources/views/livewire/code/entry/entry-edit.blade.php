@@ -158,7 +158,9 @@
                 <span class="bg-zinc-200 px-3 py-2 rounded-lg">
                     <i class="fa-solid fa-circle-info"></i>
                 </span>
+                <div class="w-full">
                     @livewire('quill', ['value' => $info])
+                </div>
             </div>
         </div>
         <!-- Errors -->

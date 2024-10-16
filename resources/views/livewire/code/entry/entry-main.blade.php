@@ -118,7 +118,6 @@
 
         </div>
     @endif
-
     <!-- Search -->
     <div class="flex flex-col items-start sm:justify-between sm:flex-row px-4 py-4 w-100 gap-2">
         <!-- Search -->

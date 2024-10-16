@@ -83,7 +83,7 @@ class CodeService
      * @param Code $entry
      * @param string $separator Value to separate between tags (- / *) 
      */
-    public function displayEntryTags(Code $entry, string $separator): array
+    public function displayEntryTags(Code $entry, string $separator = ''): array
     {
         $tags = $entry->tags;
         $count = 0;
